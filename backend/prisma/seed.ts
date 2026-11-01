@@ -1,3 +1,4 @@
+import process from 'process';
 import { PrismaClient, Role, DiscountType } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { catalogCategories, catalogProducts } from '../src/config/productsCatalog';
