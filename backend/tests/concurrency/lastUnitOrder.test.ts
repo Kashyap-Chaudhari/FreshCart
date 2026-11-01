@@ -144,3 +144,4 @@ describe('Concurrency: Last-Unit Order Checkout Race Condition', () => {
     expect(db.getStock()).toBe(0);
   });
 });
+

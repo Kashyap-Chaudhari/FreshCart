@@ -11,14 +11,18 @@ enum Role {
   OWNER
   STAFF
   CUSTOMER
+  DELIVERY_PERSON
 }
 
 enum OrderStatus {
   PLACED
   CONFIRMED
+  PROCESSING
   PACKED
+  SHIPPED
   OUT_FOR_DELIVERY
   DELIVERED
+  CANCEL_REQUESTED
   CANCELLED
   REJECTED
 }
@@ -45,20 +49,24 @@ enum DiscountType {
 }
 
 model User {
-  id              String                @id @default(uuid())
-  name            String
-  email           String?               @unique
-  phone           String?               @unique
-  passwordHash    String?
-  role            Role                  @default(CUSTOMER)
-  isBlocked       Boolean               @default(false)
-  isPhoneVerified Boolean               @default(false)
-  addresses       Address[]
-  orders          Order[]
-  auditLogs       AuditLog[]
-  stockMovements  StockMovementLedger[]
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  id                 String                @id @default(uuid())
+  name               String
+  email              String?               @unique
+  phone              String?               @unique
+  passwordHash       String?
+  role               Role                  @default(CUSTOMER)
+  vehicleNumber      String?
+  vehicleType        String?
+  isActive           Boolean               @default(true)
+  isBlocked          Boolean               @default(false)
+  isPhoneVerified    Boolean               @default(false)
+  addresses          Address[]
+  orders             Order[]               @relation("CustomerOrders")
+  assignedDeliveries Order[]               @relation("DeliveryPersonOrders")
+  auditLogs          AuditLog[]
+  stockMovements     StockMovementLedger[]
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
 
   @@index([role])
   @@index([phone])
@@ -227,7 +235,19 @@ model Order {
   orderNumber             String               @unique // e.g. ORD-20261028-1001
   invoiceNumber           String               @unique // e.g. INV-001001
   userId                  String?
-  user                    User?                @relation(fields: [userId], references: [id])
+  user                    User?                @relation("CustomerOrders", fields: [userId], references: [id])
+  deliveryPersonId        String?
+  deliveryPerson          User?                @relation("DeliveryPersonOrders", fields: [deliveryPersonId], references: [id])
+  deliveryPersonName      String?
+  deliveryStatus          String?              @default("UNASSIGNED") // "UNASSIGNED", "ASSIGNED", "ACCEPTED", "PICKED_UP", "OUT_FOR_DELIVERY", "DELIVERED", "FAILED"
+  assignedAt              DateTime?
+  acceptedAt              DateTime?
+  pickedUpAt              DateTime?
+  outForDeliveryAt        DateTime?
+  deliveredAt             DateTime?
+  deliveryLocation        Json?                // { latitude, longitude, accuracy, timestamp }
+  deliveryNotes           String?
+  failureReason           String?
   isGuest                 Boolean              @default(false)
   customerName            String
   customerPhone           String
@@ -238,6 +258,11 @@ model Order {
   paymentStatus           PaymentStatus        @default(PENDING)
   deliveryType            String               @default("DELIVERY") // "DELIVERY" or "PICKUP"
   deliverySlot            String?
+  estimatedDeliveryDate   DateTime?
+  trackingNumber          String?
+  carrier                 String?
+  trackingNotes           String?
+  cancellationStatus      String?              @default("NONE") // "NONE", "REQUESTED", "APPROVED", "REJECTED"
   pincode                 String
   subtotal                Decimal              @db.Decimal(10, 2)
   taxTotal                Decimal              @db.Decimal(10, 2)
@@ -261,6 +286,8 @@ model Order {
   @@index([orderNumber])
   @@index([invoiceNumber])
   @@index([userId])
+  @@index([deliveryPersonId])
+  @@index([deliveryStatus])
   @@index([status])
   @@index([paymentStatus])
   @@index([createdAt])
@@ -338,3 +365,4 @@ model OtpVerification {
   @@index([isUsed])
   @@map("otp_verifications")
 }
+

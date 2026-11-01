@@ -1,0 +1,734 @@
+SKU,Category,Sub-category,Product Name,Unit / Pack Size,Price (₹),MRP (₹),Tax / GST %,Stock Qty,Low Stock Alert Qty,Available (Yes/No)
+GRC00001,"Fruits & Vegetables","Fresh Vegetables","Potato","1 kg",32,38,0,72,8,Yes
+GRC00002,"Fruits & Vegetables","Fresh Vegetables","Potato","5 kg",158,190,0,72,8,Yes
+GRC00003,"Fruits & Vegetables","Fresh Vegetables","Onion","1 kg",41,48,0,65,9,Yes
+GRC00004,"Fruits & Vegetables","Fresh Vegetables","Onion","5 kg",203,240,0,65,9,Yes
+GRC00005,"Fruits & Vegetables","Fresh Vegetables","Tomato","1 kg",33,40,0,72,8,Yes
+GRC00006,"Fruits & Vegetables","Fresh Vegetables","Green Chilli","250 g",42,50,0,34,10,Yes
+GRC00007,"Fruits & Vegetables","Fresh Vegetables","Ginger","250 g",42,50,0,72,8,Yes
+GRC00008,"Fruits & Vegetables","Fresh Vegetables","Garlic","250 g",42,50,0,72,8,Yes
+GRC00009,"Fruits & Vegetables","Fresh Vegetables","Lemon","250 g",17,20,0,65,9,Yes
+GRC00010,"Fruits & Vegetables","Fresh Vegetables","Coriander Leaves","1 bunch",22,25,0,62,14,Yes
+GRC00011,"Fruits & Vegetables","Fresh Vegetables","Mint Leaves","1 bunch",22,25,0,107,11,Yes
+GRC00012,"Fruits & Vegetables","Fresh Vegetables","Curry Leaves","1 bunch",55,65,0,34,10,Yes
+GRC00013,"Fruits & Vegetables","Fresh Vegetables","Cauliflower","1 kg",56,65,0,107,11,Yes
+GRC00014,"Fruits & Vegetables","Fresh Vegetables","Cabbage","1 kg",60,65,0,79,15,Yes
+GRC00015,"Fruits & Vegetables","Fresh Vegetables","Brinjal (Eggplant)","500 g",29,34,0,76,12,Yes
+GRC00016,"Fruits & Vegetables","Fresh Vegetables","Ladyfinger (Okra)","500 g",30,34,0,69,13,Yes
+GRC00017,"Fruits & Vegetables","Fresh Vegetables","Cucumber","500 g",31,34,0,86,14,Yes
+GRC00018,"Fruits & Vegetables","Fresh Vegetables","Carrot","500 g",28,34,0,72,8,Yes
+GRC00019,"Fruits & Vegetables","Fresh Vegetables","Beetroot","500 g",31,34,0,86,14,Yes
+GRC00020,"Fruits & Vegetables","Fresh Vegetables","Radish","500 g",28,34,0,72,8,Yes
+GRC00021,"Fruits & Vegetables","Fresh Vegetables","Spinach (Palak)","1 bunch",23,25,0,55,15,Yes
+GRC00022,"Fruits & Vegetables","Fresh Vegetables","Fenugreek (Methi)","1 bunch",57,65,0,69,13,Yes
+GRC00023,"Fruits & Vegetables","Fresh Vegetables","Bottle Gourd (Dudhi)","1 kg",54,65,0,90,10,Yes
+GRC00024,"Fruits & Vegetables","Fresh Vegetables","Ridge Gourd (Turai)","500 g",29,34,0,83,11,Yes
+GRC00025,"Fruits & Vegetables","Fresh Vegetables","Bitter Gourd (Karela)","500 g",31,34,0,97,9,Yes
+GRC00026,"Fruits & Vegetables","Fresh Vegetables","Cluster Beans (Guvar)","500 g",31,34,0,97,9,Yes
+GRC00027,"Fruits & Vegetables","Fresh Vegetables","French Beans","500 g",29,34,0,34,10,Yes
+GRC00028,"Fruits & Vegetables","Fresh Vegetables","Green Peas","500 g",30,34,0,100,12,Yes
+GRC00029,"Fruits & Vegetables","Fresh Vegetables","Capsicum","500 g",31,34,0,86,14,Yes
+GRC00030,"Fruits & Vegetables","Fresh Vegetables","Pumpkin","1 kg",60,65,0,79,15,Yes
+GRC00031,"Fruits & Vegetables","Fresh Vegetables","Sweet Potato","500 g",17,20,0,34,10,Yes
+GRC00032,"Fruits & Vegetables","Fresh Vegetables","Raw Banana","500 g",27,31,0,100,12,Yes
+GRC00033,"Fruits & Vegetables","Fresh Vegetables","Drumstick","500 g",30,34,0,93,13,Yes
+GRC00034,"Fruits & Vegetables","Fresh Vegetables","Spring Onion","1 bunch",41,48,0,34,10,Yes
+GRC00035,"Fruits & Vegetables","Fresh Vegetables","Sweet Corn","2 pcs",57,65,0,100,12,Yes
+GRC00036,"Fruits & Vegetables","Fresh Vegetables","Mushroom","200 g",59,65,0,86,14,Yes
+GRC00037,"Fruits & Vegetables","Fresh Vegetables","Broccoli","1 pc",59,65,0,86,14,Yes
+GRC00038,"Fruits & Vegetables","Fresh Vegetables","Raw Mango","500 g",88,99,0,93,13,Yes
+GRC00039,"Fruits & Vegetables","Fresh Vegetables","Ivy Gourd (Tindora)","500 g",29,34,0,83,11,Yes
+GRC00040,"Fruits & Vegetables","Fresh Vegetables","Cowpea (Chora)","500 g",31,34,0,48,8,Yes
+GRC00041,"Fruits & Vegetables","Fresh Fruits","Banana","1 dozen",50,60,0,72,8,Yes
+GRC00042,"Fruits & Vegetables","Fresh Fruits","Apple","1 kg",186,220,0,65,9,Yes
+GRC00043,"Fruits & Vegetables","Fresh Fruits","Orange","1 kg",54,65,0,72,8,Yes
+GRC00044,"Fruits & Vegetables","Fresh Fruits","Mosambi (Sweet Lime)","1 kg",54,65,0,90,10,Yes
+GRC00045,"Fruits & Vegetables","Fresh Fruits","Grapes","500 g",69,83,0,72,8,Yes
+GRC00046,"Fruits & Vegetables","Fresh Fruits","Pomegranate","1 kg",138,160,0,107,11,Yes
+GRC00047,"Fruits & Vegetables","Fresh Fruits","Papaya","1 pc",42,50,0,72,8,Yes
+GRC00048,"Fruits & Vegetables","Fresh Fruits","Watermelon","1 pc",44,50,0,100,12,Yes
+GRC00049,"Fruits & Vegetables","Fresh Fruits","Muskmelon","1 pc",58,65,0,93,13,Yes
+GRC00050,"Fruits & Vegetables","Fresh Fruits","Mango (Seasonal)","1 kg",169,190,0,62,14,Yes
+GRC00051,"Fruits & Vegetables","Fresh Fruits","Pineapple","1 pc",196,220,0,93,13,Yes
+GRC00052,"Fruits & Vegetables","Fresh Fruits","Guava","500 g",29,34,0,65,9,Yes
+GRC00053,"Fruits & Vegetables","Fresh Fruits","Pear","500 g",29,34,0,58,10,Yes
+GRC00054,"Fruits & Vegetables","Fresh Fruits","Kiwi","3 pcs",56,65,0,58,10,Yes
+GRC00055,"Fruits & Vegetables","Fresh Fruits","Chikoo","500 g",28,34,0,72,8,Yes
+GRC00056,"Fruits & Vegetables","Fresh Fruits","Custard Apple","500 g",95,115,0,41,9,Yes
+GRC00057,"Fruits & Vegetables","Fresh Fruits","Coconut (Fresh)","1 pc",59,65,0,55,15,Yes
+GRC00058,"Fruits & Vegetables","Fresh Fruits","Dragon Fruit","1 pc",55,65,0,34,10,Yes
+GRC00059,"Fruits & Vegetables","Fresh Fruits","Strawberry","250 g",18,20,0,100,12,Yes
+GRC00060,"Fruits & Vegetables","Cut & Packaged Vegetables","Peeled Garlic","100 g",22,27,0,41,9,Yes
+GRC00061,"Fruits & Vegetables","Cut & Packaged Vegetables","Cut Mixed Vegetables","500 g",28,34,0,90,10,Yes
+GRC00062,"Fruits & Vegetables","Cut & Packaged Vegetables","Sprouts Mix","200 g",56,65,0,107,11,Yes
+GRC00063,"Fruits & Vegetables","Cut & Packaged Vegetables","Salad Pack","250 g",18,20,0,100,12,Yes
+GRC00064,"Rice, Flour & Grains","Rice","Basmati Rice","1 kg",118,140,5,34,10,Yes
+GRC00065,"Rice, Flour & Grains","Rice","Basmati Rice","5 kg",592,700,5,34,10,Yes
+GRC00066,"Rice, Flour & Grains","Rice","Sona Masoori Rice","1 kg",61,70,5,69,13,Yes
+GRC00067,"Rice, Flour & Grains","Rice","Sona Masoori Rice","5 kg",306,350,5,69,13,Yes
+GRC00068,"Rice, Flour & Grains","Rice","Kolam Rice","1 kg",61,70,5,100,12,Yes
+GRC00069,"Rice, Flour & Grains","Rice","Kolam Rice","5 kg",306,350,5,100,12,Yes
+GRC00070,"Rice, Flour & Grains","Rice","Brown Rice","1 kg",61,70,5,100,12,Yes
+GRC00071,"Rice, Flour & Grains","Rice","Idli Rice","1 kg",62,70,5,93,13,Yes
+GRC00072,"Rice, Flour & Grains","Rice","Poha (Thick)","500 g",30,36,5,34,10,Yes
+GRC00073,"Rice, Flour & Grains","Rice","Poha (Thin)","500 g",31,36,5,107,11,Yes
+GRC00074,"Rice, Flour & Grains","Rice","Puffed Rice (Murmura)","200 g",64,70,5,97,9,Yes
+GRC00075,"Rice, Flour & Grains","Rice","Sabudana","500 g",33,36,5,86,14,Yes
+GRC00076,"Rice, Flour & Grains","Flour (Atta)","Wheat Atta","5 kg",254,290,5,100,12,Yes
+GRC00077,"Rice, Flour & Grains","Flour (Atta)","Wheat Atta","10 kg",508,580,5,100,12,Yes
+GRC00078,"Rice, Flour & Grains","Flour (Atta)","Multigrain Atta","1 kg",52,58,5,55,15,Yes
+GRC00079,"Rice, Flour & Grains","Flour (Atta)","Multigrain Atta","5 kg",262,290,5,55,15,Yes
+GRC00080,"Rice, Flour & Grains","Flour (Atta)","Maida","500 g",33,39,5,65,9,Yes
+GRC00081,"Rice, Flour & Grains","Flour (Atta)","Maida","1 kg",63,75,5,65,9,Yes
+GRC00082,"Rice, Flour & Grains","Flour (Atta)","Sooji (Rava)","500 g",33,39,5,34,10,Yes
+GRC00083,"Rice, Flour & Grains","Flour (Atta)","Sooji (Rava)","1 kg",63,75,5,34,10,Yes
+GRC00084,"Rice, Flour & Grains","Flour (Atta)","Besan","500 g",33,39,5,65,9,Yes
+GRC00085,"Rice, Flour & Grains","Flour (Atta)","Besan","1 kg",63,75,5,65,9,Yes
+GRC00086,"Rice, Flour & Grains","Flour (Atta)","Bajra Flour","500 g",26,30,5,107,11,Yes
+GRC00087,"Rice, Flour & Grains","Flour (Atta)","Jowar Flour","500 g",26,30,5,107,11,Yes
+GRC00088,"Rice, Flour & Grains","Flour (Atta)","Ragi Flour","500 g",26,30,5,100,12,Yes
+GRC00089,"Rice, Flour & Grains","Flour (Atta)","Rice Flour","500 g",26,30,5,100,12,Yes
+GRC00090,"Rice, Flour & Grains","Flour (Atta)","Corn Flour","200 g",51,58,5,100,12,Yes
+GRC00091,"Rice, Flour & Grains","Flour (Atta)","Makai Atta","500 g",26,30,5,100,12,Yes
+GRC00092,"Rice, Flour & Grains","Flour (Atta)","Dalia (Broken Wheat)","500 g",30,36,5,90,10,Yes
+GRC00093,"Rice, Flour & Grains","Flour (Atta)","Vermicelli (Sev)","200 g",62,70,5,62,14,Yes
+GRC00094,"Rice, Flour & Grains","Flour (Atta)","Vermicelli (Sev)","400 g",62,70,5,62,14,Yes
+GRC00095,"Rice, Flour & Grains","Millets & Others","Foxtail Millet","500 g",39,42,5,48,8,Yes
+GRC00096,"Rice, Flour & Grains","Millets & Others","Ragi (Finger Millet)","500 g",35,42,5,90,10,Yes
+GRC00097,"Rice, Flour & Grains","Millets & Others","Jowar","500 g",35,42,5,65,9,Yes
+GRC00098,"Rice, Flour & Grains","Millets & Others","Bajra","500 g",30,36,5,65,9,Yes
+GRC00099,"Rice, Flour & Grains","Millets & Others","Quinoa","500 g",30,36,5,72,8,Yes
+GRC00100,"Rice, Flour & Grains","Millets & Others","Oats","500 g",31,36,5,58,10,Yes
+GRC00101,"Rice, Flour & Grains","Millets & Others","Oats","1 kg",60,70,5,58,10,Yes
+GRC00102,"Pulses & Dals","Dals","Toor Dal","500 g",90,99,5,86,14,Yes
+GRC00103,"Pulses & Dals","Dals","Toor Dal","1 kg",172,190,5,86,14,Yes
+GRC00104,"Pulses & Dals","Dals","Moong Dal (Yellow)","500 g",78,91,5,76,12,Yes
+GRC00105,"Pulses & Dals","Dals","Moong Dal (Yellow)","1 kg",151,175,5,76,12,Yes
+GRC00106,"Pulses & Dals","Dals","Moong Dal (Washed)","500 g",78,91,5,76,12,Yes
+GRC00107,"Pulses & Dals","Dals","Chana Dal","500 g",69,78,5,93,13,Yes
+GRC00108,"Pulses & Dals","Dals","Chana Dal","1 kg",134,150,5,93,13,Yes
+GRC00109,"Pulses & Dals","Dals","Urad Dal (Split)","500 g",74,83,5,62,14,Yes
+GRC00110,"Pulses & Dals","Dals","Urad Dal (Whole)","500 g",74,83,5,62,14,Yes
+GRC00111,"Pulses & Dals","Dals","Masoor Dal","500 g",54,62,5,100,12,Yes
+GRC00112,"Pulses & Dals","Dals","Masoor Dal","1 kg",105,120,5,100,12,Yes
+GRC00113,"Pulses & Dals","Dals","Masoor Whole","500 g",52,62,5,34,10,Yes
+GRC00114,"Pulses & Dals","Dals","Moong Whole (Green)","500 g",77,91,5,83,11,Yes
+GRC00115,"Pulses & Dals","Dals","Matki (Moth Beans)","500 g",65,75,5,76,12,Yes
+GRC00116,"Pulses & Dals","Dals","Val (Field Beans)","500 g",66,75,5,69,13,Yes
+GRC00117,"Pulses & Dals","Beans & Legumes","Kabuli Chana (White)","500 g",65,78,5,90,10,Yes
+GRC00118,"Pulses & Dals","Beans & Legumes","Kabuli Chana (White)","1 kg",125,150,5,90,10,Yes
+GRC00119,"Pulses & Dals","Beans & Legumes","Kala Chana (Black)","500 g",67,78,5,76,12,Yes
+GRC00120,"Pulses & Dals","Beans & Legumes","Rajma (Red Kidney Beans)","500 g",68,78,5,38,14,Yes
+GRC00121,"Pulses & Dals","Beans & Legumes","Lobia (Black Eyed Peas)","500 g",67,75,5,31,15,Yes
+GRC00122,"Pulses & Dals","Beans & Legumes","Dried Green Peas","500 g",67,75,5,62,14,Yes
+GRC00123,"Pulses & Dals","Beans & Legumes","Soya Chunks","200 g",125,145,5,107,11,Yes
+GRC00124,"Pulses & Dals","Beans & Legumes","Soya Chunks","500 g",65,75,5,107,11,Yes
+GRC00125,"Spices & Masalas","Whole Spices","Cumin Seeds (Jeera)","100 g",61,72,5,83,11,Yes
+GRC00126,"Spices & Masalas","Whole Spices","Cumin Seeds (Jeera)","200 g",406,480,5,83,11,Yes
+GRC00127,"Spices & Masalas","Whole Spices","Mustard Seeds","100 g",60,72,5,41,9,Yes
+GRC00128,"Spices & Masalas","Whole Spices","Mustard Seeds","200 g",398,480,5,41,9,Yes
+GRC00129,"Spices & Masalas","Whole Spices","Coriander Seeds","100 g",49,54,5,55,15,Yes
+GRC00130,"Spices & Masalas","Whole Spices","Coriander Seeds","200 g",326,360,5,55,15,Yes
+GRC00131,"Spices & Masalas","Whole Spices","Fennel Seeds (Saunf)","100 g",52,63,5,90,10,Yes
+GRC00132,"Spices & Masalas","Whole Spices","Fenugreek Seeds","100 g",57,63,5,55,15,Yes
+GRC00133,"Spices & Masalas","Whole Spices","Black Pepper","50 g",93,110,5,34,10,Yes
+GRC00134,"Spices & Masalas","Whole Spices","Black Pepper","100 g",177,210,5,34,10,Yes
+GRC00135,"Spices & Masalas","Whole Spices","Cloves (Laung)","50 g",101,110,5,48,8,Yes
+GRC00136,"Spices & Masalas","Whole Spices","Cinnamon (Dalchini)","50 g",93,110,5,83,11,Yes
+GRC00137,"Spices & Masalas","Whole Spices","Green Cardamom (Elaichi)","25 g",2800,3200,5,38,14,Yes
+GRC00138,"Spices & Masalas","Whole Spices","Green Cardamom (Elaichi)","50 g",223,255,5,38,14,Yes
+GRC00139,"Spices & Masalas","Whole Spices","Black Cardamom","25 g",2944,3200,5,48,8,Yes
+GRC00140,"Spices & Masalas","Whole Spices","Bay Leaf (Tej Patta)","25 g",349,420,5,90,10,Yes
+GRC00141,"Spices & Masalas","Whole Spices","Star Anise","25 g",368,420,5,100,12,Yes
+GRC00142,"Spices & Masalas","Whole Spices","Dry Red Chilli","100 g",50,54,5,48,8,Yes
+GRC00143,"Spices & Masalas","Whole Spices","Dry Red Chilli","200 g",331,360,5,48,8,Yes
+GRC00144,"Spices & Masalas","Whole Spices","Carom Seeds (Ajwain)","100 g",52,63,5,90,10,Yes
+GRC00145,"Spices & Masalas","Whole Spices","Sesame Seeds (Til)","100 g",54,63,5,76,12,Yes
+GRC00146,"Spices & Masalas","Whole Spices","Sesame Seeds (Til)","200 g",361,420,5,76,12,Yes
+GRC00147,"Spices & Masalas","Whole Spices","Poppy Seeds (Khus Khus)","50 g",30,34,5,31,15,Yes
+GRC00148,"Spices & Masalas","Whole Spices","Nutmeg (Jaiphal)","25 g",374,420,5,62,14,Yes
+GRC00149,"Spices & Masalas","Whole Spices","Mace (Javitri)","10 g",386,420,5,48,8,Yes
+GRC00150,"Spices & Masalas","Whole Spices","Asafoetida (Hing)","50 g",30,34,5,69,13,Yes
+GRC00151,"Spices & Masalas","Whole Spices","Kalonji (Nigella)","50 g",30,34,5,69,13,Yes
+GRC00152,"Spices & Masalas","Ground Spices","Turmeric Powder","100 g",49,54,5,55,15,Yes
+GRC00153,"Spices & Masalas","Ground Spices","Turmeric Powder","200 g",326,360,5,55,15,Yes
+GRC00154,"Spices & Masalas","Ground Spices","Red Chilli Powder","100 g",47,54,5,69,13,Yes
+GRC00155,"Spices & Masalas","Ground Spices","Red Chilli Powder","200 g",315,360,5,69,13,Yes
+GRC00156,"Spices & Masalas","Ground Spices","Red Chilli Powder","500 g",162,185,5,69,13,Yes
+GRC00157,"Spices & Masalas","Ground Spices","Kashmiri Chilli Powder","100 g",49,54,5,104,8,Yes
+GRC00158,"Spices & Masalas","Ground Spices","Coriander Powder","100 g",48,54,5,62,14,Yes
+GRC00159,"Spices & Masalas","Ground Spices","Coriander Powder","200 g",320,360,5,62,14,Yes
+GRC00160,"Spices & Masalas","Ground Spices","Cumin Powder","100 g",53,63,5,34,10,Yes
+GRC00161,"Spices & Masalas","Ground Spices","Black Pepper Powder","50 g",93,110,5,83,11,Yes
+GRC00162,"Spices & Masalas","Ground Spices","Dry Mango Powder (Amchur)","100 g",54,63,5,45,13,Yes
+GRC00163,"Spices & Masalas","Ground Spices","Dry Ginger Powder","50 g",30,34,5,69,13,Yes
+GRC00164,"Spices & Masalas","Ground Spices","Garlic Powder","50 g",28,34,5,41,9,Yes
+GRC00165,"Spices & Masalas","Blended Masalas","Garam Masala","50 g",29,34,5,34,10,Yes
+GRC00166,"Spices & Masalas","Blended Masalas","Garam Masala","100 g",53,63,5,34,10,Yes
+GRC00167,"Spices & Masalas","Blended Masalas","Chaat Masala","50 g",29,34,5,34,10,Yes
+GRC00168,"Spices & Masalas","Blended Masalas","Chaat Masala","100 g",53,63,5,34,10,Yes
+GRC00169,"Spices & Masalas","Blended Masalas","Pav Bhaji Masala","50 g",30,34,5,62,14,Yes
+GRC00170,"Spices & Masalas","Blended Masalas","Pav Bhaji Masala","100 g",56,63,5,62,14,Yes
+GRC00171,"Spices & Masalas","Blended Masalas","Chhole Masala","50 g",28,34,5,41,9,Yes
+GRC00172,"Spices & Masalas","Blended Masalas","Chhole Masala","100 g",52,63,5,41,9,Yes
+GRC00173,"Spices & Masalas","Blended Masalas","Sambar Masala","100 g",52,63,5,41,9,Yes
+GRC00174,"Spices & Masalas","Blended Masalas","Biryani Masala","50 g",31,34,5,48,8,Yes
+GRC00175,"Spices & Masalas","Blended Masalas","Kitchen King Masala","100 g",53,63,5,83,11,Yes
+GRC00176,"Spices & Masalas","Blended Masalas","Meat Masala","50 g",29,34,5,107,11,Yes
+GRC00177,"Spices & Masalas","Blended Masalas","Tea Masala","50 g",30,34,5,100,12,Yes
+GRC00178,"Spices & Masalas","Blended Masalas","Sabzi Masala","100 g",53,63,5,34,10,Yes
+GRC00179,"Spices & Masalas","Blended Masalas","Rasam Powder","100 g",53,63,5,34,10,Yes
+GRC00180,"Spices & Masalas","Blended Masalas","Panipuri Masala","50 g",31,34,5,55,15,Yes
+GRC00181,"Spices & Masalas","Blended Masalas","Jaljeera Powder","100 g",65,72,5,55,15,Yes
+GRC00182,"Spices & Masalas","Blended Masalas","Goda Masala","100 g",54,63,5,107,11,Yes
+GRC00183,"Spices & Masalas","Blended Masalas","Undhiyu Masala","100 g",58,63,5,48,8,Yes
+GRC00184,"Spices & Masalas","Blended Masalas","Dabeli Masala","50 g",28,34,5,41,9,Yes
+GRC00185,"Spices & Masalas","Blended Masalas","Khichdi Masala","50 g",31,34,5,48,8,Yes
+GRC00186,"Spices & Masalas","Salt & Others","Iodised Salt","1 kg",25,30,0,34,10,Yes
+GRC00187,"Spices & Masalas","Salt & Others","Rock Salt (Sendha Namak)","200 g",26,30,0,38,14,Yes
+GRC00188,"Spices & Masalas","Salt & Others","Rock Salt (Sendha Namak)","500 g",18,20,0,38,14,Yes
+GRC00189,"Spices & Masalas","Salt & Others","Black Salt (Kala Namak)","100 g",18,20,0,31,15,Yes
+GRC00190,"Spices & Masalas","Salt & Others","Black Pepper & Salt Mix","100 g",18,20,0,31,15,Yes
+GRC00191,"Spices & Masalas","Salt & Others","Citric Acid (Limbu Phool)","100 g",54,63,5,45,13,Yes
+GRC00192,"Spices & Masalas","Salt & Others","Baking Soda","100 g",54,63,5,107,11,Yes
+GRC00193,"Spices & Masalas","Salt & Others","Tamarind (Imli)","200 g",380,420,5,55,15,Yes
+GRC00194,"Spices & Masalas","Salt & Others","Tamarind (Imli)","500 g",199,220,5,55,15,Yes
+GRC00195,"Spices & Masalas","Salt & Others","Kokum","100 g",53,63,5,65,9,Yes
+GRC00196,"Oils, Ghee & Sweeteners","Cooking Oils","Sunflower Oil","1 L",145,175,5,41,9,Yes
+GRC00197,"Oils, Ghee & Sweeteners","Cooking Oils","Sunflower Oil","5 L",726,875,5,41,9,Yes
+GRC00198,"Oils, Ghee & Sweeteners","Cooking Oils","Groundnut Oil","1 L",145,175,5,41,9,Yes
+GRC00199,"Oils, Ghee & Sweeteners","Cooking Oils","Groundnut Oil","5 L",726,875,5,41,9,Yes
+GRC00200,"Oils, Ghee & Sweeteners","Cooking Oils","Mustard Oil","1 L",151,175,5,107,11,Yes
+GRC00201,"Oils, Ghee & Sweeteners","Cooking Oils","Mustard Oil","5 L",753,875,5,107,11,Yes
+GRC00202,"Oils, Ghee & Sweeteners","Cooking Oils","Soybean Oil","1 L",138,160,5,107,11,Yes
+GRC00203,"Oils, Ghee & Sweeteners","Cooking Oils","Soybean Oil","5 L",688,800,5,107,11,Yes
+GRC00204,"Oils, Ghee & Sweeteners","Cooking Oils","Cottonseed Oil","1 L",147,160,5,48,8,Yes
+GRC00205,"Oils, Ghee & Sweeteners","Cooking Oils","Cottonseed Oil","15 L tin",736,800,5,48,8,Yes
+GRC00206,"Oils, Ghee & Sweeteners","Cooking Oils","Palm Oil","1 L",145,160,5,86,14,Yes
+GRC00207,"Oils, Ghee & Sweeteners","Cooking Oils","Coconut Oil","200 ml",39,45,5,107,11,Yes
+GRC00208,"Oils, Ghee & Sweeteners","Cooking Oils","Coconut Oil","500 ml",71,83,5,107,11,Yes
+GRC00209,"Oils, Ghee & Sweeteners","Cooking Oils","Coconut Oil","1 L",138,160,5,107,11,Yes
+GRC00210,"Oils, Ghee & Sweeteners","Cooking Oils","Olive Oil","250 ml",236,265,5,93,13,Yes
+GRC00211,"Oils, Ghee & Sweeteners","Cooking Oils","Olive Oil","500 ml",441,495,5,93,13,Yes
+GRC00212,"Oils, Ghee & Sweeteners","Cooking Oils","Rice Bran Oil","1 L",133,160,5,41,9,Yes
+GRC00213,"Oils, Ghee & Sweeteners","Cooking Oils","Rice Bran Oil","5 L",664,800,5,41,9,Yes
+GRC00214,"Oils, Ghee & Sweeteners","Cooking Oils","Sesame Oil","500 ml",73,83,5,100,12,Yes
+GRC00215,"Oils, Ghee & Sweeteners","Cooking Oils","Sesame Oil","1 L",140,160,5,100,12,Yes
+GRC00216,"Oils, Ghee & Sweeteners","Cooking Oils","Refined Oil","1 L",138,160,5,107,11,Yes
+GRC00217,"Oils, Ghee & Sweeteners","Cooking Oils","Refined Oil","5 L",688,800,5,107,11,Yes
+GRC00218,"Oils, Ghee & Sweeteners","Ghee & Butter","Cow Ghee","200 ml",181,200,12,86,14,Yes
+GRC00219,"Oils, Ghee & Sweeteners","Ghee & Butter","Cow Ghee","500 ml",339,375,12,86,14,Yes
+GRC00220,"Oils, Ghee & Sweeteners","Ghee & Butter","Cow Ghee","1 L",652,720,12,86,14,Yes
+GRC00221,"Oils, Ghee & Sweeteners","Ghee & Butter","Buffalo Ghee","500 ml",317,375,12,34,10,Yes
+GRC00222,"Oils, Ghee & Sweeteners","Ghee & Butter","Buffalo Ghee","1 L",608,720,12,34,10,Yes
+GRC00223,"Oils, Ghee & Sweeteners","Ghee & Butter","Vanaspati","1 kg",142,160,5,93,13,Yes
+GRC00224,"Oils, Ghee & Sweeteners","Ghee & Butter","Butter (Salted)","100 g",22,24,5,55,15,Yes
+GRC00225,"Oils, Ghee & Sweeteners","Ghee & Butter","Butter (Salted)","500 g",75,83,5,55,15,Yes
+GRC00226,"Oils, Ghee & Sweeteners","Ghee & Butter","Butter (Unsalted)","100 g",21,24,5,69,13,Yes
+GRC00227,"Oils, Ghee & Sweeteners","Ghee & Butter","Butter (Unsalted)","500 g",73,83,5,69,13,Yes
+GRC00228,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Sugar","1 kg",47,56,5,65,9,Yes
+GRC00229,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Sugar","5 kg",237,280,5,65,9,Yes
+GRC00230,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Brown Sugar","500 g",25,29,5,107,11,Yes
+GRC00231,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Jaggery (Gur)","500 g",24,29,5,41,9,Yes
+GRC00232,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Jaggery (Gur)","1 kg",46,56,5,41,9,Yes
+GRC00233,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Jaggery Powder","500 g",27,29,5,48,8,Yes
+GRC00234,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Sugar Cubes","500 g",25,29,5,107,11,Yes
+GRC00235,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Mishri (Rock Sugar)","200 g",47,56,5,83,11,Yes
+GRC00236,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Honey","250 g",38,45,5,65,9,Yes
+GRC00237,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Honey","500 g",70,83,5,65,9,Yes
+GRC00238,"Oils, Ghee & Sweeteners","Sugar & Sweeteners","Sugar Free Sweetener","100 pellets",46,56,5,90,10,Yes
+GRC00239,"Dairy & Eggs","Milk","Full Cream Milk","500 ml",35,39,0,55,15,Yes
+GRC00240,"Dairy & Eggs","Milk","Full Cream Milk","1 L",68,75,0,55,15,Yes
+GRC00241,"Dairy & Eggs","Milk","Toned Milk","500 ml",34,39,0,100,12,Yes
+GRC00242,"Dairy & Eggs","Milk","Toned Milk","1 L",66,75,0,100,12,Yes
+GRC00243,"Dairy & Eggs","Milk","Double Toned Milk","500 ml",34,39,0,69,13,Yes
+GRC00244,"Dairy & Eggs","Milk","Cow Milk","500 ml",35,39,0,86,14,Yes
+GRC00245,"Dairy & Eggs","Milk","Cow Milk","1 L",68,75,0,86,14,Yes
+GRC00246,"Dairy & Eggs","Milk","Buffalo Milk","500 ml",33,39,0,34,10,Yes
+GRC00247,"Dairy & Eggs","Milk","Buffalo Milk","1 L",63,75,0,34,10,Yes
+GRC00248,"Dairy & Eggs","Milk","UHT Milk","1 L",68,75,0,86,14,Yes
+GRC00249,"Dairy & Eggs","Milk","Flavoured Milk","200 ml",19,21,0,48,8,Yes
+GRC00250,"Dairy & Eggs","Milk","Milk Powder","200 g",65,75,0,107,11,Yes
+GRC00251,"Dairy & Eggs","Milk","Milk Powder","500 g",34,39,0,107,11,Yes
+GRC00252,"Dairy & Eggs","Curd, Paneer & Cheese","Curd (Dahi)","200 g",65,75,0,107,11,Yes
+GRC00253,"Dairy & Eggs","Curd, Paneer & Cheese","Curd (Dahi)","400 g",65,75,0,107,11,Yes
+GRC00254,"Dairy & Eggs","Curd, Paneer & Cheese","Curd (Dahi)","1 kg",65,75,0,107,11,Yes
+GRC00255,"Dairy & Eggs","Curd, Paneer & Cheese","Greek Yogurt","100 g",23,27,5,34,10,Yes
+GRC00256,"Dairy & Eggs","Curd, Paneer & Cheese","Buttermilk (Chaas)","200 ml",18,21,0,76,12,Yes
+GRC00257,"Dairy & Eggs","Curd, Paneer & Cheese","Buttermilk (Chaas)","500 ml",34,39,0,76,12,Yes
+GRC00258,"Dairy & Eggs","Curd, Paneer & Cheese","Lassi","200 ml",42,50,5,65,9,Yes
+GRC00259,"Dairy & Eggs","Curd, Paneer & Cheese","Paneer","200 g",382,460,5,72,8,Yes
+GRC00260,"Dairy & Eggs","Curd, Paneer & Cheese","Paneer","500 g",199,240,5,72,8,Yes
+GRC00261,"Dairy & Eggs","Curd, Paneer & Cheese","Cheese Slices","10 slices",481,580,12,41,9,Yes
+GRC00262,"Dairy & Eggs","Curd, Paneer & Cheese","Cheese Cube","200 g",499,580,12,107,11,Yes
+GRC00263,"Dairy & Eggs","Curd, Paneer & Cheese","Mozzarella Cheese","200 g",508,580,12,69,13,Yes
+GRC00264,"Dairy & Eggs","Curd, Paneer & Cheese","Processed Cheese Spread","180 g",516,580,12,31,15,Yes
+GRC00265,"Dairy & Eggs","Curd, Paneer & Cheese","Cream (Malai)","200 ml",42,50,5,41,9,Yes
+GRC00266,"Dairy & Eggs","Curd, Paneer & Cheese","Khoya (Mawa)","200 g",152,180,5,34,10,Yes
+GRC00267,"Dairy & Eggs","Eggs","Eggs (White)","6 pcs",45,53,0,34,10,Yes
+GRC00268,"Dairy & Eggs","Eggs","Eggs (White)","12 pcs",83,98,0,34,10,Yes
+GRC00269,"Dairy & Eggs","Eggs","Eggs (White)","30 pcs",203,240,0,34,10,Yes
+GRC00270,"Dairy & Eggs","Eggs","Eggs (Brown)","6 pcs",45,53,0,34,10,Yes
+GRC00271,"Dry Fruits & Nuts","Nuts","Almonds (Badam)","100 g",18,20,0,55,15,Yes
+GRC00272,"Dry Fruits & Nuts","Nuts","Almonds (Badam)","250 g",18,20,0,55,15,Yes
+GRC00273,"Dry Fruits & Nuts","Nuts","Almonds (Badam)","500 g",31,34,0,55,15,Yes
+GRC00274,"Dry Fruits & Nuts","Nuts","Cashew (Kaju)","100 g",17,20,0,41,9,Yes
+GRC00275,"Dry Fruits & Nuts","Nuts","Cashew (Kaju)","250 g",17,20,0,41,9,Yes
+GRC00276,"Dry Fruits & Nuts","Nuts","Cashew (Kaju)","500 g",28,34,0,41,9,Yes
+GRC00277,"Dry Fruits & Nuts","Nuts","Walnut (Akhrot)","100 g",18,20,0,55,15,Yes
+GRC00278,"Dry Fruits & Nuts","Nuts","Walnut (Akhrot)","250 g",18,20,0,55,15,Yes
+GRC00279,"Dry Fruits & Nuts","Nuts","Pistachio (Pista)","100 g",18,20,0,69,13,Yes
+GRC00280,"Dry Fruits & Nuts","Nuts","Pistachio (Pista)","250 g",18,20,0,69,13,Yes
+GRC00281,"Dry Fruits & Nuts","Nuts","Peanuts (Raw)","500 g",28,34,0,41,9,Yes
+GRC00282,"Dry Fruits & Nuts","Nuts","Peanuts (Roasted)","200 g",57,65,0,69,13,Yes
+GRC00283,"Dry Fruits & Nuts","Nuts","Hazelnut","100 g",18,20,0,86,14,Yes
+GRC00284,"Dry Fruits & Nuts","Nuts","Brazil Nuts","100 g",17,20,0,107,11,Yes
+GRC00285,"Dry Fruits & Nuts","Nuts","Pecan","100 g",17,20,0,65,9,Yes
+GRC00286,"Dry Fruits & Nuts","Dried Fruits","Raisins (Kishmish)","100 g",17,20,0,76,12,Yes
+GRC00287,"Dry Fruits & Nuts","Dried Fruits","Raisins (Kishmish)","250 g",17,20,0,76,12,Yes
+GRC00288,"Dry Fruits & Nuts","Dried Fruits","Black Raisins","100 g",17,20,0,41,9,Yes
+GRC00289,"Dry Fruits & Nuts","Dried Fruits","Dates (Khajoor)","250 g",18,20,0,55,15,Yes
+GRC00290,"Dry Fruits & Nuts","Dried Fruits","Dates (Khajoor)","500 g",31,34,0,55,15,Yes
+GRC00291,"Dry Fruits & Nuts","Dried Fruits","Dried Figs (Anjeer)","100 g",17,20,0,83,11,Yes
+GRC00292,"Dry Fruits & Nuts","Dried Fruits","Dried Figs (Anjeer)","250 g",17,20,0,83,11,Yes
+GRC00293,"Dry Fruits & Nuts","Dried Fruits","Dried Apricot","200 g",54,65,0,41,9,Yes
+GRC00294,"Dry Fruits & Nuts","Dried Fruits","Prunes","200 g",54,65,0,72,8,Yes
+GRC00295,"Dry Fruits & Nuts","Dried Fruits","Dried Cranberries","100 g",18,20,0,69,13,Yes
+GRC00296,"Dry Fruits & Nuts","Dried Fruits","Mixed Dry Fruits","250 g",18,20,0,62,14,Yes
+GRC00297,"Dry Fruits & Nuts","Dried Fruits","Mixed Dry Fruits","500 g",30,34,0,62,14,Yes
+GRC00298,"Dry Fruits & Nuts","Dried Fruits","Makhana (Fox Nuts)","100 g",17,20,0,76,12,Yes
+GRC00299,"Dry Fruits & Nuts","Dried Fruits","Makhana (Fox Nuts)","250 g",17,20,0,76,12,Yes
+GRC00300,"Dry Fruits & Nuts","Dried Fruits","Chironji","50 g",18,20,0,86,14,Yes
+GRC00301,"Dry Fruits & Nuts","Dried Fruits","Dry Coconut (Copra)","200 g",55,65,0,83,11,Yes
+GRC00302,"Dry Fruits & Nuts","Dried Fruits","Dessicated Coconut","100 g",17,20,0,76,12,Yes
+GRC00303,"Dry Fruits & Nuts","Seeds","Pumpkin Seeds","100 g",17,20,0,41,9,Yes
+GRC00304,"Dry Fruits & Nuts","Seeds","Pumpkin Seeds","200 g",54,65,0,41,9,Yes
+GRC00305,"Dry Fruits & Nuts","Seeds","Sunflower Seeds","100 g",18,20,0,55,15,Yes
+GRC00306,"Dry Fruits & Nuts","Seeds","Sunflower Seeds","200 g",59,65,0,55,15,Yes
+GRC00307,"Dry Fruits & Nuts","Seeds","Chia Seeds","100 g",18,20,0,100,12,Yes
+GRC00308,"Dry Fruits & Nuts","Seeds","Chia Seeds","250 g",18,20,0,100,12,Yes
+GRC00309,"Dry Fruits & Nuts","Seeds","Flax Seeds","100 g",18,20,0,100,12,Yes
+GRC00310,"Dry Fruits & Nuts","Seeds","Flax Seeds","250 g",18,20,0,100,12,Yes
+GRC00311,"Dry Fruits & Nuts","Seeds","Watermelon Seeds","100 g",18,20,0,62,14,Yes
+GRC00312,"Packaged Foods & Breakfast","Breakfast Cereals","Corn Flakes","250 g",36,42,18,107,11,Yes
+GRC00313,"Packaged Foods & Breakfast","Breakfast Cereals","Corn Flakes","500 g",67,78,18,107,11,Yes
+GRC00314,"Packaged Foods & Breakfast","Breakfast Cereals","Muesli","250 g",35,42,18,72,8,Yes
+GRC00315,"Packaged Foods & Breakfast","Breakfast Cereals","Muesli","500 g",65,78,18,72,8,Yes
+GRC00316,"Packaged Foods & Breakfast","Breakfast Cereals","Chocos","250 g",35,42,18,72,8,Yes
+GRC00317,"Packaged Foods & Breakfast","Breakfast Cereals","Oats Instant","200 g",220,260,18,34,10,Yes
+GRC00318,"Packaged Foods & Breakfast","Breakfast Cereals","Wheat Flakes","250 g",35,42,18,34,10,Yes
+GRC00319,"Packaged Foods & Breakfast","Breakfast Cereals","Granola","250 g",39,42,18,79,15,Yes
+GRC00320,"Packaged Foods & Breakfast","Noodles & Pasta","Instant Noodles","1 pack",109,120,18,55,15,Yes
+GRC00321,"Packaged Foods & Breakfast","Noodles & Pasta","Instant Noodles","4 pack",109,120,18,55,15,Yes
+GRC00322,"Packaged Foods & Breakfast","Noodles & Pasta","Cup Noodles","1 pc",103,120,18,107,11,Yes
+GRC00323,"Packaged Foods & Breakfast","Noodles & Pasta","Pasta (Penne)","200 g",100,120,18,41,9,Yes
+GRC00324,"Packaged Foods & Breakfast","Noodles & Pasta","Pasta (Penne)","500 g",51,62,18,41,9,Yes
+GRC00325,"Packaged Foods & Breakfast","Noodles & Pasta","Pasta (Macaroni)","200 g",107,120,18,62,14,Yes
+GRC00326,"Packaged Foods & Breakfast","Noodles & Pasta","Pasta (Macaroni)","500 g",55,62,18,62,14,Yes
+GRC00327,"Packaged Foods & Breakfast","Noodles & Pasta","Spaghetti","200 g",134,150,18,93,13,Yes
+GRC00328,"Packaged Foods & Breakfast","Noodles & Pasta","Spaghetti","500 g",69,78,18,93,13,Yes
+GRC00329,"Packaged Foods & Breakfast","Noodles & Pasta","Vermicelli (Roasted)","200 g",125,150,18,90,10,Yes
+GRC00330,"Packaged Foods & Breakfast","Ready to Cook & Eat","Ready Poha Mix","200 g",138,150,18,48,8,Yes
+GRC00331,"Packaged Foods & Breakfast","Ready to Cook & Eat","Upma Mix","200 g",136,150,18,86,14,Yes
+GRC00332,"Packaged Foods & Breakfast","Ready to Cook & Eat","Idli Dosa Batter","500 g",69,78,18,62,14,Yes
+GRC00333,"Packaged Foods & Breakfast","Ready to Cook & Eat","Idli Dosa Batter","1 kg",134,150,18,62,14,Yes
+GRC00334,"Packaged Foods & Breakfast","Ready to Cook & Eat","Ready Khichdi","200 g",125,150,18,41,9,Yes
+GRC00335,"Packaged Foods & Breakfast","Ready to Cook & Eat","Paneer Butter Masala (Ready)","300 g",138,150,18,66,10,Yes
+GRC00336,"Packaged Foods & Breakfast","Ready to Cook & Eat","Dal Makhani (Ready)","300 g",127,150,18,83,11,Yes
+GRC00337,"Packaged Foods & Breakfast","Ready to Cook & Eat","Pav Bhaji (Ready)","300 g",131,150,18,69,13,Yes
+GRC00338,"Packaged Foods & Breakfast","Ready to Cook & Eat","Gulab Jamun Mix","200 g",145,160,18,55,15,Yes
+GRC00339,"Packaged Foods & Breakfast","Ready to Cook & Eat","Dhokla Mix","200 g",131,150,18,100,12,Yes
+GRC00340,"Packaged Foods & Breakfast","Ready to Cook & Eat","Khaman Mix","200 g",131,150,18,100,12,Yes
+GRC00341,"Packaged Foods & Breakfast","Ready to Cook & Eat","Thepla Mix","200 g",131,150,18,100,12,Yes
+GRC00342,"Packaged Foods & Breakfast","Ready to Cook & Eat","Gathiya Instant","200 g",136,150,18,55,15,Yes
+GRC00343,"Packaged Foods & Breakfast","Ready to Cook & Eat","Papad Mix","200 g",134,150,18,93,13,Yes
+GRC00344,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Peanut Butter","200 g",125,150,18,41,9,Yes
+GRC00345,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Peanut Butter","500 g",65,78,18,41,9,Yes
+GRC00346,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Mixed Fruit Jam","200 g",145,160,18,55,15,Yes
+GRC00347,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Mixed Fruit Jam","500 g",75,83,18,55,15,Yes
+GRC00348,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Mango Jam","200 g",142,160,18,93,13,Yes
+GRC00349,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Chocolate Spread","200 g",134,150,18,62,14,Yes
+GRC00350,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Tomato Ketchup","200 g",147,160,18,48,8,Yes
+GRC00351,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Tomato Ketchup","500 g",76,83,18,48,8,Yes
+GRC00352,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Green Chilli Sauce","100 g",21,24,18,76,12,Yes
+GRC00353,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Red Chilli Sauce","100 g",21,24,18,62,14,Yes
+GRC00354,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Soy Sauce","100 ml",21,24,18,93,13,Yes
+GRC00355,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Vinegar","200 ml",39,42,18,79,15,Yes
+GRC00356,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Vinegar","500 ml",72,78,18,79,15,Yes
+GRC00357,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Mayonnaise","200 g",131,150,18,100,12,Yes
+GRC00358,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Schezwan Sauce","200 g",147,160,18,48,8,Yes
+GRC00359,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Tomato Puree","200 g",127,150,18,34,10,Yes
+GRC00360,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Pizza Sauce","200 g",138,160,18,107,11,Yes
+GRC00361,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Mustard Sauce","100 g",20,24,18,41,9,Yes
+GRC00362,"Packaged Foods & Breakfast","Spreads, Jams & Sauces","Pasta Sauce","200 g",103,120,18,107,11,Yes
+GRC00363,"Packaged Foods & Breakfast","Pickles & Papad","Mango Pickle","200 g",118,140,12,34,10,Yes
+GRC00364,"Packaged Foods & Breakfast","Pickles & Papad","Mango Pickle","500 g",62,73,12,34,10,Yes
+GRC00365,"Packaged Foods & Breakfast","Pickles & Papad","Mixed Pickle","200 g",118,140,12,34,10,Yes
+GRC00366,"Packaged Foods & Breakfast","Pickles & Papad","Mixed Pickle","500 g",62,73,12,34,10,Yes
+GRC00367,"Packaged Foods & Breakfast","Pickles & Papad","Lemon Pickle","200 g",118,140,12,34,10,Yes
+GRC00368,"Packaged Foods & Breakfast","Pickles & Papad","Green Chilli Pickle","200 g",118,140,12,83,11,Yes
+GRC00369,"Packaged Foods & Breakfast","Pickles & Papad","Garlic Pickle","200 g",116,140,12,41,9,Yes
+GRC00370,"Packaged Foods & Breakfast","Pickles & Papad","Chhundo","250 g",39,42,18,79,15,Yes
+GRC00371,"Packaged Foods & Breakfast","Pickles & Papad","Kerda Pickle","250 g",33,39,12,34,10,Yes
+GRC00372,"Packaged Foods & Breakfast","Pickles & Papad","Urad Papad","200 g",131,150,18,100,12,Yes
+GRC00373,"Packaged Foods & Breakfast","Pickles & Papad","Moong Papad","200 g",129,150,18,107,11,Yes
+GRC00374,"Packaged Foods & Breakfast","Pickles & Papad","Masala Papad","200 g",127,150,18,34,10,Yes
+GRC00375,"Packaged Foods & Breakfast","Pickles & Papad","Sabudana Papad","200 g",138,150,18,48,8,Yes
+GRC00376,"Packaged Foods & Breakfast","Pickles & Papad","Fryums","200 g",125,150,18,72,8,Yes
+GRC00377,"Packaged Foods & Breakfast","Pickles & Papad","Khakhra","200 g",138,150,18,79,15,Yes
+GRC00378,"Packaged Foods & Breakfast","Pickles & Papad","Khakhra","400 g",138,150,18,79,15,Yes
+GRC00379,"Packaged Foods & Breakfast","Canned & Jarred","Canned Sweet Corn","400 g",131,150,18,69,13,Yes
+GRC00380,"Packaged Foods & Breakfast","Canned & Jarred","Canned Chickpeas","400 g",134,150,18,62,14,Yes
+GRC00381,"Packaged Foods & Breakfast","Canned & Jarred","Canned Mushrooms","400 g",134,150,18,62,14,Yes
+GRC00382,"Packaged Foods & Breakfast","Canned & Jarred","Canned Pineapple","450 g",18,20,18,62,14,Yes
+GRC00383,"Packaged Foods & Breakfast","Canned & Jarred","Olives","240 g",125,150,18,72,8,Yes
+GRC00384,"Packaged Foods & Breakfast","Canned & Jarred","Jalapeno Slices","300 g",136,150,18,55,15,Yes
+GRC00385,"Packaged Foods & Breakfast","Canned & Jarred","Baked Beans","450 g",17,20,18,107,11,Yes
+GRC00386,"Snacks & Namkeen","Chips & Crisps","Potato Chips","50 g",17,20,12,34,10,Yes
+GRC00387,"Snacks & Namkeen","Chips & Crisps","Potato Chips","100 g",28,33,12,34,10,Yes
+GRC00388,"Snacks & Namkeen","Chips & Crisps","Banana Chips","200 g",186,220,12,34,10,Yes
+GRC00389,"Snacks & Namkeen","Chips & Crisps","Nachos","150 g",17,20,12,72,8,Yes
+GRC00390,"Snacks & Namkeen","Chips & Crisps","Corn Puffs","50 g",18,20,12,100,12,Yes
+GRC00391,"Snacks & Namkeen","Chips & Crisps","Popcorn Ready","100 g",27,33,12,41,9,Yes
+GRC00392,"Snacks & Namkeen","Chips & Crisps","Tortilla Chips","150 g",18,20,12,48,8,Yes
+GRC00393,"Snacks & Namkeen","Namkeen","Aloo Bhujia","200 g",189,220,12,107,11,Yes
+GRC00394,"Snacks & Namkeen","Namkeen","Aloo Bhujia","400 g",189,220,12,107,11,Yes
+GRC00395,"Snacks & Namkeen","Namkeen","Bhujia Sev","200 g",193,220,12,100,12,Yes
+GRC00396,"Snacks & Namkeen","Namkeen","Gathiya","200 g",202,220,12,79,15,Yes
+GRC00397,"Snacks & Namkeen","Namkeen","Gathiya","400 g",202,220,12,79,15,Yes
+GRC00398,"Snacks & Namkeen","Namkeen","Ratlami Sev","200 g",189,220,12,107,11,Yes
+GRC00399,"Snacks & Namkeen","Namkeen","Moong Dal Namkeen","200 g",193,220,12,69,13,Yes
+GRC00400,"Snacks & Namkeen","Namkeen","Mixture","200 g",202,220,12,79,15,Yes
+GRC00401,"Snacks & Namkeen","Namkeen","Mixture","400 g",202,220,12,79,15,Yes
+GRC00402,"Snacks & Namkeen","Namkeen","Chana Jor Garam","200 g",199,220,12,55,15,Yes
+GRC00403,"Snacks & Namkeen","Namkeen","Chakli","200 g",183,220,12,72,8,Yes
+GRC00404,"Snacks & Namkeen","Namkeen","Farsi Puri","200 g",193,220,12,100,12,Yes
+GRC00405,"Snacks & Namkeen","Namkeen","Sev Mamra","200 g",196,220,12,93,13,Yes
+GRC00406,"Snacks & Namkeen","Namkeen","Chivda","200 g",183,220,12,72,8,Yes
+GRC00407,"Snacks & Namkeen","Namkeen","Roasted Chana","200 g",183,220,12,41,9,Yes
+GRC00408,"Snacks & Namkeen","Namkeen","Khari","200 g",186,220,12,65,9,Yes
+GRC00409,"Snacks & Namkeen","Biscuits & Cookies","Glucose Biscuit","100 g",24,27,18,55,15,Yes
+GRC00410,"Snacks & Namkeen","Biscuits & Cookies","Glucose Biscuit","200 g",163,180,18,55,15,Yes
+GRC00411,"Snacks & Namkeen","Biscuits & Cookies","Marie Biscuit","100 g",22,27,18,41,9,Yes
+GRC00412,"Snacks & Namkeen","Biscuits & Cookies","Marie Biscuit","200 g",149,180,18,41,9,Yes
+GRC00413,"Snacks & Namkeen","Biscuits & Cookies","Cream Biscuit","100 g",22,27,18,41,9,Yes
+GRC00414,"Snacks & Namkeen","Biscuits & Cookies","Digestive Biscuit","250 g",44,50,18,69,13,Yes
+GRC00415,"Snacks & Namkeen","Biscuits & Cookies","Cookies (Butter)","150 g",18,20,18,62,14,Yes
+GRC00416,"Snacks & Namkeen","Biscuits & Cookies","Cookies (Choco Chip)","150 g",17,20,18,90,10,Yes
+GRC00417,"Snacks & Namkeen","Biscuits & Cookies","Rusk","200 g",189,220,12,58,10,Yes
+GRC00418,"Snacks & Namkeen","Biscuits & Cookies","Rusk","400 g",189,220,12,58,10,Yes
+GRC00419,"Snacks & Namkeen","Biscuits & Cookies","Cake Rusk","200 g",196,220,12,93,13,Yes
+GRC00420,"Snacks & Namkeen","Biscuits & Cookies","Salted Crackers","100 g",30,33,12,55,15,Yes
+GRC00421,"Snacks & Namkeen","Biscuits & Cookies","Salted Crackers","200 g",199,220,12,55,15,Yes
+GRC00422,"Snacks & Namkeen","Biscuits & Cookies","Milk Biscuit","100 g",23,27,18,34,10,Yes
+GRC00423,"Snacks & Namkeen","Biscuits & Cookies","Nankhatai","200 g",196,220,12,93,13,Yes
+GRC00424,"Snacks & Namkeen","Biscuits & Cookies","Wafers","50 g",17,20,12,72,8,Yes
+GRC00425,"Snacks & Namkeen","Chocolates & Sweets","Milk Chocolate","40 g",166,180,18,48,8,Yes
+GRC00426,"Snacks & Namkeen","Chocolates & Sweets","Milk Chocolate","100 g",25,27,18,48,8,Yes
+GRC00427,"Snacks & Namkeen","Chocolates & Sweets","Dark Chocolate","50 g",18,20,18,48,8,Yes
+GRC00428,"Snacks & Namkeen","Chocolates & Sweets","Dark Chocolate","100 g",25,27,18,48,8,Yes
+GRC00429,"Snacks & Namkeen","Chocolates & Sweets","Chocolate Bar","1 pc",149,180,18,41,9,Yes
+GRC00430,"Snacks & Namkeen","Chocolates & Sweets","Toffee","100 g",27,33,12,72,8,Yes
+GRC00431,"Snacks & Namkeen","Chocolates & Sweets","Candy","100 g",28,33,12,65,9,Yes
+GRC00432,"Snacks & Namkeen","Chocolates & Sweets","Chewing Gum","1 pack",189,220,12,107,11,Yes
+GRC00433,"Snacks & Namkeen","Chocolates & Sweets","Mouth Freshener","100 g",30,33,12,55,15,Yes
+GRC00434,"Snacks & Namkeen","Chocolates & Sweets","Kaju Katli","250 g",54,62,12,100,12,Yes
+GRC00435,"Snacks & Namkeen","Chocolates & Sweets","Gulab Jamun Tin","500 g",104,115,12,55,15,Yes
+GRC00436,"Snacks & Namkeen","Chocolates & Sweets","Rasgulla Tin","500 g",97,115,12,34,10,Yes
+GRC00437,"Snacks & Namkeen","Chocolates & Sweets","Soan Papdi","250 g",54,62,12,100,12,Yes
+GRC00438,"Snacks & Namkeen","Chocolates & Sweets","Chikki","100 g",27,33,12,72,8,Yes
+GRC00439,"Snacks & Namkeen","Chocolates & Sweets","Laddu","250 g",52,62,12,65,9,Yes
+GRC00440,"Snacks & Namkeen","Chocolates & Sweets","Halwa Pack","250 g",54,62,12,100,12,Yes
+GRC00441,"Beverages","Tea & Coffee","Tea Powder (CTC)","250 g",120,135,5,62,14,Yes
+GRC00442,"Beverages","Tea & Coffee","Tea Powder (CTC)","500 g",223,250,5,62,14,Yes
+GRC00443,"Beverages","Tea & Coffee","Tea Powder (CTC)","1 kg",427,480,5,62,14,Yes
+GRC00444,"Beverages","Tea & Coffee","Green Tea","25 bags",427,480,5,93,13,Yes
+GRC00445,"Beverages","Tea & Coffee","Green Tea","100 g",64,72,5,93,13,Yes
+GRC00446,"Beverages","Tea & Coffee","Herbal Tea","25 bags",420,480,5,100,12,Yes
+GRC00447,"Beverages","Tea & Coffee","Masala Tea","250 g",118,135,5,100,12,Yes
+GRC00448,"Beverages","Tea & Coffee","Instant Coffee","50 g",88,96,5,48,8,Yes
+GRC00449,"Beverages","Tea & Coffee","Instant Coffee","100 g",166,180,5,48,8,Yes
+GRC00450,"Beverages","Tea & Coffee","Instant Coffee","200 g",1104,1200,5,48,8,Yes
+GRC00451,"Beverages","Tea & Coffee","Filter Coffee","200 g",996,1200,5,41,9,Yes
+GRC00452,"Beverages","Tea & Coffee","Filter Coffee","500 g",519,625,5,41,9,Yes
+GRC00453,"Beverages","Tea & Coffee","Coffee 3-in-1 Sachet","10 sachets",996,1200,5,90,10,Yes
+GRC00454,"Beverages","Tea & Coffee","Tea Bags","25 bags",434,480,5,86,14,Yes
+GRC00455,"Beverages","Tea & Coffee","Tea Bags","100 bags",434,480,5,86,14,Yes
+GRC00456,"Beverages","Tea & Coffee","Iced Tea","200 ml",122,135,5,86,14,Yes
+GRC00457,"Beverages","Soft Drinks & Juices","Cola","250 ml",29,34,12,58,10,Yes
+GRC00458,"Beverages","Soft Drinks & Juices","Cola","750 ml",103,120,12,58,10,Yes
+GRC00459,"Beverages","Soft Drinks & Juices","Cola","2 L",206,240,12,58,10,Yes
+GRC00460,"Beverages","Soft Drinks & Juices","Lemon Soda","600 ml",83,95,28,100,12,Yes
+GRC00461,"Beverages","Soft Drinks & Juices","Orange Drink","250 ml",29,34,12,34,10,Yes
+GRC00462,"Beverages","Soft Drinks & Juices","Orange Drink","1 L",101,120,12,34,10,Yes
+GRC00463,"Beverages","Soft Drinks & Juices","Mango Drink","250 ml",29,34,12,107,11,Yes
+GRC00464,"Beverages","Soft Drinks & Juices","Mango Drink","1 L",103,120,12,107,11,Yes
+GRC00465,"Beverages","Soft Drinks & Juices","Fruit Juice (Mixed)","200 ml",33,39,12,83,11,Yes
+GRC00466,"Beverages","Soft Drinks & Juices","Fruit Juice (Mixed)","1 L",118,140,12,83,11,Yes
+GRC00467,"Beverages","Soft Drinks & Juices","Apple Juice","1 L",120,140,12,107,11,Yes
+GRC00468,"Beverages","Soft Drinks & Juices","Coconut Water","200 ml",28,34,12,41,9,Yes
+GRC00469,"Beverages","Soft Drinks & Juices","Energy Drink","250 ml",29,34,12,34,10,Yes
+GRC00470,"Beverages","Soft Drinks & Juices","Soda Water","750 ml",83,95,28,100,12,Yes
+GRC00471,"Beverages","Soft Drinks & Juices","Packaged Drinking Water","1 L",107,120,12,31,15,Yes
+GRC00472,"Beverages","Soft Drinks & Juices","Packaged Drinking Water","20 L",107,120,12,31,15,Yes
+GRC00473,"Beverages","Soft Drinks & Juices","Sparkling Water","750 ml",109,120,12,55,15,Yes
+GRC00474,"Beverages","Health Drinks & Mixes","Malt Drink (Powder)","500 g",52,62,12,83,11,Yes
+GRC00475,"Beverages","Health Drinks & Mixes","Malt Drink (Powder)","1 kg",101,120,12,83,11,Yes
+GRC00476,"Beverages","Health Drinks & Mixes","Chocolate Drink Powder","200 g",109,120,12,104,8,Yes
+GRC00477,"Beverages","Health Drinks & Mixes","Chocolate Drink Powder","500 g",56,62,12,104,8,Yes
+GRC00478,"Beverages","Health Drinks & Mixes","Protein Powder","500 g",57,62,12,48,8,Yes
+GRC00479,"Beverages","Health Drinks & Mixes","Glucose Powder","200 g",110,120,12,48,8,Yes
+GRC00480,"Beverages","Health Drinks & Mixes","Glucose Powder","500 g",57,62,12,48,8,Yes
+GRC00481,"Beverages","Health Drinks & Mixes","Rose Syrup","750 ml",105,120,12,100,12,Yes
+GRC00482,"Beverages","Health Drinks & Mixes","Squash (Orange)","750 ml",109,120,12,55,15,Yes
+GRC00483,"Beverages","Health Drinks & Mixes","Squash (Lemon)","750 ml",110,120,12,48,8,Yes
+GRC00484,"Beverages","Health Drinks & Mixes","Sherbet Syrup","750 ml",100,120,12,41,9,Yes
+GRC00485,"Beverages","Health Drinks & Mixes","Electrolyte Powder","10 sachets",103,120,12,76,12,Yes
+GRC00486,"Beverages","Health Drinks & Mixes","Instant Sharbat Mix","200 g",101,120,12,83,11,Yes
+GRC00487,"Frozen & Bakery","Frozen Foods","Frozen Green Peas","500 g",92,105,18,69,13,Yes
+GRC00488,"Frozen & Bakery","Frozen Foods","Frozen Sweet Corn","500 g",92,105,18,69,13,Yes
+GRC00489,"Frozen & Bakery","Frozen Foods","Frozen Mixed Veg","500 g",93,105,18,62,14,Yes
+GRC00490,"Frozen & Bakery","Frozen Foods","French Fries","400 g",169,200,18,34,10,Yes
+GRC00491,"Frozen & Bakery","Frozen Foods","Veg Nuggets","400 g",172,200,18,107,11,Yes
+GRC00492,"Frozen & Bakery","Frozen Foods","Paratha (Frozen)","5 pcs",178,200,18,62,14,Yes
+GRC00493,"Frozen & Bakery","Frozen Foods","Frozen Samosa","10 pcs",166,200,18,41,9,Yes
+GRC00494,"Frozen & Bakery","Frozen Foods","Frozen Pizza Base","2 pcs",175,200,18,69,13,Yes
+GRC00495,"Frozen & Bakery","Frozen Foods","Ice Cream Tub","500 ml",87,105,18,41,9,Yes
+GRC00496,"Frozen & Bakery","Frozen Foods","Ice Cream Tub","1 L",166,200,18,41,9,Yes
+GRC00497,"Frozen & Bakery","Frozen Foods","Ice Cream Cone","1 pc",184,200,18,48,8,Yes
+GRC00498,"Frozen & Bakery","Frozen Foods","Ice Cream Cup","1 pc",166,200,18,41,9,Yes
+GRC00499,"Frozen & Bakery","Frozen Foods","Kulfi","1 pc",169,200,18,65,9,Yes
+GRC00500,"Frozen & Bakery","Bakery","Bread (White)","400 g",42,50,0,41,9,Yes
+GRC00501,"Frozen & Bakery","Bakery","Bread (Brown)","400 g",42,50,0,41,9,Yes
+GRC00502,"Frozen & Bakery","Bakery","Multigrain Bread","400 g",45,50,0,62,14,Yes
+GRC00503,"Frozen & Bakery","Bakery","Pav","6 pcs",31,35,0,51,11,Yes
+GRC00504,"Frozen & Bakery","Bakery","Burger Buns","4 pcs",172,200,18,107,11,Yes
+GRC00505,"Frozen & Bakery","Bakery","Pizza Base","2 pcs",175,200,18,100,12,Yes
+GRC00506,"Frozen & Bakery","Bakery","Cake (Plain)","250 g",47,56,18,34,10,Yes
+GRC00507,"Frozen & Bakery","Bakery","Muffin","1 pc",166,200,18,72,8,Yes
+GRC00508,"Frozen & Bakery","Bakery","Khari","200 g",169,200,18,65,9,Yes
+GRC00509,"Frozen & Bakery","Bakery","Toast","200 g",169,200,18,65,9,Yes
+GRC00510,"Frozen & Bakery","Bakery","Fresh Dhokla","250 g",47,56,18,34,10,Yes
+GRC00511,"Frozen & Bakery","Bakery","Tortilla Wraps","6 pcs",129,140,18,48,8,Yes
+GRC00512,"Baking & Home Cooking","Baking","Baking Powder","100 g",17,20,18,41,9,Yes
+GRC00513,"Baking & Home Cooking","Baking","Baking Soda","100 g",17,20,18,107,11,Yes
+GRC00514,"Baking & Home Cooking","Baking","Cocoa Powder","100 g",17,20,18,34,10,Yes
+GRC00515,"Baking & Home Cooking","Baking","Yeast","50 g",17,20,18,65,9,Yes
+GRC00516,"Baking & Home Cooking","Baking","Custard Powder","100 g",18,20,18,48,8,Yes
+GRC00517,"Baking & Home Cooking","Baking","Custard Powder","200 g",110,120,18,48,8,Yes
+GRC00518,"Baking & Home Cooking","Baking","Vanilla Essence","50 ml",109,120,18,55,15,Yes
+GRC00519,"Baking & Home Cooking","Baking","Food Colour","1 set",103,120,18,107,11,Yes
+GRC00520,"Baking & Home Cooking","Baking","Cake Mix","250 g",31,34,18,86,14,Yes
+GRC00521,"Baking & Home Cooking","Baking","Icing Sugar","200 g",103,120,18,107,11,Yes
+GRC00522,"Baking & Home Cooking","Baking","Chocolate Chips","100 g",18,20,18,55,15,Yes
+GRC00523,"Baking & Home Cooking","Baking","Gelatin","50 g",18,20,18,79,15,Yes
+GRC00524,"Baking & Home Cooking","Baking","China Grass","10 g",103,120,18,107,11,Yes
+GRC00525,"Baking & Home Cooking","Baking","Sprinkles","50 g",18,20,18,93,13,Yes
+GRC00526,"Personal Care","Bath & Body","Bathing Soap","75 g",186,220,18,34,10,Yes
+GRC00527,"Personal Care","Bath & Body","Bathing Soap","4 pack",186,220,18,34,10,Yes
+GRC00528,"Personal Care","Bath & Body","Body Wash","250 ml",55,62,18,93,13,Yes
+GRC00529,"Personal Care","Bath & Body","Hand Wash","200 ml",55,62,18,93,13,Yes
+GRC00530,"Personal Care","Bath & Body","Hand Wash","750 ml",196,220,18,93,13,Yes
+GRC00531,"Personal Care","Bath & Body","Talcum Powder","100 g",27,33,18,41,9,Yes
+GRC00532,"Personal Care","Bath & Body","Talcum Powder","300 g",183,220,18,41,9,Yes
+GRC00533,"Personal Care","Bath & Body","Body Lotion","200 ml",53,62,18,107,11,Yes
+GRC00534,"Personal Care","Bath & Body","Deodorant","150 ml",196,220,18,93,13,Yes
+GRC00535,"Personal Care","Bath & Body","Sanitary Pads","7 pcs",183,220,18,41,9,Yes
+GRC00536,"Personal Care","Bath & Body","Sanitary Pads","15 pcs",183,220,18,41,9,Yes
+GRC00537,"Personal Care","Bath & Body","Face Wash","50 g",18,20,18,93,13,Yes
+GRC00538,"Personal Care","Bath & Body","Face Wash","100 g",29,33,18,93,13,Yes
+GRC00539,"Personal Care","Bath & Body","Moisturiser","100 ml",28,33,18,107,11,Yes
+GRC00540,"Personal Care","Bath & Body","Sunscreen","50 g",18,20,18,93,13,Yes
+GRC00541,"Personal Care","Bath & Body","Petroleum Jelly","50 g",18,20,18,55,15,Yes
+GRC00542,"Personal Care","Bath & Body","Lip Balm","1 pc",199,220,18,86,14,Yes
+GRC00543,"Personal Care","Bath & Body","Cotton Buds","100 pcs",189,220,18,107,11,Yes
+GRC00544,"Personal Care","Bath & Body","Cotton Pads","1 pack",189,220,18,107,11,Yes
+GRC00545,"Personal Care","Bath & Body","Wet Wipes","20 pcs",196,220,18,93,13,Yes
+GRC00546,"Personal Care","Hair Care","Shampoo","80 ml",202,220,18,79,15,Yes
+GRC00547,"Personal Care","Hair Care","Shampoo","180 ml",202,220,18,79,15,Yes
+GRC00548,"Personal Care","Hair Care","Shampoo","340 ml",202,220,18,79,15,Yes
+GRC00549,"Personal Care","Hair Care","Shampoo Sachet","1 pc",202,220,18,48,8,Yes
+GRC00550,"Personal Care","Hair Care","Conditioner","180 ml",189,220,18,107,11,Yes
+GRC00551,"Personal Care","Hair Care","Hair Oil (Coconut)","100 ml",28,33,18,76,12,Yes
+GRC00552,"Personal Care","Hair Care","Hair Oil (Coconut)","200 ml",53,62,18,76,12,Yes
+GRC00553,"Personal Care","Hair Care","Hair Oil (Coconut)","500 ml",99,115,18,76,12,Yes
+GRC00554,"Personal Care","Hair Care","Hair Oil (Almond)","100 ml",29,33,18,69,13,Yes
+GRC00555,"Personal Care","Hair Care","Hair Colour","1 pack",189,220,18,107,11,Yes
+GRC00556,"Personal Care","Hair Care","Hair Gel","50 g",18,20,18,86,14,Yes
+GRC00557,"Personal Care","Hair Care","Comb","1 pc",189,220,18,58,10,Yes
+GRC00558,"Personal Care","Hair Care","Hair Serum","50 ml",193,220,18,100,12,Yes
+GRC00559,"Personal Care","Hair Care","Mehendi (Henna)","100 g",30,33,18,55,15,Yes
+GRC00560,"Personal Care","Oral Care","Toothpaste","100 g",29,33,18,100,12,Yes
+GRC00561,"Personal Care","Oral Care","Toothpaste","200 g",193,220,18,100,12,Yes
+GRC00562,"Personal Care","Oral Care","Toothbrush","1 pc",193,220,18,100,12,Yes
+GRC00563,"Personal Care","Oral Care","Toothbrush","2 pc",193,220,18,100,12,Yes
+GRC00564,"Personal Care","Oral Care","Mouthwash","250 ml",55,62,18,93,13,Yes
+GRC00565,"Personal Care","Oral Care","Tongue Cleaner","1 pc",202,220,18,48,8,Yes
+GRC00566,"Personal Care","Oral Care","Dental Floss","1 pc",186,220,18,34,10,Yes
+GRC00567,"Personal Care","Oral Care","Neem Datun Powder","100 g",29,33,18,69,13,Yes
+GRC00568,"Personal Care","Shaving & Grooming","Razor","1 pc",186,220,18,65,9,Yes
+GRC00569,"Personal Care","Shaving & Grooming","Shaving Foam","200 g",186,220,18,34,10,Yes
+GRC00570,"Personal Care","Shaving & Grooming","Shaving Cream","70 g",183,220,18,41,9,Yes
+GRC00571,"Personal Care","Shaving & Grooming","After Shave","50 ml",189,220,18,107,11,Yes
+GRC00572,"Personal Care","Shaving & Grooming","Trimmer Blades","1 pack",202,220,18,48,8,Yes
+GRC00573,"Personal Care","Shaving & Grooming","Beard Oil","30 ml",196,220,18,93,13,Yes
+GRC00574,"Personal Care","Shaving & Grooming","Nail Cutter","1 pc",189,220,18,107,11,Yes
+GRC00575,"Personal Care","Shaving & Grooming","Perfume","100 ml",30,33,18,79,15,Yes
+GRC00576,"Personal Care","Shaving & Grooming","Talc Men","100 g",30,33,18,86,14,Yes
+GRC00577,"Household & Cleaning","Laundry","Detergent Powder","500 g",84,94,18,62,14,Yes
+GRC00578,"Household & Cleaning","Laundry","Detergent Powder","1 kg",160,180,18,62,14,Yes
+GRC00579,"Household & Cleaning","Laundry","Detergent Powder","4 kg",160,180,18,62,14,Yes
+GRC00580,"Household & Cleaning","Laundry","Liquid Detergent","500 ml",84,94,18,62,14,Yes
+GRC00581,"Household & Cleaning","Laundry","Liquid Detergent","1 L",160,180,18,62,14,Yes
+GRC00582,"Household & Cleaning","Laundry","Detergent Bar","200 g",149,180,18,41,9,Yes
+GRC00583,"Household & Cleaning","Laundry","Fabric Softener","220 ml",163,180,18,55,15,Yes
+GRC00584,"Household & Cleaning","Laundry","Fabric Softener","860 ml",163,180,18,55,15,Yes
+GRC00585,"Household & Cleaning","Laundry","Fabric Whitener (Neel)","100 g",24,27,18,104,8,Yes
+GRC00586,"Household & Cleaning","Laundry","Stain Remover","1 pc",149,180,18,41,9,Yes
+GRC00587,"Household & Cleaning","Laundry","Washing Soda","500 g",79,94,18,34,10,Yes
+GRC00588,"Household & Cleaning","Laundry","Clothes Pegs","1 pack",152,180,18,34,10,Yes
+GRC00589,"Household & Cleaning","Laundry","Laundry Bag","1 pc",155,180,18,107,11,Yes
+GRC00590,"Household & Cleaning","Dishwash","Dishwash Bar","200 g",152,180,18,34,10,Yes
+GRC00591,"Household & Cleaning","Dishwash","Dishwash Bar","500 g",79,94,18,34,10,Yes
+GRC00592,"Household & Cleaning","Dishwash","Dishwash Liquid","250 ml",45,50,18,55,15,Yes
+GRC00593,"Household & Cleaning","Dishwash","Dishwash Liquid","500 ml",85,94,18,55,15,Yes
+GRC00594,"Household & Cleaning","Dishwash","Dishwash Liquid","1 L",163,180,18,55,15,Yes
+GRC00595,"Household & Cleaning","Dishwash","Dishwash Gel","500 ml",79,94,18,34,10,Yes
+GRC00596,"Household & Cleaning","Dishwash","Scrub Pad","1 pc",160,180,18,93,13,Yes
+GRC00597,"Household & Cleaning","Dishwash","Scrub Pad","3 pc",160,180,18,93,13,Yes
+GRC00598,"Household & Cleaning","Dishwash","Steel Scrubber","1 pc",166,180,18,48,8,Yes
+GRC00599,"Household & Cleaning","Dishwash","Sponge","1 pc",149,180,18,72,8,Yes
+GRC00600,"Household & Cleaning","Dishwash","Dishwash Powder","500 g",85,94,18,55,15,Yes
+GRC00601,"Household & Cleaning","Home Cleaning","Floor Cleaner","500 ml",78,94,18,41,9,Yes
+GRC00602,"Household & Cleaning","Home Cleaning","Floor Cleaner","1 L",149,180,18,41,9,Yes
+GRC00603,"Household & Cleaning","Home Cleaning","Toilet Cleaner","500 ml",86,94,18,48,8,Yes
+GRC00604,"Household & Cleaning","Home Cleaning","Toilet Cleaner","1 L",166,180,18,48,8,Yes
+GRC00605,"Household & Cleaning","Home Cleaning","Glass Cleaner","500 ml",78,94,18,41,9,Yes
+GRC00606,"Household & Cleaning","Home Cleaning","Bathroom Cleaner","500 ml",84,94,18,62,14,Yes
+GRC00607,"Household & Cleaning","Home Cleaning","Phenyl","500 ml",78,94,18,72,8,Yes
+GRC00608,"Household & Cleaning","Home Cleaning","Phenyl","1 L",149,180,18,72,8,Yes
+GRC00609,"Household & Cleaning","Home Cleaning","Bleach","500 ml",78,94,18,72,8,Yes
+GRC00610,"Household & Cleaning","Home Cleaning","Disinfectant Liquid","500 ml",79,94,18,83,11,Yes
+GRC00611,"Household & Cleaning","Home Cleaning","Room Freshener","220 ml",166,180,18,48,8,Yes
+GRC00612,"Household & Cleaning","Home Cleaning","Air Freshener Gel","1 pc",158,180,18,69,13,Yes
+GRC00613,"Household & Cleaning","Home Cleaning","Mosquito Coil","10 pcs",149,180,18,41,9,Yes
+GRC00614,"Household & Cleaning","Home Cleaning","Mosquito Repellent Liquid","45 ml",155,180,18,45,13,Yes
+GRC00615,"Household & Cleaning","Home Cleaning","Insect Spray","400 ml",152,180,18,34,10,Yes
+GRC00616,"Household & Cleaning","Home Cleaning","Rat Glue Pad","1 pc",152,180,18,34,10,Yes
+GRC00617,"Household & Cleaning","Home Cleaning","Naphthalene Balls","100 g",24,27,18,69,13,Yes
+GRC00618,"Household & Cleaning","Home Cleaning","Garbage Bags","30 pcs",486,575,18,34,10,Yes
+GRC00619,"Household & Cleaning","Home Cleaning","Broom (Jhadu)","1 pc",149,180,18,41,9,Yes
+GRC00620,"Household & Cleaning","Home Cleaning","Mop","1 pc",158,180,18,51,11,Yes
+GRC00621,"Household & Cleaning","Home Cleaning","Dustpan","1 pc",166,180,18,79,15,Yes
+GRC00622,"Household & Cleaning","Home Cleaning","Toilet Brush","1 pc",152,180,18,34,10,Yes
+GRC00623,"Household & Cleaning","Home Cleaning","Duster Cloth","2 pcs",152,180,18,34,10,Yes
+GRC00624,"Household & Cleaning","Pooja & Daily Needs","Incense Sticks (Agarbatti)","1 pack",152,180,18,52,12,Yes
+GRC00625,"Household & Cleaning","Pooja & Daily Needs","Dhoop Sticks","1 pack",152,180,18,34,10,Yes
+GRC00626,"Household & Cleaning","Pooja & Daily Needs","Camphor (Kapoor)","25 g",160,180,18,62,14,Yes
+GRC00627,"Household & Cleaning","Pooja & Daily Needs","Camphor (Kapoor)","50 g",18,20,18,62,14,Yes
+GRC00628,"Household & Cleaning","Pooja & Daily Needs","Cotton Wicks (Batti)","1 pack",149,180,18,90,10,Yes
+GRC00629,"Household & Cleaning","Pooja & Daily Needs","Matchbox","1 pc",163,180,18,86,14,Yes
+GRC00630,"Household & Cleaning","Pooja & Daily Needs","Matchbox","10 pcs",163,180,18,86,14,Yes
+GRC00631,"Household & Cleaning","Pooja & Daily Needs","Candles","6 pcs",115,125,18,79,15,Yes
+GRC00632,"Household & Cleaning","Pooja & Daily Needs","Diya","1 pc",155,180,18,58,10,Yes
+GRC00633,"Household & Cleaning","Pooja & Daily Needs","Pooja Oil","500 ml",84,94,18,93,13,Yes
+GRC00634,"Household & Cleaning","Pooja & Daily Needs","Kumkum","50 g",17,20,18,72,8,Yes
+GRC00635,"Household & Cleaning","Pooja & Daily Needs","Roli","50 g",17,20,18,58,10,Yes
+GRC00636,"Household & Cleaning","Pooja & Daily Needs","Gangajal","200 ml",45,50,18,86,14,Yes
+GRC00637,"Household & Cleaning","Pooja & Daily Needs","Sandalwood Powder","20 g",158,180,18,69,13,Yes
+GRC00638,"Household & Cleaning","Pooja & Daily Needs","Rudraksh Mala","1 pc",149,180,18,41,9,Yes
+GRC00639,"Household & Cleaning","Pooja & Daily Needs","Pooja Thali Set","1 pc",163,180,18,55,15,Yes
+GRC00640,"Kitchen & Disposables","Kitchen Essentials","Aluminium Foil","9 m",147,160,18,48,8,Yes
+GRC00641,"Kitchen & Disposables","Kitchen Essentials","Aluminium Foil","72 m",147,160,18,48,8,Yes
+GRC00642,"Kitchen & Disposables","Kitchen Essentials","Cling Film","30 m",140,160,18,100,12,Yes
+GRC00643,"Kitchen & Disposables","Kitchen Essentials","Butter Paper","1 roll",135,160,18,34,10,Yes
+GRC00644,"Kitchen & Disposables","Kitchen Essentials","Paper Napkins","100 pcs",133,160,18,41,9,Yes
+GRC00645,"Kitchen & Disposables","Kitchen Essentials","Tissue Roll","1 pc",138,160,18,107,11,Yes
+GRC00646,"Kitchen & Disposables","Kitchen Essentials","Kitchen Towel","1 roll",133,160,18,41,9,Yes
+GRC00647,"Kitchen & Disposables","Kitchen Essentials","Zip Lock Bags","10 pcs",133,160,18,41,9,Yes
+GRC00648,"Kitchen & Disposables","Kitchen Essentials","Food Container","1 pc",147,160,18,48,8,Yes
+GRC00649,"Kitchen & Disposables","Kitchen Essentials","Water Bottle","1 L",135,160,18,34,10,Yes
+GRC00650,"Kitchen & Disposables","Kitchen Essentials","Lunch Box","1 pc",142,160,18,93,13,Yes
+GRC00651,"Kitchen & Disposables","Kitchen Essentials","Gas Lighter","1 pc",138,160,18,107,11,Yes
+GRC00652,"Kitchen & Disposables","Kitchen Essentials","Matchbox (Large)","1 pc",142,160,18,62,14,Yes
+GRC00653,"Kitchen & Disposables","Disposables","Paper Cups","25 pcs",140,160,18,100,12,Yes
+GRC00654,"Kitchen & Disposables","Disposables","Paper Cups","50 pcs",140,160,18,100,12,Yes
+GRC00655,"Kitchen & Disposables","Disposables","Paper Plates","25 pcs",135,160,18,34,10,Yes
+GRC00656,"Kitchen & Disposables","Disposables","Plastic Spoons","50 pcs",147,160,18,48,8,Yes
+GRC00657,"Kitchen & Disposables","Disposables","Plastic Glass","25 pcs",133,160,18,41,9,Yes
+GRC00658,"Kitchen & Disposables","Disposables","Straws","100 pcs",133,160,18,72,8,Yes
+GRC00659,"Kitchen & Disposables","Disposables","Carry Bags (Cloth)","1 pc",138,160,18,76,12,Yes
+GRC00660,"Kitchen & Disposables","Disposables","Plastic Carry Bags","1 kg",138,160,18,76,12,Yes
+GRC00661,"Kitchen & Disposables","Disposables","Paper Bags","50 pcs",140,160,18,100,12,Yes
+GRC00662,"Baby Care","Baby Care","Baby Diapers (S/M/L)","1 pack",374,450,12,90,10,Yes
+GRC00663,"Baby Care","Baby Care","Baby Wipes","72 pcs",394,450,12,100,12,Yes
+GRC00664,"Baby Care","Baby Care","Baby Powder","100 g",58,68,12,107,11,Yes
+GRC00665,"Baby Care","Baby Care","Baby Powder","200 g",387,450,12,107,11,Yes
+GRC00666,"Baby Care","Baby Care","Baby Lotion","100 ml",58,68,12,107,11,Yes
+GRC00667,"Baby Care","Baby Care","Baby Lotion","200 ml",108,125,12,107,11,Yes
+GRC00668,"Baby Care","Baby Care","Baby Shampoo","100 ml",57,68,12,34,10,Yes
+GRC00669,"Baby Care","Baby Care","Baby Shampoo","200 ml",106,125,12,34,10,Yes
+GRC00670,"Baby Care","Baby Care","Baby Soap","75 g",401,450,12,93,13,Yes
+GRC00671,"Baby Care","Baby Care","Baby Oil","100 ml",62,68,12,86,14,Yes
+GRC00672,"Baby Care","Baby Care","Baby Oil","200 ml",113,125,12,86,14,Yes
+GRC00673,"Baby Care","Baby Care","Baby Cereal","300 g",387,450,12,107,11,Yes
+GRC00674,"Baby Care","Baby Care","Infant Formula (Stage 1)","400 g",394,450,12,38,14,Yes
+GRC00675,"Baby Care","Baby Care","Infant Formula (Stage 2)","400 g",394,450,12,38,14,Yes
+GRC00676,"Baby Care","Baby Care","Feeding Bottle","1 pc",414,450,12,48,8,Yes
+GRC00677,"Baby Care","Baby Care","Baby Rash Cream","50 g",33,36,12,55,15,Yes
+GRC00678,"Baby Care","Baby Care","Baby Toothbrush","1 pc",407,450,12,55,15,Yes
+GRC00679,"Baby Care","Baby Care","Nipple Pacifier","1 pc",407,450,12,55,15,Yes
+GRC00680,"Health & Wellness","Health Essentials","Chyawanprash","500 g",110,130,12,34,10,Yes
+GRC00681,"Health & Wellness","Health Essentials","Chyawanprash","1 kg",211,250,12,34,10,Yes
+GRC00682,"Health & Wellness","Health Essentials","Digestive Powder","100 g",34,38,12,62,14,Yes
+GRC00683,"Health & Wellness","Health Essentials","Ayurvedic Churna","100 g",34,38,12,62,14,Yes
+GRC00684,"Health & Wellness","Health Essentials","Honey (Organic)","250 g",63,70,12,55,15,Yes
+GRC00685,"Health & Wellness","Health Essentials","Amla Juice","1 L",219,250,12,100,12,Yes
+GRC00686,"Health & Wellness","Health Essentials","Aloe Vera Juice","1 L",226,250,12,55,15,Yes
+GRC00687,"Health & Wellness","Health Essentials","Apple Cider Vinegar","500 ml",110,130,12,83,11,Yes
+GRC00688,"Health & Wellness","Health Essentials","Pain Balm","10 g",223,250,12,93,13,Yes
+GRC00689,"Health & Wellness","Health Essentials","Pain Balm","50 g",18,20,12,93,13,Yes
+GRC00690,"Health & Wellness","Health Essentials","Antiseptic Liquid","100 ml",33,38,12,69,13,Yes
+GRC00691,"Health & Wellness","Health Essentials","Bandage","1 pack",230,250,12,79,15,Yes
+GRC00692,"Health & Wellness","Health Essentials","Hand Sanitizer","100 ml",35,38,12,48,8,Yes
+GRC00693,"Health & Wellness","Health Essentials","Hand Sanitizer","500 ml",120,130,12,48,8,Yes
+GRC00694,"Health & Wellness","Health Essentials","Face Mask","1 pack",223,250,12,93,13,Yes
+GRC00695,"Health & Wellness","Health Essentials","Thermometer","1 pc",215,250,12,107,11,Yes
+GRC00696,"Health & Wellness","Health Essentials","ORS Powder","1 sachet",219,250,12,100,12,Yes
+GRC00697,"Health & Wellness","Health Essentials","Cotton Roll","100 g",33,38,12,107,11,Yes
+GRC00698,"Health & Wellness","Health Essentials","Vitamin C Tablets","1 strip",219,250,12,69,13,Yes
+GRC00699,"Health & Wellness","Health Essentials","Glucose-D","200 g",223,250,12,93,13,Yes
+GRC00700,"Health & Wellness","Health Essentials","Cough Syrup (OTC)","100 ml",33,38,12,69,13,Yes
+GRC00701,"Health & Wellness","Health Essentials","Eucalyptus Oil","50 ml",230,250,12,48,8,Yes
+GRC00702,"Health & Wellness","Health Essentials","Disposable Gloves","1 pack",219,250,12,69,13,Yes
+GRC00703,"Pet Care","Pet Care","Dog Food (Dry)","1 kg",294,320,18,48,8,Yes
+GRC00704,"Pet Care","Pet Care","Dog Food (Dry)","3 kg",294,320,18,48,8,Yes
+GRC00705,"Pet Care","Pet Care","Dog Food (Wet)","85 g",294,320,18,48,8,Yes
+GRC00706,"Pet Care","Pet Care","Cat Food (Dry)","1 kg",294,320,18,48,8,Yes
+GRC00707,"Pet Care","Pet Care","Cat Food (Wet)","85 g",294,320,18,48,8,Yes
+GRC00708,"Pet Care","Pet Care","Pet Shampoo","200 ml",77,90,18,107,11,Yes
+GRC00709,"Pet Care","Pet Care","Dog Biscuits","200 g",270,320,18,34,10,Yes
+GRC00710,"Pet Care","Pet Care","Bird Seed Mix","500 g",137,165,18,41,9,Yes
+GRC00711,"Pet Care","Pet Care","Fish Food","50 g",23,26,18,93,13,Yes
+GRC00712,"Stationery & Misc","Stationery","Notebook","1 pc",109,120,18,86,14,Yes
+GRC00713,"Stationery & Misc","Stationery","Pen (Ball)","1 pc",105,120,18,100,12,Yes
+GRC00714,"Stationery & Misc","Stationery","Pen (Ball)","10 pcs",105,120,18,100,12,Yes
+GRC00715,"Stationery & Misc","Stationery","Pencil","10 pcs",100,120,18,72,8,Yes
+GRC00716,"Stationery & Misc","Stationery","Eraser","1 pc",100,120,18,72,8,Yes
+GRC00717,"Stationery & Misc","Stationery","Sharpener","1 pc",107,120,18,93,13,Yes
+GRC00718,"Stationery & Misc","Stationery","Glue Stick","1 pc",105,120,18,100,12,Yes
+GRC00719,"Stationery & Misc","Stationery","Scotch Tape","1 pc",103,120,18,107,11,Yes
+GRC00720,"Stationery & Misc","Stationery","Chart Paper","1 pc",103,120,18,107,11,Yes
+GRC00721,"Stationery & Misc","Stationery","Marker Pen","1 pc",105,120,18,100,12,Yes
+GRC00722,"Stationery & Misc","Stationery","Highlighter","1 pc",103,120,18,107,11,Yes
+GRC00723,"Stationery & Misc","Stationery","Envelope","10 pcs",109,120,18,86,14,Yes
+GRC00724,"Stationery & Misc","Stationery","Stapler","1 pc",110,120,18,79,15,Yes
+GRC00725,"Stationery & Misc","Stationery","Stapler Pins","1 pack",101,120,18,34,10,Yes
+GRC00726,"Stationery & Misc","Electrical & Misc","LED Bulb (9W)","1 pc",100,120,18,41,9,Yes
+GRC00727,"Stationery & Misc","Electrical & Misc","Batteries AA","4 pcs",101,120,18,34,10,Yes
+GRC00728,"Stationery & Misc","Electrical & Misc","Batteries AAA","4 pcs",100,120,18,41,9,Yes
+GRC00729,"Stationery & Misc","Electrical & Misc","Extension Board","1 pc",109,120,18,55,15,Yes
+GRC00730,"Stationery & Misc","Electrical & Misc","Torch","1 pc",101,120,18,65,9,Yes
+GRC00731,"Stationery & Misc","Electrical & Misc","Phone Charger","1 pc",100,120,18,41,9,Yes
+GRC00732,"Stationery & Misc","Electrical & Misc","Earphones","1 pc",107,120,18,93,13,Yes
+GRC00733,"Stationery & Misc","Electrical & Misc","Candles (Emergency)","6 pcs",71,84,18,83,11,Yes

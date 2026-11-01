@@ -26,6 +26,10 @@ export default function AdminInventoryPage() {
   const [activeTab, setActiveTab] = useState<'PRODUCTS' | 'LEDGER'>('PRODUCTS');
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [isImporting, setIsImporting] = useState(false);
 
   // Stock Adjustment Modal
   const [adjustingProduct, setAdjustingProduct] = useState<any>(null);
@@ -51,14 +55,23 @@ export default function AdminInventoryPage() {
 
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
-  const loadData = () => {
+  const loadData = (page: number = currentPage) => {
     setIsLoading(true);
     const params = new URLSearchParams();
     if (searchQuery) params.set('search', searchQuery);
     if (categoryFilter) params.set('category', categoryFilter);
+    params.set('page', String(page));
+    params.set('limit', '50');
 
     api.adminGetProducts(params.toString()).then((res) => {
-      if (res.success && res.data) setProducts(res.data);
+      if (res.success && res.data) {
+        setProducts(res.data);
+        if (res.pagination) {
+          setCurrentPage(res.pagination.page);
+          setTotalPages(res.pagination.totalPages);
+          setTotalCount(res.pagination.total);
+        }
+      }
       setIsLoading(false);
     });
 
@@ -77,8 +90,39 @@ export default function AdminInventoryPage() {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(1);
   }, [categoryFilter]);
+
+  const handleCsvFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    setMessage({ type: 'success', text: `Uploading and processing "${file.name}"...` });
+
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const csvData = evt.target?.result as string;
+        const res = await api.adminImportProductsCsv(csvData);
+        if (res.success) {
+          setMessage({
+            type: 'success',
+            text: res.message || `CSV imported successfully! (${res.data?.total || 0} products processed)`,
+          });
+          loadData(1);
+        } else {
+          setMessage({ type: 'error', text: res.message || 'Failed to import CSV' });
+        }
+      } catch (err: any) {
+        setMessage({ type: 'error', text: err.message || 'Error reading CSV file' });
+      } finally {
+        setIsImporting(false);
+        e.target.value = '';
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const handleAdjustStockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,6 +230,18 @@ export default function AdminInventoryPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-white border border-gray-200 text-gray-700 hover:text-emerald-700 text-xs font-bold rounded-xl transition shadow-sm">
+            <Upload className="w-3.5 h-3.5 text-blue-600" />
+            <span>{isImporting ? 'Importing CSV...' : 'Import CSV'}</span>
+            <input
+              type="file"
+              accept=".csv"
+              className="hidden"
+              disabled={isImporting}
+              onChange={handleCsvFileUpload}
+            />
+          </label>
+
           <a
             href={api.adminGetStockCsvUrl()}
             target="_blank"
@@ -233,7 +289,7 @@ export default function AdminInventoryPage() {
             }`}
           >
             <Boxes className="w-3.5 h-3.5" />
-            <span>Product Catalog ({products.length})</span>
+            <span>Product Catalog ({totalCount || products.length})</span>
           </button>
 
           <button
@@ -250,19 +306,42 @@ export default function AdminInventoryPage() {
         </div>
 
         {activeTab === 'PRODUCTS' && (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && loadData(1)}
+                placeholder="Search SKU or name..."
+                className="pl-8 pr-3 py-1.5 text-xs bg-white border border-gray-300 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-emerald-500 w-44 sm:w-56"
+              />
+            </div>
+
             <select
               value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="text-xs bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-700"
+              onChange={(e) => {
+                setCategoryFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="text-xs bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-gray-700 focus:outline-none focus:border-emerald-500"
             >
-              <option value="">All Categories</option>
+              <option value="">All Categories ({categories.length})</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>
               ))}
             </select>
+
+            <button
+              onClick={() => loadData(1)}
+              className="p-1.5 text-gray-500 hover:text-emerald-700 hover:bg-gray-100 rounded-xl border border-gray-200 transition"
+              title="Search & Refresh"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+            </button>
           </div>
         )}
       </div>
@@ -400,6 +479,35 @@ export default function AdminInventoryPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-600">
+              <span>
+                Showing page <strong className="text-gray-900">{currentPage}</strong> of{' '}
+                <strong className="text-gray-900">{totalPages}</strong> ({totalCount} total items)
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  disabled={currentPage <= 1 || isLoading}
+                  onClick={() => loadData(currentPage - 1)}
+                  className="px-3 py-1 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-40 font-bold transition shadow-sm"
+                >
+                  Previous
+                </button>
+                <span className="px-2 font-mono text-[11px] font-bold text-gray-800">
+                  {currentPage} / {totalPages}
+                </span>
+                <button
+                  disabled={currentPage >= totalPages || isLoading}
+                  onClick={() => loadData(currentPage + 1)}
+                  className="px-3 py-1 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-40 font-bold transition shadow-sm"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -723,3 +831,4 @@ export default function AdminInventoryPage() {
     </div>
   );
 }
+

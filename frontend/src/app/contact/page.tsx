@@ -43,8 +43,8 @@ export default function ContactPage() {
             <h3 className="font-bold text-gray-900 text-sm">Store Location</h3>
             <p className="text-xs text-gray-600 leading-relaxed">
               FreshCart Supermarket<br />
-              123 Market Road, Koramangala 4th Block,<br />
-              Bengaluru, Karnataka 560034
+              Shop 101-104, Iscon Elegance, Prahlad Nagar, SG Highway,<br />
+              Ahmedabad, Gujarat 380015
             </p>
           </div>
 
@@ -66,7 +66,7 @@ export default function ContactPage() {
             <h3 className="font-bold text-gray-900 text-sm">Opening Hours</h3>
             <p className="text-xs text-gray-600">
               Monday - Sunday: <strong>7:00 AM - 10:00 PM</strong><br />
-              Open all 365 days including holidays.
+              Open all 365 days across Gujarat.
             </p>
           </div>
         </div>
@@ -76,9 +76,9 @@ export default function ContactPage() {
           {/* Interactive Map Box */}
           <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
             <div className="p-4 bg-gray-50 border-b border-gray-100 flex items-center justify-between text-xs">
-              <span className="font-bold text-gray-800">Store Map Location (Koramangala, Bengaluru)</span>
+              <span className="font-bold text-gray-800">Store Map Location (Prahlad Nagar, SG Highway, Ahmedabad)</span>
               <a
-                href="https://maps.google.com/?q=12.9352,77.6245"
+                href="https://maps.google.com/?q=23.0135,72.5085"
                 target="_blank"
                 rel="noreferrer"
                 className="text-emerald-700 font-semibold hover:underline"
@@ -88,7 +88,7 @@ export default function ContactPage() {
             </div>
             <iframe
               title="FreshCart Supermarket Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15553.336495116744!2d77.6185!3d12.9352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae144e13284ff3%3A0x6b4f708298782a20!2sKoramangala%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.9547568571864!2d72.5063083!3d23.0135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f555555555%3A0x6b4f708298782a20!2sPrahlad%20Nagar%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               width="100%"
               height="260"
               style={{ border: 0 }}
@@ -184,3 +184,4 @@ export default function ContactPage() {
     </div>
   );
 }
+

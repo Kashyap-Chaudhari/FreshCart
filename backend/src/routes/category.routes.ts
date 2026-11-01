@@ -14,3 +14,4 @@ router.post('/', authenticate, requireRole(['OWNER', 'STAFF']), categoryControll
 router.patch('/:id', authenticate, requireRole(['OWNER', 'STAFF']), categoryController.update);
 
 export default router;
+

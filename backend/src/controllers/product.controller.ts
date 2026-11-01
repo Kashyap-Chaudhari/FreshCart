@@ -3,6 +3,7 @@ import prisma from '../config/prisma';
 import { stockService } from '../services/stock.service';
 import { auditService } from '../services/audit.service';
 import { AppError } from '../middlewares/error.middleware';
+import { parseProductCsv } from '../utils/csvImporter';
 
 export const productController = {
   /**
@@ -14,7 +15,7 @@ export const productController = {
       const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string, 10) || 20));
       const skip = (page - 1) * limit;
 
-      const { category, search, inStock, sortBy, sortOrder } = req.query;
+      const { category, subcategory, search, inStock, sortBy, sortOrder } = req.query;
 
       const where: any = {
         isAvailable: true,
@@ -22,6 +23,10 @@ export const productController = {
 
       if (category) {
         where.category = { slug: String(category) };
+      }
+
+      if (subcategory) {
+        where.subcategory = String(subcategory);
       }
 
       if (inStock === 'true') {
@@ -311,4 +316,138 @@ export const productController = {
       next(err);
     }
   },
+
+  /**
+   * Admin: Bulk import products via CSV
+   */
+  async importCsv(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { csvData } = req.body;
+      if (!csvData || typeof csvData !== 'string') {
+        throw new AppError('CSV data string is required', 400);
+      }
+
+      const parsedItems = parseProductCsv(csvData);
+      if (parsedItems.length === 0) {
+        throw new AppError('No valid product rows found in CSV', 400);
+      }
+
+      // Fetch all existing categories
+      const existingCategories = await prisma.category.findMany();
+      const catMap = new Map<string, any>();
+      existingCategories.forEach((c: any) => catMap.set(c.name.toLowerCase(), c));
+
+      let createdCount = 0;
+      let updatedCount = 0;
+
+      for (const item of parsedItems) {
+        // Resolve or create category
+        let category = catMap.get(item.categoryName.toLowerCase());
+        if (!category) {
+          const catSlug = item.categoryName
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '');
+          category = await prisma.category.create({
+            data: {
+              name: item.categoryName,
+              slug: catSlug || `category-${Date.now()}`,
+              description: `${item.categoryName} products`,
+              imageUrl: item.images[0],
+              displayOrder: catMap.size + 1,
+              isActive: true,
+            },
+          });
+          catMap.set(item.categoryName.toLowerCase(), category);
+        }
+
+        const slug =
+          item.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '') +
+          '-' +
+          item.sku.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        const existingProduct = await prisma.product.findUnique({
+          where: { sku: item.sku },
+        });
+
+        if (existingProduct) {
+          await prisma.product.update({
+            where: { id: existingProduct.id },
+            data: {
+              name: item.name,
+              unit: item.unit,
+              price: item.price,
+              mrp: item.mrp,
+              costPrice: item.costPrice,
+              taxPercent: item.taxPercent,
+              stockQty: item.stockQty,
+              lowStockThreshold: item.lowStockThreshold,
+              isAvailable: item.isAvailable,
+              categoryId: category.id,
+            },
+          });
+          updatedCount++;
+        } else {
+          const product = await prisma.product.create({
+            data: {
+              name: item.name,
+              slug,
+              sku: item.sku,
+              unit: item.unit,
+              price: item.price,
+              mrp: item.mrp,
+              costPrice: item.costPrice,
+              taxPercent: item.taxPercent,
+              stockQty: item.stockQty,
+              lowStockThreshold: item.lowStockThreshold,
+              isAvailable: item.isAvailable,
+              categoryId: category.id,
+              images: item.images,
+              description: item.description,
+            },
+          });
+
+          if (item.stockQty > 0) {
+            await prisma.stockMovementLedger.create({
+              data: {
+                productId: product.id,
+                type: 'PURCHASE',
+                quantityChange: item.stockQty,
+                balanceAfter: item.stockQty,
+                reason: 'Initial stock via CSV import',
+                referenceType: 'MANUAL',
+                createdByUserId: req.user?.id,
+              },
+            });
+          }
+          createdCount++;
+        }
+      }
+
+      await auditService.log({
+        userId: req.user?.id,
+        action: 'PRODUCT_CSV_IMPORT',
+        entity: 'Product',
+        entityId: 'bulk',
+        details: { totalRows: parsedItems.length, createdCount, updatedCount },
+        ipAddress: req.ip,
+      });
+
+      res.json({
+        success: true,
+        message: `CSV import completed successfully: ${createdCount} created, ${updatedCount} updated.`,
+        data: {
+          total: parsedItems.length,
+          created: createdCount,
+          updated: updatedCount,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
+

@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Plus, Minus, Zap, Clock, ShoppingBag } from 'lucide-react';
 import { useCart, CartProduct } from '@/context/CartContext';
 
 export interface ProductCardProps {
@@ -13,141 +13,175 @@ export interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { items, addToCart, updateQuantity } = useCart();
+  const [animating, setAnimating] = useState(false);
 
   const cartItem = items.find((it) => it.product.id === product.id);
   const inCartQty = cartItem ? cartItem.quantity : 0;
   const isOutOfStock = !product.isAvailable || product.stockQty <= 0;
 
+  // Extract authentic Brand from product or description
+  const brandName =
+    (product as any).brand ||
+    (product as any).description?.match(/by\s+([^.]+)\./)?.[1]?.trim() ||
+    product.name.split(' ')[0];
+
   const discountPercent =
-    product.mrp && product.mrp > product.price
+    product.mrp && Number(product.mrp) > Number(product.price)
       ? Math.round(((Number(product.mrp) - Number(product.price)) / Number(product.mrp)) * 100)
       : 0;
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (isOutOfStock) return;
+    setAnimating(true);
     addToCart(product, 1);
+    setTimeout(() => setAnimating(false), 300);
   };
 
   const handleIncrement = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (inCartQty < product.stockQty) {
+      setAnimating(true);
       updateQuantity(product.id, inCartQty + 1);
+      setTimeout(() => setAnimating(false), 300);
     }
   };
 
   const handleDecrement = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    setAnimating(true);
     updateQuantity(product.id, inCartQty - 1);
+    setTimeout(() => setAnimating(false), 300);
   };
 
   return (
-    <div className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col overflow-hidden relative">
-      {/* Discount Badge */}
-      {discountPercent > 0 && (
-        <span className="absolute top-2.5 left-2.5 z-10 bg-emerald-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-          {discountPercent}% OFF
-        </span>
-      )}
+    <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/70 dark:border-slate-800/90 hover:border-emerald-500/60 dark:hover:border-emerald-600/60 shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between overflow-hidden relative p-2 sm:p-3 w-full min-w-0 box-border">
+      {/* Product Image Box with Floating Badges */}
+      <Link
+        href={`/products/${product.slug}`}
+        className="block relative aspect-square w-full rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800/50 mb-1.5 sm:mb-2 group/img"
+      >
+        {product.images && product.images[0] ? (
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className={`w-full h-full object-contain p-1 sm:p-2 group-hover:scale-105 transition-transform duration-300 ${
+              isOutOfStock ? 'grayscale opacity-60' : ''
+            }`}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-slate-400">
+            <ShoppingBag className="w-8 h-8 opacity-40" />
+          </div>
+        )}
 
-      {/* Stock Status Badge */}
-      {isOutOfStock ? (
-        <span className="absolute top-2.5 right-2.5 z-10 bg-rose-50 text-rose-600 border border-rose-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
-          Out of Stock
-        </span>
-      ) : product.stockQty <= 5 ? (
-        <span className="absolute top-2.5 right-2.5 z-10 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-full">
-          Only {product.stockQty} left!
-        </span>
-      ) : null}
+        {/* Floating Time Pill (Top Left) */}
+        <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10 flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs text-[9px] sm:text-[10px] font-black text-emerald-800 dark:text-emerald-400 px-1.5 sm:px-2 py-0.5 rounded-md shadow-xs border border-slate-200/50 dark:border-slate-700/50">
+          <Zap className="w-2.5 h-2.5 fill-emerald-600 text-emerald-600" />
+          <span>10-15m</span>
+        </div>
 
-      {/* Image Container */}
-      <Link href={`/products/${product.slug}`} className="block relative pt-[75%] bg-gray-50 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={product.images?.[0] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80'}
-          alt={product.name}
-          className={`absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${
-            isOutOfStock ? 'opacity-60 grayscale' : ''
-          }`}
-          loading="lazy"
-        />
+        {/* Floating Discount Badge (Top Right) */}
+        {discountPercent > 0 && (
+          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-xs">
+            {discountPercent}% OFF
+          </div>
+        )}
+
+        {/* Out of Stock Overlay */}
+        {isOutOfStock && (
+          <div className="absolute inset-0 z-20 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 text-center">
+            <span className="text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md bg-rose-600 shadow-md">
+              Out of Stock
+            </span>
+          </div>
+        )}
       </Link>
 
-      {/* Product Details */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
-        <div>
-          {product.category && (
-            <span className="text-[11px] font-medium text-emerald-700 uppercase tracking-wider block mb-1">
-              {product.category.name}
-            </span>
-          )}
-          <Link href={`/products/${product.slug}`} className="block">
-            <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 hover:text-emerald-600 transition-colors">
-              {product.name}
-            </h3>
+      {/* Product Information */}
+      <div className="flex-1 flex flex-col justify-between min-w-0 w-full">
+        <div className="min-w-0 w-full">
+          {/* Brand Name */}
+          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 truncate block">
+            {brandName}
+          </span>
+
+          {/* Product Title */}
+          <Link
+            href={`/products/${product.slug}`}
+            className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 line-clamp-2 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors leading-snug mt-0.5 min-h-[2.1rem] sm:min-h-[2.3rem]"
+            title={product.name}
+          >
+            {product.name}
           </Link>
-          <span className="text-xs text-gray-500 font-medium block mt-1">
+
+          {/* Unit / Pack Size */}
+          <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400 block mt-0.5 sm:mt-1 truncate">
             {product.unit}
           </span>
         </div>
 
-        {/* Price & Action */}
-        <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-extrabold text-gray-900">
-                ₹{Number(product.price).toFixed(0)}
+        {/* Bottom Price & Add to Cart Action */}
+        <div className="flex items-center justify-between pt-2 mt-auto border-t border-slate-100 dark:border-slate-800/80 gap-1 sm:gap-2 min-w-0 w-full">
+          {/* Price & MRP */}
+          <div className="flex items-baseline gap-1 min-w-0 flex-shrink">
+            <span className="text-xs sm:text-base font-black text-slate-900 dark:text-white font-mono leading-none truncate">
+              ₹{Number(product.price).toFixed(0)}
+            </span>
+            {product.mrp && Number(product.mrp) > Number(product.price) && (
+              <span className="text-[10px] sm:text-[11px] text-slate-400 line-through font-mono font-normal truncate">
+                ₹{Number(product.mrp).toFixed(0)}
               </span>
-              {Number(product.mrp) > Number(product.price) && (
-                <span className="text-xs text-gray-400 line-through">
-                  ₹{Number(product.mrp).toFixed(0)}
-                </span>
-              )}
-            </div>
-            <span className="text-[10px] text-gray-400">Inclusive of GST</span>
-          </div>
-
-          {/* Add / Qty Control */}
-          <div>
-            {isOutOfStock ? (
-              <button
-                disabled
-                className="px-3 py-1.5 bg-gray-100 text-gray-400 text-xs font-semibold rounded-xl cursor-not-allowed"
-              >
-                Unavailable
-              </button>
-            ) : inCartQty > 0 ? (
-              <div className="flex items-center bg-emerald-50 border border-emerald-300 rounded-xl overflow-hidden shadow-sm">
-                <button
-                  onClick={handleDecrement}
-                  className="p-1.5 text-emerald-800 hover:bg-emerald-100 transition"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <span className="px-2 text-xs font-bold text-emerald-900 min-w-[20px] text-center">
-                  {inCartQty}
-                </span>
-                <button
-                  onClick={handleIncrement}
-                  disabled={inCartQty >= product.stockQty}
-                  className="p-1.5 text-emerald-800 hover:bg-emerald-100 transition disabled:opacity-30 disabled:cursor-not-allowed"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleAdd}
-                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition shadow-sm"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>ADD</span>
-              </button>
             )}
           </div>
+
+          {/* Add / Quantity Button */}
+          {isOutOfStock ? (
+            <button
+              disabled
+              className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 font-bold text-[10px] sm:text-[11px] cursor-not-allowed flex-shrink-0"
+            >
+              Unavailable
+            </button>
+          ) : inCartQty === 0 ? (
+            <button
+              type="button"
+              onClick={handleAdd}
+              className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg border-1.5 border-emerald-600 bg-emerald-50/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-500 dark:hover:bg-emerald-600 dark:hover:text-white font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-150 flex items-center justify-center gap-0.5 sm:gap-1 shadow-xs active:scale-95 flex-shrink-0 ${
+                animating ? 'scale-105 bg-emerald-600 text-white' : ''
+              }`}
+            >
+              <span>ADD</span>
+              <Plus className="w-3 h-3 stroke-[3]" />
+            </button>
+          ) : (
+            <div className="inline-flex items-center rounded-lg bg-emerald-600 text-white shadow-md shadow-emerald-600/25 overflow-hidden text-xs font-bold min-w-[64px] sm:min-w-[76px] justify-between flex-shrink-0">
+              <button
+                type="button"
+                onClick={handleDecrement}
+                className="p-1 sm:p-1.5 hover:bg-emerald-700 transition active:scale-90"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
+              </button>
+              <span className="px-1 font-black text-[11px] sm:text-xs font-mono text-center">
+                {inCartQty}
+              </span>
+              <button
+                type="button"
+                onClick={handleIncrement}
+                disabled={inCartQty >= product.stockQty}
+                className="p-1 sm:p-1.5 hover:bg-emerald-700 transition active:scale-90 disabled:opacity-50"
+                aria-label="Increase quantity"
+              >
+                <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

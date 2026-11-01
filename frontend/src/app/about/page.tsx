@@ -14,7 +14,7 @@ export default function AboutPage() {
           Your Trusted Daily Fresh Grocery Partner
         </h1>
         <p className="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">
-          Founded with a simple mission: bringing freshly harvested farm vegetables, authentic staples, and daily essentials straight to Bangalore families with zero compromise on quality and swift 2-hour delivery.
+          Founded with a simple mission: bringing freshly harvested farm vegetables, authentic staples, and daily essentials straight to families across Gujarat with zero compromise on quality and swift express delivery.
         </p>
       </div>
 
@@ -23,10 +23,10 @@ export default function AboutPage() {
         <div className="space-y-4">
           <h2 className="text-xl font-black text-gray-900">Direct From Farms, Right to Your Kitchen</h2>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Unlike traditional middlemen channels where produce sits for days in wholesale yards, FreshCart sources vegetables and fruits daily from verified local farmers across Karnataka.
+            Unlike traditional middlemen channels where produce sits for days in wholesale yards, FreshCart sources vegetables and fruits daily from verified local farmers across Gujarat.
           </p>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Every item undergoes rigorous quality grading before being temperature-controlled in our Koramangala distribution hub.
+            Every item undergoes rigorous quality grading before being temperature-controlled in our Ahmedabad central fulfillment hub.
           </p>
           <div className="space-y-2 pt-2 text-xs font-semibold text-gray-800">
             <div className="flex items-center gap-2 text-emerald-800">
@@ -102,3 +102,4 @@ export default function AboutPage() {
     </div>
   );
 }
+

@@ -30,7 +30,7 @@ services:
       PORT: 5000
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-freshcart}?schema=public
       JWT_SECRET: ${JWT_SECRET:-supersecret_jwt_key_change_in_production_2026}
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000,http://localhost:3001,http://localhost:3002}
     ports:
       - "5000:5000"
     depends_on:
@@ -45,8 +45,37 @@ services:
     restart: always
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000/api}
+      NEXT_PUBLIC_ADMIN_URL: ${NEXT_PUBLIC_ADMIN_URL:-http://localhost:3001}
     ports:
       - "3000:3000"
+    depends_on:
+      - backend
+
+  admin:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    container_name: freshcart_admin
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000/api}
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+
+  delivery:
+    build:
+      context: ./delivery
+      dockerfile: Dockerfile
+    container_name: freshcart_delivery
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000/api}
+      PORT: 3002
+    ports:
+      - "3002:3002"
     depends_on:
       - backend
 

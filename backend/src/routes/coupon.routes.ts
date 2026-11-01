@@ -14,3 +14,4 @@ router.post('/admin', authenticate, requireRole(['OWNER', 'STAFF']), couponContr
 router.patch('/admin/:id', authenticate, requireRole(['OWNER', 'STAFF']), couponController.update);
 
 export default router;
+

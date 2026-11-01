@@ -19,3 +19,4 @@ router.post('/otp/verify', authRateLimiter, validate({ body: verifyOtpSchema }),
 router.get('/me', authenticate, authController.getMe);
 
 export default router;
+

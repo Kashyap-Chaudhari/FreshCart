@@ -12,9 +12,13 @@ export const orderController = {
    */
   async checkout(req: Request, res: Response, next: NextFunction) {
     try {
+      if (!req.user || !req.user.id) {
+        throw new AppError('First please login or register to place your order.', 401);
+      }
+
       const order = await orderService.createOrder({
         ...req.body,
-        userId: req.user?.id || null,
+        userId: req.user.id,
       });
 
       res.status(201).json({
@@ -150,6 +154,50 @@ export const orderController = {
   },
 
   /**
+   * Print View HTML for Order Invoice
+   */
+  async printInvoice(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const order = await prisma.order.findFirst({
+        where: { OR: [{ id }, { orderNumber: id }] },
+      });
+      if (!order) throw new AppError('Order not found', 404);
+      if (req.user && order.userId && order.userId !== req.user.id && req.user.role === 'CUSTOMER') {
+        throw new AppError('Access denied', 403);
+      }
+      const html = await invoiceService.generateInvoiceHtml(order.id);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * Download / Stream PDF GST Credit Note (Section 34 CGST Act)
+   */
+  async downloadCreditNote(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const order = await prisma.order.findFirst({
+        where: { OR: [{ id }, { orderNumber: id }] },
+      });
+      if (!order) throw new AppError('Order not found', 404);
+      if (req.user && order.userId && order.userId !== req.user.id && req.user.role === 'CUSTOMER') {
+        throw new AppError('Access denied', 403);
+      }
+      const reason = (req.query.reason as string) || order.cancellationReason || 'Order Cancellation Credit Reversal';
+      const pdfDoc = await invoiceService.generateCreditNotePdf(order.id, reason);
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `inline; filename="Credit-Note-${order.orderNumber}.pdf"`);
+      pdfDoc.pipe(res);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
    * Admin: List all orders with filters (status, search, dates, pagination)
    */
   async adminList(req: Request, res: Response, next: NextFunction) {
@@ -237,6 +285,119 @@ export const orderController = {
         success: true,
         message: `Order status updated to ${status}`,
         data: updated,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * Admin: Update estimated delivery and tracking notes
+   */
+  async adminUpdateDelivery(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.orderId || req.params.id;
+      const { estimatedDeliveryDate, trackingNumber, carrier, trackingNotes, note } = req.body;
+
+      const updated = await orderService.updateDelivery(id, {
+        estimatedDeliveryDate,
+        trackingNumber,
+        carrier,
+        trackingNotes,
+        note,
+        changedByUserId: req.user?.id,
+      });
+
+      await auditService.log({
+        userId: req.user?.id,
+        action: 'ORDER_DELIVERY_UPDATE',
+        entity: 'Order',
+        entityId: id,
+        details: { estimatedDeliveryDate, trackingNumber, carrier, trackingNotes, note },
+        ipAddress: req.ip,
+      });
+
+      res.json({
+        success: true,
+        message: 'Delivery tracking information updated successfully',
+        data: updated,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * Admin: Review customer cancellation request (Approve/Reject)
+   */
+  async adminReviewCancellation(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.orderId || req.params.id;
+      const { action, note } = req.body;
+
+      if (!action || (action !== 'APPROVE' && action !== 'REJECT')) {
+        throw new AppError('Action must be either APPROVE or REJECT', 400);
+      }
+
+      const result = await orderService.reviewCancellationRequest(id, action, note, req.user?.id);
+
+      await auditService.log({
+        userId: req.user?.id,
+        action: `ORDER_CANCEL_REQUEST_${action}`,
+        entity: 'Order',
+        entityId: id,
+        details: { action, note },
+        ipAddress: req.ip,
+      });
+
+      res.json({
+        success: true,
+        message: `Cancellation request ${action === 'APPROVE' ? 'approved and stock restored' : 'rejected'}.`,
+        data: result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * Customer / Public: Get structured 6-stage real-time tracking timeline
+   */
+  async getTrackingTimeline(req: Request, res: Response, next: NextFunction) {
+    try {
+      const identifier = req.params.orderId || req.params.identifier || req.params.id;
+      const tracking = await orderService.getOrderTracking(identifier);
+
+      res.json({
+        success: true,
+        data: tracking,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
+   * Customer: Request order cancellation
+   */
+  async requestCancelOrder(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.orderId || req.params.id;
+      const { reason } = req.body;
+
+      if (!reason || !reason.trim()) {
+        throw new AppError('Cancellation reason is required', 400);
+      }
+
+      const result = await orderService.requestCancellation(id, reason.trim(), req.user?.id);
+
+      res.json({
+        success: true,
+        message:
+          result.status === 'CANCELLED'
+            ? 'Order cancelled successfully and stock restored'
+            : 'Cancellation request submitted for store review',
+        data: result,
       });
     } catch (err) {
       next(err);
@@ -396,3 +557,4 @@ export const orderController = {
     }
   },
 };
+

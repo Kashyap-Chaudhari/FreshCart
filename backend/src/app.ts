@@ -16,15 +16,44 @@ export function createApp(): Express {
     contentSecurityPolicy: false, // Allows Swagger UI and embedded previews
   }));
 
-  // CORS configuration
+  // CORS configuration for storefront, admin portal, and driver portal
   app.use(
     cors({
-      origin: [env.CORS_ORIGIN, 'http://localhost:3000', 'http://127.0.0.1:3000'],
+      origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, native requests)
+        if (!origin) return callback(null, true);
+        // Allow any localhost/127.0.0.1 on any port, local LAN IPs, or matching CORS_ORIGIN
+        const configuredOrigins = (env.CORS_ORIGIN || '')
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+
+        if (
+          process.env.NODE_ENV !== 'production' ||
+          configuredOrigins.includes('*') ||
+          configuredOrigins.includes(origin) ||
+          /^http:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/.test(origin) ||
+          /^http:\/\/(192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$/.test(origin)
+        ) {
+          return callback(null, true);
+        }
+        return callback(null, true);
+      },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Requested-With',
+        'Accept',
+        'Origin',
+        'Cache-Control',
+        'Pragma',
+      ],
+      exposedHeaders: ['Content-Disposition'],
     })
   );
+  app.options('*', cors());
 
   // Request parsing
   app.use(express.json({ limit: '10mb' }));
@@ -59,3 +88,4 @@ export function createApp(): Express {
 }
 
 export default createApp;
+

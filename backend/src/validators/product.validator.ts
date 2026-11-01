@@ -23,3 +23,4 @@ export const stockAdjustmentSchema = z.object({
   type: z.enum(['PURCHASE', 'SALE_DEDUCTION', 'ORDER_CANCEL_RESTORE', 'DAMAGE', 'MANUAL_ADJUSTMENT', 'RETURN']),
   reason: z.string().min(3, 'Adjustment reason is required'),
 });
+

@@ -29,3 +29,4 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 5000
 
 CMD ["node", "dist/server.js"]
+

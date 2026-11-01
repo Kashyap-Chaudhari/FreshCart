@@ -1,14 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Phone, Mail, Lock, ShieldCheck, ArrowRight, User as UserIcon } from 'lucide-react';
+import { Phone, Mail, Lock, ShieldCheck, ArrowRight, User as UserIcon, History } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || '/';
+  const isOrdering = redirectTarget.includes('checkout') || redirectTarget.includes('cart');
+
   const { loginWithEmail, verifyOtpAndLogin, registerUser } = useAuth();
 
   const [tab, setTab] = useState<'OTP' | 'EMAIL' | 'REGISTER'>('OTP');
@@ -71,7 +75,7 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (res.success) {
-      router.push('/');
+      router.push(redirectTarget);
     } else {
       setMessage({ type: 'error', text: res.message || 'Verification failed.' });
     }
@@ -86,7 +90,7 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (res.success) {
-      router.push('/');
+      router.push(redirectTarget);
     } else {
       setMessage({ type: 'error', text: res.message || 'Invalid email or password.' });
     }
@@ -106,7 +110,7 @@ export default function LoginPage() {
     setIsLoading(false);
 
     if (res.success) {
-      router.push('/');
+      router.push(redirectTarget);
     } else {
       setMessage({ type: 'error', text: res.message || 'Registration failed.' });
     }
@@ -114,6 +118,20 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto px-4 py-12 space-y-6">
+      {isOrdering && (
+        <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/60 rounded-3xl p-4 shadow-sm flex items-start gap-3">
+          <Lock className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-xs font-black text-amber-900 dark:text-amber-200 uppercase tracking-wider">
+              Customer Sign In Required to Place Order
+            </h3>
+            <p className="text-[11px] text-amber-800 dark:text-amber-300/90 mt-0.5">
+              Please log in or register below. Afterwards, you will be taken directly back to checkout to confirm your order.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="text-center space-y-2">
         <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 text-white font-black text-2xl flex items-center justify-center mx-auto shadow-md">
           FC
@@ -376,6 +394,25 @@ export default function LoginPage() {
         )}
       </div>
 
+      {/* Quick Track Order Link for Guests or returning mobile shoppers */}
+      <div className="bg-emerald-50/70 dark:bg-emerald-950/40 rounded-3xl p-4 border border-emerald-100 dark:border-emerald-900/60 flex items-center justify-between gap-3 text-xs shadow-xs">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+            <History className="w-4 h-4" />
+          </div>
+          <div className="min-w-0">
+            <span className="font-bold text-gray-900 dark:text-white block truncate">Looking for past orders?</span>
+            <span className="text-[11px] text-gray-500 dark:text-slate-400 block truncate">Track orders placed on this device or Order #</span>
+          </div>
+        </div>
+        <Link
+          href="/orders"
+          className="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 font-bold hover:bg-emerald-50 transition shrink-0 shadow-xs"
+        >
+          View Orders →
+        </Link>
+      </div>
+
       <div className="text-center">
         <Link href="/" className="text-xs text-gray-500 hover:text-emerald-700">
           ← Return to Store
@@ -384,3 +421,19 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default function LoginPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="max-w-md mx-auto px-4 py-20 text-center text-xs text-gray-400">
+          <div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+          <span>Loading secure sign-in...</span>
+        </div>
+      }
+    >
+      <LoginForm />
+    </React.Suspense>
+  );
+}
+

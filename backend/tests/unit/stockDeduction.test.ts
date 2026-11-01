@@ -79,3 +79,4 @@ describe('Stock Deduction and Inventory Rules Tests', () => {
     expect(result.ledgerEntry.balanceAfter).toBe(7);
   });
 });
+

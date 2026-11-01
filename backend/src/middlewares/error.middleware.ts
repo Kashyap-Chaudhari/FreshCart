@@ -34,3 +34,4 @@ export function errorHandler(
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 }
+

@@ -1,21 +1,28 @@
+import http from 'http';
 import { createApp } from './app';
 import { env } from './config/env';
 import { logger } from './utils/logger';
 import prisma from './config/prisma';
+import { initSocketIO } from './socket';
 
 const app = createApp();
+const server = http.createServer(app);
 
-const server = app.listen(env.PORT, () => {
-  logger.info(`FreshCart REST API Server running on port ${env.PORT} [${env.NODE_ENV}]`);
+// Initialize real-time Socket.IO server
+const io = initSocketIO(server);
+
+server.listen(env.PORT, '0.0.0.0', () => {
+  logger.info(`FreshCart REST API & Socket.IO Server running on port ${env.PORT} [${env.NODE_ENV}]`);
   logger.info(`Swagger API Documentation available at http://localhost:${env.PORT}/api-docs`);
+  logger.info(`Real-Time WebSocket Engine active with rooms: 'admins', 'user:{id}', 'order:{id}'`);
 });
 
 // Graceful shutdown handling
 process.on('SIGTERM', async () => {
-  logger.info('SIGTERM signal received. Closing HTTP server and DB connections...');
+  logger.info('SIGTERM signal received. Closing HTTP/Socket server and DB connections...');
   server.close(async () => {
     await prisma.$disconnect();
-    logger.info('HTTP server and Prisma disconnected cleanly.');
+    logger.info('HTTP server, Socket.IO and Prisma disconnected cleanly.');
     process.exit(0);
   });
 });
@@ -28,3 +35,5 @@ process.on('SIGINT', async () => {
     process.exit(0);
   });
 });
+
+export { server, io };

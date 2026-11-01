@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const checkoutSchema = z.object({
   customerName: z.string().min(2, 'Customer name is required'),
-  customerPhone: z.string().regex(/^[6-9]\d{9}$/, 'Valid 10-digit phone number is required'),
+  customerPhone: z
+    .string()
+    .transform((val) => val.replace(/\D/g, '').slice(-10))
+    .pipe(z.string().regex(/^[6-9]\d{9}$/, 'Valid 10-digit Indian mobile number is required')),
   customerEmail: z.string().email('Invalid email').optional().or(z.literal('')),
   shippingAddress: z.object({
     street: z.string().min(3, 'Street address is required'),
@@ -15,11 +18,11 @@ export const checkoutSchema = z.object({
   deliverySlot: z.string().optional(),
   couponCode: z.string().optional(),
   notes: z.string().max(300).optional(),
-  paymentMethod: z.enum(['COD', 'UPI', 'CARD']).default('COD'),
+  paymentMethod: z.enum(['COD', 'UPI', 'CARD', 'ONLINE']).default('COD'),
   items: z
     .array(
       z.object({
-        productId: z.string().uuid('Invalid product ID'),
+        productId: z.string().min(1, 'Product ID is required'),
         quantity: z.number().int().positive('Quantity must be at least 1'),
       })
     )
@@ -37,7 +40,8 @@ export const updateOrderStatusSchema = z.object({
 });
 
 export const substituteItemSchema = z.object({
-  substituteProductId: z.string().uuid('Invalid replacement product ID'),
+  substituteProductId: z.string().min(1, 'Replacement Product ID is required'),
   substituteQuantity: z.number().int().positive(),
   note: z.string().min(2, 'Reason/note for substitution is required'),
 });
+

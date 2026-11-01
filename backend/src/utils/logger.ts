@@ -64,3 +64,4 @@ export const logger = {
     console.error(`[${timestamp}] [ERROR] ${message}`, JSON.stringify(sanitize(errorDetails)));
   },
 };
+

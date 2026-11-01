@@ -17,9 +17,11 @@ router.get('/:identifier', productController.getBySlugOrId);
 
 // Admin / Staff routes
 router.get('/admin/all', authenticate, requireRole(['OWNER', 'STAFF']), productController.adminList);
+router.post('/import-csv', authenticate, requireRole(['OWNER', 'STAFF']), productController.importCsv);
 router.post('/', authenticate, requireRole(['OWNER', 'STAFF']), validate({ body: createProductSchema }), productController.create);
 router.patch('/:id', authenticate, requireRole(['OWNER', 'STAFF']), validate({ body: updateProductSchema }), productController.update);
 router.post('/:id/adjust-stock', authenticate, requireRole(['OWNER', 'STAFF']), validate({ body: stockAdjustmentSchema }), productController.adjustStock);
 router.get('/admin/stock-ledger', authenticate, requireRole(['OWNER', 'STAFF']), productController.getStockLedger);
 
 export default router;
+

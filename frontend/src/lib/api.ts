@@ -77,9 +77,15 @@ export const api = {
   checkout: (orderData: any) => request('/orders/checkout', { method: 'POST', body: JSON.stringify(orderData) }),
   getMyOrders: (page: number = 1) => request(`/orders/my-orders?page=${page}`),
   trackOrder: (idOrNumber: string) => request(`/orders/track/${idOrNumber}`),
+  getOrderTracking: (idOrNumber: string) => request(`/orders/${idOrNumber}/tracking`),
+  requestOrderCancellation: (orderId: string, reason: string) =>
+    request(`/orders/${orderId}/cancel-request`, { method: 'POST', body: JSON.stringify({ reason }) }),
   cancelOrder: (id: string, reason: string) =>
     request(`/orders/${id}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) }),
   getInvoiceUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/invoice`,
+  getInvoicePrintUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/print`,
+  getCreditNoteUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/credit-note`,
+  getInvoiceData: (idOrNumber: string) => request(`/invoices/${idOrNumber}`),
 
   // Admin Portal Endpoints
   adminGetDashboard: () => request('/admin/dashboard-summary'),
@@ -101,6 +107,8 @@ export const api = {
   adminUpdateProduct: (id: string, body: any) => request(`/products/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
   adminAdjustStock: (id: string, body: any) =>
     request(`/products/${id}/adjust-stock`, { method: 'POST', body: JSON.stringify(body) }),
+  adminImportProductsCsv: (csvData: string) =>
+    request('/products/import-csv', { method: 'POST', body: JSON.stringify({ csvData }) }),
   adminGetStockLedger: (params: string = '') => request(`/products/admin/stock-ledger${params ? `?${params}` : ''}`),
 
   adminGetCategories: () => request('/categories/admin/all'),

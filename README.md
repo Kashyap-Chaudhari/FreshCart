@@ -73,41 +73,46 @@ gloserystore/
 │       │   └── stockDeduction.test.ts   # Inventory checks & ledger restoration
 │       └── concurrency/
 │           └── lastUnitOrder.test.ts    # Concurrency test for last-unit checkout
-└── frontend/
-    ├── Dockerfile
+├── frontend/                    # Customer Storefront (Port 3000)
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   └── src/
+│       ├── app/
+│       │   ├── layout.tsx               # Root layout with Cart & Auth providers
+│       │   ├── page.tsx                 # Homepage with banners, category pills, pincode checker
+│       │   ├── cart/page.tsx            # Full cart page with free-delivery indicator
+│       │   ├── checkout/page.tsx        # Pincode check, delivery slots, coupon, COD
+│       │   ├── orders/                  # Customer order tracking & history
+│       │   └── products/                # Product catalogue & details
+│       ├── components/                  # Customer Navbar, Footer, ProductCard, OrderTracker
+│       └── context/                     # AuthContext, CartContext, SocketContext, ThemeContext
+├── admin/                       # Enterprise Admin Dashboard (Port 3001)
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   └── src/
+│       ├── app/
+│       │   ├── (dashboard)/             # Protected admin panel pages
+│       │   │   ├── orders/              # Order fulfillment & delivery partner assignment
+│       │   │   ├── delivery-management/ # Fleet management, add partners, active toggle, history
+│       │   │   ├── inventory/           # Product catalogue & stock adjust
+│       │   │   ├── categories/          # Category management
+│       │   │   ├── coupons/             # Promotional discounts
+│       │   │   ├── delivery-areas/      # Gujarat service areas coverage
+│       │   │   ├── reports/             # Sales & COD collection reports
+│       │   │   └── settings/            # Store settings & GST configuration
+│       │   └── login/                   # Owner/Staff secure sign-in
+│       └── context/                     # Admin AuthContext, SocketContext, ThemeContext
+└── delivery/                    # Dedicated Delivery Person Mobile App (Port 3002)
     ├── package.json
     ├── tsconfig.json
     ├── tailwind.config.js
     └── src/
         ├── app/
-        │   ├── layout.tsx               # Root layout with Cart & Auth providers
-        │   ├── page.tsx                 # Homepage with banners, category pills, pincode checker
-        │   ├── about/page.tsx           # About store, farm sourcing, standards
-        │   ├── contact/page.tsx         # Contact info, map, delivery areas list
-        │   ├── login/page.tsx           # Tabbed Phone OTP, Email/Password, Customer Signup
-        │   ├── cart/page.tsx            # Full cart page with free-delivery indicator
-        │   ├── checkout/page.tsx        # Pincode check, delivery slots, coupon, COD
-        │   ├── orders/
-        │   │   ├── page.tsx             # Customer order history & guest tracker
-        │   │   └── [id]/page.tsx        # Live progress tracker & 1-click invoice download
-        │   ├── products/
-        │   │   ├── page.tsx             # Catalogue with search, category & stock filters
-        │   │   └── [slug]/page.tsx      # Product details with live stock availability
-        │   └── admin/
-        │       ├── layout.tsx           # Admin sidebar, role badge, sign-out
-        │       ├── page.tsx             # Dashboard KPIs (Revenue, pending orders, low stock)
-        │       ├── orders/              # Orders list, quick status, item substitution
-        │       ├── inventory/           # Product CRUD, stock adjust modal, stock movement ledger
-        │       ├── categories/          # Category CRUD
-        │       ├── coupons/             # Discount codes and limits
-        │       ├── delivery-areas/      # Pincode coverage & delivery fee rules
-        │       ├── reports/             # Sales over time, product breakdown, COD audit
-        │       ├── customers/           # Owner only: Customer accounts & block toggle
-        │       ├── settings/            # Owner only: Store details, GSTIN, invoice prefix
-        │       └── audit-logs/          # Owner only: Admin action audit log
-        ├── components/                  # Customer Navbar, Footer, ProductCard, OrderTracker
-        ├── context/                     # AuthContext, CartContext (with stock caps)
-        └── lib/                         # API fetch wrapper
+        │   ├── page.tsx                 # Delivery dashboard (assigned orders, status progression, self-confirmation)
+        │   └── login/                   # Driver sign-in (Amit Dave, Ketan Solanki, Bhavin Shah)
+        └── context/                     # DeliveryAuthContext, SocketContext, ThemeContext
 ```
 
 ---
@@ -273,8 +278,11 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/freshcart?schema=pub
 # Install backend dependencies
 cd backend && npm install
 
-# Install frontend dependencies
+# Install customer storefront dependencies
 cd ../frontend && npm install
+
+# Install dedicated admin portal dependencies
+cd ../admin && npm install
 cd ..
 ```
 
@@ -293,25 +301,27 @@ The seed script creates:
 - **Owner Account:** `owner@freshcart.com` / `OwnerPass@2026`
 - **Staff Account:** `staff@freshcart.com` / `StaffPass@2026`
 - **Customer Account:** `customer@example.com` / `CustomerPass@2026`
-- **7 Categories:** Fruits & Vegetables, Dairy, Staples, Oils & Masalas, Snacks, Juices, Cleaning.
-- **30 Realistic Products:** With SKU, prices, MRP, GST tax %, stock counts, and images.
-- **5 Serviceable Delivery Areas:** Bangalore pincodes with min-order & delivery charge rules.
+- **Catalog Categories & Products:** 2,023 branded & farm-fresh items across Gujarat.
+- **Serviceable Delivery Areas:** State-wide coverage across Gujarat PIN codes (`36xxxx`, `37xxxx`, `38xxxx`, `39xxxx`).
 - **Store Settings & Promo Coupons:** `FRESH15` (15% off), `FLAT50` (₹50 off).
 
 ### Starting Local Development Servers
-In two separate terminal windows:
+In three separate terminal windows (or concurrently via root scripts):
 ```bash
-# Terminal 1: Backend API (runs on http://localhost:5000)
-cd backend && npm run dev
+# Terminal 1: Backend REST API (runs on http://localhost:5000)
+npm run dev:backend
 
-# Terminal 2: Customer & Admin Frontend (runs on http://localhost:3000)
-cd frontend && npm run dev
+# Terminal 2: Customer Supermarket Storefront (runs on http://localhost:3000)
+npm run dev:customer
+
+# Terminal 3: Dedicated Admin Operations Portal (runs on http://localhost:3001)
+npm run dev:admin
 ```
 
 Visit:
-- Customer Store: `http://localhost:3000`
-- Admin Operations Portal: `http://localhost:3000/admin`
-- Swagger API Documentation: `http://localhost:5000/api-docs`
+- **Customer Supermarket Store:** [http://localhost:3000](http://localhost:3000)
+- **Dedicated Admin Portal Website:** [http://localhost:3001](http://localhost:3001)
+- **OpenAPI / Swagger Documentation:** [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
 
 ---
 
@@ -392,3 +402,4 @@ Before deploying this application to production, configure the following:
 - [ ] **Store Statutory Details:** Go to `/admin/settings` (logged in as Owner) and configure your legal entity Name, GSTIN number, and FSSAI registration number.
 - [ ] **Secret Keys & Environment Variables:** Change `JWT_SECRET` in `backend/.env` to a cryptographically secure random string (minimum 64 characters) and configure production `DATABASE_URL`.
 - [ ] **Domain & SSL:** Configure Nginx and generate Let's Encrypt certificates using Certbot as detailed in `DEPLOYMENT.md`.
+

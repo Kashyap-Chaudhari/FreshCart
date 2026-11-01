@@ -8,6 +8,7 @@ import deliveryRoutes from './delivery.routes';
 import settingRoutes from './setting.routes';
 import adminRoutes from './admin.routes';
 import reportRoutes from './report.routes';
+import invoiceRoutes from './invoice.routes';
 
 const router = Router();
 
@@ -20,6 +21,7 @@ router.use('/delivery', deliveryRoutes);
 router.use('/settings', settingRoutes);
 router.use('/admin', adminRoutes);
 router.use('/reports', reportRoutes);
+router.use('/invoices', invoiceRoutes);
 
 router.get('/health', (_req, res) => {
   res.json({
@@ -30,3 +32,4 @@ router.get('/health', (_req, res) => {
 });
 
 export default router;
+

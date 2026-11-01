@@ -21,3 +21,4 @@ describe('Sequential Invoice and Order Number Generator Tests', () => {
     expect(orderNumber).toMatch(/^ORD-\d{8}-\d{4}$/);
   });
 });
+

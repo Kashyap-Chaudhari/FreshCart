@@ -210,3 +210,4 @@ const swaggerDocument = {
 export function setupSwagger(app: Express): void {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
+

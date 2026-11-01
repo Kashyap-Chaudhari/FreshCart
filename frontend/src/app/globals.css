@@ -3,8 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 17, 24, 39;
-  --background-rgb: 249, 250, 251;
+  --brand-primary: #168447;
+  --brand-deep: #106B39;
+  --brand-soft: #E8F5E9;
+  --brand-bg: #FFFFFF;
+  --brand-secondary-bg: #F7FAF7;
+  --brand-text: #17251C;
+  --brand-muted: #738078;
+  --brand-offer: #F5A623;
+
+  --foreground-rgb: 23, 37, 28;
+  --background-rgb: 247, 250, 247;
+}
+
+.dark {
+  --foreground-rgb: 243, 244, 246;
+  --background-rgb: 15, 23, 42;
 }
 
 body {
@@ -12,20 +26,123 @@ body {
   background: rgb(var(--background-rgb));
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
 }
 
-/* Custom scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #c8e6c9;
   border-radius: 9999px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* Hide scrollbar for horizontal product/category carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Add-to-cart pulse effect */
+@keyframes cartBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.animate-cart-bounce {
+  animation: cartBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Blinkit-style shimmer skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f4f1 25%, #e8eee9 50%, #f0f4f1 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Safe bottom margin for mobile floating nav */
+.safe-bottom-padding {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* ==========================================================================
+   MOBILE & TABLET FULL-WIDTH RESPONSIVE FIT
+   Ensures the entire mobile shopping interface fits naturally within viewport
+   width without unwanted side margins, clipping or overflow.
+   Desktop layout (1025px+) is strictly protected and untouched.
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  /* Full-width container reset on phones */
+  .mobile-page-container {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    box-sizing: border-box;
+  }
+
+  /* Product card & grid flex constraints */
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  main {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
 }

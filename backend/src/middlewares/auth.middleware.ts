@@ -5,7 +5,7 @@ import prisma from '../config/prisma';
 
 export interface AuthUser {
   id: string;
-  role: 'OWNER' | 'STAFF' | 'CUSTOMER';
+  role: 'OWNER' | 'STAFF' | 'CUSTOMER' | 'DELIVERY_PERSON' | string;
   email?: string | null;
   phone?: string | null;
   name: string;
@@ -86,3 +86,4 @@ export async function optionalAuthenticate(req: Request, _res: Response, next: N
   }
   next();
 }
+

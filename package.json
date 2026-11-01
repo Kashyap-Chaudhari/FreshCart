@@ -4,9 +4,18 @@
   "private": true,
   "scripts": {
     "dev:backend": "npm --prefix backend run dev",
-    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:customer": "npm --prefix frontend run dev",
+    "dev:admin": "npm --prefix admin run dev",
+    "dev:delivery": "npm --prefix delivery run dev",
     "build:backend": "npm --prefix backend run build",
-    "build:frontend": "npm --prefix frontend run build",
+    "build:customer": "npm --prefix frontend run build",
+    "build:admin": "npm --prefix admin run build",
+    "build:delivery": "npm --prefix delivery run build",
+    "build:all": "npm run build:backend && npm run build:customer && npm run build:admin && npm run build:delivery",
+    "start:backend": "npm --prefix backend run start",
+    "start:customer": "npm --prefix frontend run start",
+    "start:admin": "npm --prefix admin run start",
+    "start:delivery": "npm --prefix delivery run start",
     "test:backend": "npm --prefix backend test",
     "seed": "npm --prefix backend run seed"
   }

@@ -13,9 +13,16 @@ import {
   CheckCircle2,
   AlertCircle,
   ShoppingBag,
+  Zap,
+  Tag,
+  Clock,
+  Sparkles,
+  Share2,
+  Check,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
+import ProductCard from '@/components/customer/ProductCard';
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -23,17 +30,44 @@ export default function ProductDetailPage() {
   const { items, addToCart, updateQuantity, setIsCartOpen } = useCart();
 
   const [product, setProduct] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
     setIsLoading(true);
+    setError('');
+
     api
       .getProduct(String(slug))
       .then((res) => {
         if (res.success && res.data) {
-          setProduct(res.data);
+          const p = res.data;
+          setProduct(p);
+          if (p.images && p.images.length > 0) {
+            setSelectedImage(p.images[0]);
+          }
+
+          // Persist to Recently Viewed in localStorage
+          try {
+            const saved = localStorage.getItem('freshcart_recently_viewed');
+            const list = saved ? JSON.parse(saved) : [];
+            const filtered = [p, ...list.filter((item: any) => item.id !== p.id)].slice(0, 10);
+            localStorage.setItem('freshcart_recently_viewed', JSON.stringify(filtered));
+          } catch {}
+
+          // Fetch related products from category
+          if (p.categoryId || p.category?.slug) {
+            const catParam = p.category?.slug ? `category=${p.category.slug}&limit=5` : 'limit=5';
+            api.getProducts(catParam).then((r) => {
+              if (r.success && r.data) {
+                setRelatedProducts(r.data.filter((item: any) => item.id !== p.id));
+              }
+            });
+          }
         } else {
           setError(res.message || 'Product not found');
         }
@@ -44,22 +78,26 @@ export default function ProductDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-16 text-center text-xs text-gray-400">
-        Loading product information...
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center text-xs text-slate-400">
+        <div className="w-8 h-8 border-3 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+        <span>Loading product details...</span>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-4">
-        <h2 className="text-xl font-bold text-gray-900">Product Not Found</h2>
-        <p className="text-xs text-gray-500">{error || 'This item may have been discontinued.'}</p>
+      <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4">
+        <div className="w-16 h-16 rounded-3xl bg-rose-50 dark:bg-rose-950 text-rose-600 flex items-center justify-center mx-auto">
+          <AlertCircle className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-black text-brand-text dark:text-white">Product Not Found</h2>
+        <p className="text-xs text-slate-500">{error || 'This item may have been moved or discontinued.'}</p>
         <Link
           href="/products"
-          className="inline-block bg-emerald-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-emerald-700"
+          className="inline-block bg-brand-primary text-white text-xs font-bold px-5 py-2.5 rounded-2xl hover:bg-brand-deep transition"
         >
-          Back to Catalogue
+          Explore All Groceries
         </Link>
       </div>
     );
@@ -74,174 +112,306 @@ export default function ProductDetailPage() {
       ? Math.round(((Number(product.mrp) - Number(product.price)) / Number(product.mrp)) * 100)
       : 0;
 
-  const handleAdd = () => {
-    if (isOutOfStock) return;
-    addToCart(product, 1);
-    setIsCartOpen(true);
+  const savings = product.mrp && Number(product.mrp) > Number(product.price)
+    ? Number(product.mrp) - Number(product.price)
+    : 0;
+
+  const handleShare = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-1.5 text-xs text-gray-500">
-        <Link href="/" className="hover:text-emerald-600">Home</Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-        <Link href="/products" className="hover:text-emerald-600">Catalogue</Link>
+    <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8 pb-24 lg:pb-8 w-full min-w-0">
+      {/* Breadcrumbs */}
+      <nav className="flex items-center gap-1.5 text-xs text-slate-500">
+        <Link href="/" className="hover:text-brand-primary">Home</Link>
+        <ChevronRight className="w-3.5 h-3.5" />
+        <Link href="/products" className="hover:text-brand-primary">Products</Link>
         {product.category && (
           <>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-            <Link href={`/products?category=${product.category.slug}`} className="hover:text-emerald-600">
+            <ChevronRight className="w-3.5 h-3.5" />
+            <Link href={`/products?category=${product.category.slug}`} className="hover:text-brand-primary">
               {product.category.name}
             </Link>
           </>
         )}
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-        <span className="text-gray-900 font-medium truncate max-w-xs">{product.name}</span>
+        <ChevronRight className="w-3.5 h-3.5" />
+        <span className="text-slate-800 dark:text-slate-200 font-bold truncate max-w-xs">{product.name}</span>
       </nav>
 
-      {/* Main Product Showcase */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 bg-white rounded-3xl border border-gray-100 p-6 sm:p-10 shadow-sm">
-        {/* Left: Product Image */}
-        <div className="relative rounded-2xl overflow-hidden bg-gray-50 aspect-square border border-gray-100">
-          {discountPercent > 0 && (
-            <span className="absolute top-4 left-4 z-10 bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md">
-              {discountPercent}% OFF
-            </span>
-          )}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.images?.[0] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80'}
-            alt={product.name}
-            className={`w-full h-full object-cover ${isOutOfStock ? 'opacity-50 grayscale' : ''}`}
-          />
-        </div>
-
-        {/* Right: Info & Actions */}
-        <div className="flex flex-col justify-between space-y-6">
-          <div className="space-y-3">
-            {product.category && (
-              <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                {product.category.name}
+      {/* Main Product Hero Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-card">
+        {/* Left Column: Image Gallery */}
+        <div className="space-y-4">
+          {/* Main Large Image Container */}
+          <div className="relative aspect-square w-full rounded-3xl bg-brand-secondary dark:bg-slate-800/50 p-6 flex items-center justify-center overflow-hidden border border-slate-100 dark:border-slate-800">
+            {discountPercent > 0 && (
+              <span className="absolute top-4 left-4 z-10 bg-brand-primary text-white text-xs font-black px-2.5 py-1 rounded-xl shadow-xs">
+                {discountPercent}% OFF
               </span>
             )}
-            <h1 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">
-              {product.name}
-            </h1>
-            <div className="flex items-center gap-3 text-xs text-gray-500">
-              <span>Unit: <strong className="text-gray-800">{product.unit}</strong></span>
-              <span>•</span>
-              <span>SKU: <strong className="text-gray-800">{product.sku}</strong></span>
-              <span>•</span>
-              <span>GST: <strong className="text-gray-800">{Number(product.taxPercent)}%</strong></span>
+
+            <button
+              type="button"
+              onClick={handleShare}
+              className="absolute top-4 right-4 z-10 p-2 rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xs text-slate-600 dark:text-slate-300 hover:text-brand-primary transition shadow-xs"
+              title="Share product link"
+            >
+              {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
+            </button>
+
+            {selectedImage ? (
+              <img
+                src={selectedImage}
+                alt={product.name}
+                className="w-full h-full object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+              />
+            ) : (
+              <ShoppingBag className="w-16 h-16 text-slate-300" />
+            )}
+
+            {isOutOfStock && (
+              <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center">
+                <span className="text-white text-xs font-black uppercase tracking-wider px-4 py-2 rounded-2xl bg-rose-600 shadow-md">
+                  Currently Out of Stock
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Thumbnails Row */}
+          {product.images && product.images.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto pb-1">
+              {product.images.map((img: string, idx: number) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setSelectedImage(img)}
+                  className={`w-16 h-16 rounded-2xl bg-brand-secondary dark:bg-slate-800 p-1 flex-shrink-0 border-2 transition ${
+                    selectedImage === img
+                      ? 'border-brand-primary ring-2 ring-brand-primary/20'
+                      : 'border-transparent hover:border-slate-300'
+                  }`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-contain rounded-xl" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Right Column: Product Details & Purchase Controls */}
+        <div className="flex flex-col justify-between space-y-6">
+          <div className="space-y-4">
+            {/* Quick Delivery Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-soft dark:bg-emerald-950/60 text-brand-primary dark:text-emerald-300 text-xs font-bold border border-brand-soft dark:border-emerald-900">
+              <Zap className="w-3.5 h-3.5 fill-brand-primary" />
+              <span>Express Delivery in 10-15 Mins</span>
             </div>
 
-            {/* Price section */}
-            <div className="pt-4 border-t border-gray-100">
-              <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-black text-gray-900">
-                  ₹{Number(product.price).toFixed(0)}
-                </span>
-                {Number(product.mrp) > Number(product.price) && (
-                  <span className="text-base text-gray-400 line-through">
-                    ₹{Number(product.mrp).toFixed(0)}
-                  </span>
-                )}
-              </div>
-              <span className="text-[11px] text-gray-500 block mt-0.5">
-                (Inclusive of all applicable taxes)
+            {/* Product Title & Brand */}
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black text-brand-text dark:text-white tracking-tight leading-snug">
+                {product.name}
+              </h1>
+              <span className="text-xs font-bold text-slate-500 block mt-1">
+                Net Quantity: <strong className="text-slate-800 dark:text-slate-200">{product.unit}</strong>
               </span>
             </div>
 
-            {/* Stock status indicator */}
-            <div className="pt-2">
-              {isOutOfStock ? (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200">
-                  <AlertCircle className="w-4 h-4" />
-                  Currently Out of Stock
+            {/* Price & Savings Banner */}
+            <div className="p-4 rounded-2xl bg-brand-secondary dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between">
+              <div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl sm:text-3xl font-black text-brand-text dark:text-white font-mono">
+                    ₹{Number(product.price).toFixed(0)}
+                  </span>
+                  {product.mrp && Number(product.mrp) > Number(product.price) && (
+                    <span className="text-sm text-slate-400 line-through font-mono">
+                      ₹{Number(product.mrp).toFixed(0)}
+                    </span>
+                  )}
                 </div>
-              ) : (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  In Stock ({product.stockQty} available for fast delivery)
+                <span className="text-[10px] text-slate-400 block mt-0.5">
+                  Inclusive of all applicable taxes ({product.taxPercent || 0}% GST)
+                </span>
+              </div>
+
+              {savings > 0 && (
+                <div className="text-right">
+                  <span className="inline-block px-3 py-1 rounded-xl bg-brand-primary text-white text-xs font-black shadow-xs">
+                    Save ₹{savings.toFixed(0)}
+                  </span>
                 </div>
               )}
             </div>
 
-            {/* Description */}
-            {product.description && (
-              <div className="pt-4 text-xs text-gray-600 leading-relaxed border-t border-gray-100">
-                <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-1">
-                  Product Overview
-                </h4>
-                <p>{product.description}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Add to cart / Quantity buttons */}
-          <div className="pt-6 border-t border-gray-100 space-y-4">
-            {isOutOfStock ? (
-              <button
-                disabled
-                className="w-full bg-gray-100 text-gray-400 font-bold py-3.5 rounded-2xl text-xs cursor-not-allowed"
-              >
-                Out of Stock - Cannot be Added to Cart
-              </button>
-            ) : inCartQty > 0 ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center bg-emerald-50 border-2 border-emerald-500 rounded-2xl overflow-hidden shadow-sm">
-                  <button
-                    onClick={() => updateQuantity(product.id, inCartQty - 1)}
-                    className="p-3 text-emerald-900 hover:bg-emerald-100 transition"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="px-4 text-sm font-extrabold text-emerald-900 min-w-[36px] text-center">
-                    {inCartQty}
+            {/* Stock State */}
+            <div>
+              {!isOutOfStock ? (
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>
+                    In Stock ({product.stockQty} {product.unit} available)
                   </span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-xs font-bold text-rose-600">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Out of stock at nearest local fulfillment hub</span>
+                </div>
+              )}
+            </div>
+
+            {/* Main ADD / QUANTITY Action */}
+            <div className="pt-2">
+              {isOutOfStock ? (
+                <button
+                  disabled
+                  className="w-full py-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 font-bold text-sm cursor-not-allowed"
+                >
+                  Currently Unavailable
+                </button>
+              ) : inCartQty === 0 ? (
+                <button
+                  type="button"
+                  onClick={() => addToCart(product, 1)}
+                  className="w-full py-3.5 px-6 rounded-2xl bg-brand-primary hover:bg-brand-deep text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/25 transition active:scale-98"
+                >
+                  <ShoppingBag className="w-5 h-5 stroke-[2.5]" />
+                  <span>ADD TO CART</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <div className="inline-flex items-center rounded-2xl bg-brand-primary text-white text-sm font-black shadow-md overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(product.id, inCartQty - 1)}
+                      className="px-4 py-3 hover:bg-black/15 transition"
+                    >
+                      <Minus className="w-4 h-4 stroke-[3]" />
+                    </button>
+                    <span className="px-4 font-mono text-base">{inCartQty}</span>
+                    <button
+                      type="button"
+                      onClick={() => updateQuantity(product.id, inCartQty + 1)}
+                      disabled={inCartQty >= product.stockQty}
+                      className="px-4 py-3 hover:bg-black/15 transition disabled:opacity-50"
+                    >
+                      <Plus className="w-4 h-4 stroke-[3]" />
+                    </button>
+                  </div>
+
                   <button
-                    onClick={() => updateQuantity(product.id, inCartQty + 1)}
-                    disabled={inCartQty >= product.stockQty}
-                    className="p-3 text-emerald-900 hover:bg-emerald-100 transition disabled:opacity-30 disabled:cursor-not-allowed"
+                    type="button"
+                    onClick={() => setIsCartOpen(true)}
+                    className="flex-1 py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition text-center"
                   >
-                    <Plus className="w-4 h-4" />
+                    View in Basket ({inCartQty})
                   </button>
                 </div>
-                <button
-                  onClick={() => setIsCartOpen(true)}
-                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs shadow-md transition flex items-center justify-center gap-2"
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>View in Cart ({inCartQty})</span>
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleAdd}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-6 rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add to Grocery Basket</span>
-              </button>
-            )}
+              )}
+            </div>
 
-            {/* Highlights */}
-            <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] text-gray-600 text-center">
-              <div className="bg-gray-50 p-2.5 rounded-xl border border-gray-100 flex flex-col items-center gap-1">
-                <Truck className="w-4 h-4 text-emerald-600" />
-                <span>2-Hr Delivery</span>
+            {/* Quick Guarantees Strip */}
+            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 text-center">
+              <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40">
+                <Clock className="w-4 h-4 text-brand-primary mx-auto mb-1" />
+                <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block">10-15 Mins</span>
+                <span className="text-[9px] text-slate-400">Quick Delivery</span>
               </div>
-              <div className="bg-gray-50 p-2.5 rounded-xl border border-gray-100 flex flex-col items-center gap-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Pay on Delivery</span>
+              <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40">
+                <ShieldCheck className="w-4 h-4 text-brand-primary mx-auto mb-1" />
+                <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block">Quality Assured</span>
+                <span className="text-[9px] text-slate-400">Farm Verified</span>
               </div>
-              <div className="bg-gray-50 p-2.5 rounded-xl border border-gray-100 flex flex-col items-center gap-1">
-                <RotateCcw className="w-4 h-4 text-emerald-600" />
-                <span>Doorstep Return</span>
+              <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/40">
+                <RotateCcw className="w-4 h-4 text-brand-primary mx-auto mb-1" />
+                <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block">Doorstep Check</span>
+                <span className="text-[9px] text-slate-400">Instant Return</span>
               </div>
             </div>
           </div>
+
+          {/* Description & Details */}
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+            <h3 className="font-black text-xs uppercase tracking-wider text-slate-400">Product Highlights</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+              {product.description || 'Farm-fresh quality handpicked daily for maximum nutrition and taste.'}
+            </p>
+          </div>
         </div>
+      </div>
+
+      {/* Related Products Rail */}
+      {relatedProducts.length > 0 && (
+        <section className="space-y-4 pt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-black text-brand-text dark:text-white">
+              Frequently Bought Together & Related
+            </h2>
+            <Link
+              href="/products"
+              className="text-xs font-bold text-brand-primary dark:text-emerald-400 hover:underline"
+            >
+              See More
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+            {relatedProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Mobile Sticky Add to Cart Bar */}
+      <div className="md:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 p-3 shadow-elevated flex items-center justify-between gap-3">
+        <div>
+          <span className="text-[10px] text-slate-400 block font-bold">{product.unit}</span>
+          <span className="text-base font-black font-mono text-brand-text dark:text-white">
+            ₹{Number(product.price).toFixed(0)}
+          </span>
+        </div>
+
+        {isOutOfStock ? (
+          <button disabled className="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-400 font-bold text-xs">
+            Unavailable
+          </button>
+        ) : inCartQty === 0 ? (
+          <button
+            type="button"
+            onClick={() => addToCart(product, 1)}
+            className="px-6 py-2.5 rounded-xl bg-brand-primary text-white font-black text-xs shadow-md shadow-brand-primary/20 flex items-center gap-1.5"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>ADD TO CART</span>
+          </button>
+        ) : (
+          <div className="inline-flex items-center rounded-xl bg-brand-primary text-white font-black text-xs shadow-xs">
+            <button
+              type="button"
+              onClick={() => updateQuantity(product.id, inCartQty - 1)}
+              className="px-3 py-2"
+            >
+              <Minus className="w-3.5 h-3.5 stroke-[3]" />
+            </button>
+            <span className="px-2 font-mono">{inCartQty}</span>
+            <button
+              type="button"
+              onClick={() => updateQuantity(product.id, inCartQty + 1)}
+              disabled={inCartQty >= product.stockQty}
+              className="px-3 py-2 disabled:opacity-50"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

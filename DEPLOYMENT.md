@@ -1,202 +1,282 @@
-# Production Deployment & Server Operations Guide
+# FreshCart – Multi-Website Production Deployment Guide
 
-This guide describes how to deploy the FreshCart application to a live Linux server (Ubuntu 22.04 / 24.04 LTS VPS, AWS EC2, or DigitalOcean Droplet) using Docker Compose, Nginx reverse proxy, Let's Encrypt SSL, and automated PostgreSQL backups.
+This guide describes how to deploy the entire FreshCart grocery quick-commerce ecosystem:
+1. **Customer Storefront Website** (`frontend` – Next.js 14) – Port 3000
+2. **Admin Management Portal Website** (`admin` – Next.js 14) – Port 3001
+3. **Delivery Partner Portal Website** (`delivery` – Next.js 14) – Port 3002
+4. **Backend API & Real-time Server** (`backend` – Express + Socket.io + Prisma) – Port 5000
+5. **Database** (PostgreSQL 16) – Port 5432
 
 ---
 
-## 1. Initial Server Provisioning & Hardening
+## Architecture Overview
 
-### 1.1 Update and Upgrade OS Packages
-```bash
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y ufw curl wget git ca-certificates gnupg lsb-release htop
+```
+                          ┌─────────────────────────────┐
+                          │   Customers (Web & Mobile)  │
+                          └──────────────┬──────────────┘
+                                         │ (HTTPS)
+                                         ▼
+                      ┌────────────────────────────────────┐
+                      │    Customer Storefront (Next.js)   │
+                      │       https://yourstore.com        │
+                      └──────────────────┬─────────────────┘
+                                         │
+┌─────────────────────────────┐          │          ┌─────────────────────────────┐
+│    Admin Portal (Next.js)   │          │          │   Delivery Portal (Next.js) │
+│  https://admin.yourstore.com│          │          │https://delivery.yourstore.com
+└──────────────┬──────────────┘          │          └──────────────┬──────────────┘
+               │                         │                         │
+               └───────────────────┐     │     ┌───────────────────┘
+                                   │     │     │
+                                   ▼     ▼     ▼
+                          ┌─────────────────────────────┐
+                          │   FreshCart Backend API     │
+                          │   https://api.yourstore.com │
+                          │   (Express + Socket.io)     │
+                          └──────────────┬──────────────┘
+                                         │
+                                         ▼
+                          ┌─────────────────────────────┐
+                          │   PostgreSQL 16 Database    │
+                          └─────────────────────────────┘
 ```
 
-### 1.2 Configure Firewall (UFW)
-Only open SSH (port 22), HTTP (port 80), and HTTPS (port 443). Never expose database port 5432 or internal port 5000 to the public internet.
+---
+
+## Strategy A: Cloud Hosting (Recommended – Fast & Easy)
+
+Deploy frontends to **Vercel** and backend/database to **Render** or **Railway**.
+
+### Step 1: Deploy Backend & Database on Render / Railway
+1. **Create PostgreSQL Database:**
+   - In Render or Railway, create a new PostgreSQL database.
+   - Copy the provided `DATABASE_URL` (e.g. `postgresql://user:pass@host:5432/freshcart`).
+
+2. **Deploy Backend API Service:**
+   - Create a new Web Service connected to your GitHub repository.
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install && npx prisma migrate deploy && npm run seed && npm run build`
+   - **Start Command:** `npm run start`
+   - **Environment Variables:**
+     ```env
+     NODE_ENV=production
+     PORT=5000
+     DATABASE_URL=<Your PostgreSQL Connection URL>
+     JWT_SECRET=<Random 64-char string via openssl rand -base64 48>
+     CORS_ORIGIN=https://yourstore.com,https://admin.yourstore.com,https://delivery.yourstore.com
+     ```
+   - Note down the generated Backend URL: e.g. `https://freshcart-api.onrender.com`
+
+---
+
+### Step 2: Deploy Customer Storefront on Vercel
+1. In Vercel, click **Add New Project** and import your Git repository.
+2. In the setup screen:
+   - **Project Name:** `freshcart-store`
+   - **Root Directory:** Edit and select `frontend`
+   - **Framework Preset:** Next.js (auto-detected)
+3. Under **Environment Variables**, add:
+   ```env
+   NEXT_PUBLIC_API_URL=https://freshcart-api.onrender.com/api
+   NEXT_PUBLIC_ADMIN_URL=https://freshcart-admin.vercel.app
+   ```
+4. Click **Deploy**. Your customer storefront is live!
+
+---
+
+### Step 3: Deploy Admin Portal on Vercel
+1. In Vercel, click **Add New Project** and import the same Git repository.
+2. In the setup screen:
+   - **Project Name:** `freshcart-admin`
+   - **Root Directory:** Edit and select `admin`
+   - **Framework Preset:** Next.js (auto-detected)
+3. Under **Environment Variables**, add:
+   ```env
+   NEXT_PUBLIC_API_URL=https://freshcart-api.onrender.com/api
+   ```
+4. Click **Deploy**. Your Admin Portal is live!
+
+---
+
+### Step 4: Deploy Delivery Partner Portal on Vercel
+1. In Vercel, click **Add New Project** and import the same Git repository.
+2. In the setup screen:
+   - **Project Name:** `freshcart-delivery`
+   - **Root Directory:** Edit and select `delivery`
+   - **Framework Preset:** Next.js (auto-detected)
+3. Under **Environment Variables**, add:
+   ```env
+   NEXT_PUBLIC_API_URL=https://freshcart-api.onrender.com/api
+   ```
+4. Click **Deploy**. Your Delivery Partner Portal is live!
+
+---
+
+## Strategy B: Single Linux VPS Deployment (Docker Compose & Nginx)
+
+Run all 3 frontends, backend, database, and Nginx on a single VPS (Ubuntu 22.04 / 24.04 on AWS EC2, DigitalOcean, Hetzner, or Hostinger).
+
+### 1. Server Setup & Docker Installation
 ```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y ufw curl wget git ca-certificates gnupg lsb-release nginx certbot python3-certbot-nginx
+
+# Configure Firewall
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
-```
 
-### 1.3 Install Docker Engine & Docker Compose
-```bash
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
-# Enable Docker on boot
+# Install Docker
+curl -fsSL https://get.docker.com | sh
 sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
 ---
 
-## 2. Deploying Application via Docker Compose
-
-### 2.1 Clone Repository and Prepare Environment
+### 2. Clone Repository & Run Docker Compose
 ```bash
 cd /var/www
-sudo git clone <YOUR_GIT_REPO_URL> freshcart
-cd /var/www/freshcart
+git clone <YOUR_GIT_REPO_URL> freshcart
+cd freshcart
 
-# Create production .env
-sudo cp .env.example .env
+# Create and edit production .env
+cp .env.example .env
+nano .env
 ```
 
-### 2.2 Configure Production Variables
-Edit `.env` using `nano`:
+Ensure `.env` contains:
 ```env
-# Generate a strong password for DB
 POSTGRES_USER=freshcart_admin
-POSTGRES_PASSWORD=Use_A_Very_Strong_Password_Here_32Chars!
+POSTGRES_PASSWORD=YourSecurePassword123!
 POSTGRES_DB=freshcart_prod
 
-DATABASE_URL=postgresql://freshcart_admin:Use_A_Very_Strong_Password_Here_32Chars!@postgres:5432/freshcart_prod?schema=public
-
 NODE_ENV=production
-PORT=5000
+JWT_SECRET=YourGenerated64CharSecretKeyHere
 
-# Generate via: openssl rand -base64 64
-JWT_SECRET=c1c4f4a38d7890e785b991ab4e...REPLACE_WITH_OPENSSL_RANDOM_SECRET
+CORS_ORIGIN=https://yourstore.com,https://admin.yourstore.com,https://delivery.yourstore.com
 
-# Domain configuration
-CORS_ORIGIN=https://yourgrocerydomain.com
-NEXT_PUBLIC_API_URL=https://yourgrocerydomain.com/api
+NEXT_PUBLIC_API_URL=https://api.yourstore.com/api
+NEXT_PUBLIC_ADMIN_URL=https://admin.yourstore.com
 ```
 
-### 2.3 Run Database Migrations and Seed
+Build and launch all services:
 ```bash
-# Start PostgreSQL service first
+# Start PostgreSQL database first
 docker compose up -d postgres
 
-# Run Prisma migration to apply schema to PostgreSQL
+# Run Prisma schema migrations & seed database
 docker compose run --rm backend npx prisma migrate deploy
-
-# Seed Owner account, categories, and delivery areas
 docker compose run --rm backend npm run seed
 
-# Build and start all services in daemon mode
+# Build and start all 4 services (backend, storefront, admin, delivery)
 docker compose up -d --build
 ```
 
-Verify that all containers are healthy:
+Verify that all 5 containers are running:
 ```bash
 docker compose ps
 ```
+You should see:
+- `freshcart_postgres` (5432)
+- `freshcart_backend` (5000)
+- `freshcart_frontend` (3000)
+- `freshcart_admin` (3001)
+- `freshcart_delivery` (3002)
 
 ---
 
-## 3. Nginx Reverse Proxy & HTTP/2 Configuration
-
-Install Nginx:
-```bash
-sudo apt install -y nginx
-```
+### 3. Nginx Reverse Proxy Configuration (3 Subdomains)
 
 Create `/etc/nginx/sites-available/freshcart.conf`:
+
 ```nginx
-# Upstream servers
-upstream backend_upstream {
+# Upstream definitions
+upstream backend_api {
     server 127.0.0.1:5000;
-    keepalive 32;
 }
-
-upstream frontend_upstream {
+upstream storefront_app {
     server 127.0.0.1:3000;
-    keepalive 32;
+}
+upstream admin_app {
+    server 127.0.0.1:3001;
+}
+upstream delivery_app {
+    server 127.0.0.1:3002;
 }
 
-# Redirect HTTP to HTTPS
+# 1. Customer Storefront (yourstore.com & www.yourstore.com)
 server {
-    listen 80;
-    listen [::]:80;
-    server_name yourgrocerydomain.com www.yourgrocerydomain.com;
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
+    server_name yourstore.com www.yourstore.com;
 
     location / {
-        return 301 https://$host$request_uri;
-    }
-}
-
-# HTTPS Server
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name yourgrocerydomain.com www.yourgrocerydomain.com;
-
-    # SSL Certificates managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/yourgrocerydomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourgrocerydomain.com/privkey.pem;
-
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
-    ssl_prefer_server_ciphers on;
-    ssl_session_cache shared:SSL:10m;
-    ssl_session_timeout 1d;
-
-    # Gzip Compression
-    gzip on;
-    gzip_vary on;
-    gzip_proxied any;
-    gzip_comp_level 6;
-    gzip_types text/plain text/css text/xml application/json application/javascript application/rss+xml image/svg+xml;
-
-    # Security Headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Content-Security-Policy "default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';" always;
-
-    # Backend API & PDF streaming
-    location /api/ {
-        proxy_pass http://backend_upstream;
+        proxy_pass http://storefront_app;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# 2. Admin Management Portal (admin.yourstore.com)
+server {
+    server_name admin.yourstore.com;
+
+    location / {
+        proxy_pass http://admin_app;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# 3. Delivery Partner Portal (delivery.yourstore.com)
+server {
+    server_name delivery.yourstore.com;
+
+    location / {
+        proxy_pass http://delivery_app;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+# 4. Backend API & WebSockets (api.yourstore.com)
+server {
+    server_name api.yourstore.com;
+
+    location / {
+        proxy_pass http://backend_api;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_buffering off;
-        proxy_read_timeout 60s;
-    }
-
-    # Swagger API Documentation
-    location /api-docs {
-        proxy_pass http://backend_upstream;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    # Frontend Next.js Application
-    location / {
-        proxy_pass http://frontend_upstream;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
     }
 }
 ```
 
-Enable site and test configuration:
+Enable Nginx configuration and reload:
 ```bash
 sudo ln -s /etc/nginx/sites-available/freshcart.conf /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -205,96 +285,18 @@ sudo systemctl reload nginx
 
 ---
 
-## 4. Let's Encrypt SSL/TLS Certificate Setup
-
-Install Certbot:
+### 4. Enable Free SSL with Let's Encrypt Certbot
 ```bash
-sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d yourstore.com -d www.yourstore.com -d admin.yourstore.com -d delivery.yourstore.com -d api.yourstore.com --agree-tos --email admin@yourstore.com --no-eff-email
 ```
-
-Obtain and auto-configure certificates:
-```bash
-sudo certbot --nginx -d yourgrocerydomain.com -d www.yourgrocerydomain.com --agree-tos --email admin@yourgrocerydomain.com --no-eff-email
-```
-
-Test auto-renewal:
-```bash
-sudo certbot renew --dry-run
-```
-Certbot installs a systemd timer that automatically checks and renews certificates twice daily.
+Certbot will automatically install HTTPS certificates and configure HTTP-to-HTTPS redirects.
 
 ---
 
-## 5. Automated Daily PostgreSQL Backups
+## Pre-Flight Launch Verification Checklist
 
-Set up an automated backup script with 14-day retention and gzip compression.
-
-Create `/usr/local/bin/backup-freshcart-db.sh`:
-```bash
-#!/bin/bash
-set -e
-
-BACKUP_DIR="/var/backups/freshcart"
-DATE=$(date +'%Y%m%d_%H%M%S')
-CONTAINER_NAME="freshcart_postgres"
-DB_USER="freshcart_admin"
-DB_NAME="freshcart_prod"
-RETENTION_DAYS=14
-
-mkdir -p $BACKUP_DIR
-
-echo "[$(date)] Starting FreshCart PostgreSQL database backup..."
-docker exec -t $CONTAINER_NAME pg_dump -U $DB_USER $DB_NAME | gzip > "$BACKUP_DIR/db_backup_${DATE}.sql.gz"
-
-# Set permissions
-chmod 600 "$BACKUP_DIR/db_backup_${DATE}.sql.gz"
-
-# Delete backups older than RETENTION_DAYS
-find $BACKUP_DIR -type f -name "db_backup_*.sql.gz" -mtime +$RETENTION_DAYS -delete
-
-echo "[$(date)] Database backup completed successfully: $BACKUP_DIR/db_backup_${DATE}.sql.gz"
-```
-
-Make it executable:
-```bash
-sudo chmod +x /usr/local/bin/backup-freshcart-db.sh
-```
-
-Add to cron (runs nightly at 2:30 AM):
-```bash
-sudo crontab -e
-```
-Add line:
-```cron
-30 2 * * * /usr/local/bin/backup-freshcart-db.sh >> /var/log/freshcart_backup.log 2>&1
-```
-
-### To Restore from a Backup:
-```bash
-gunzip -c /var/backups/freshcart/db_backup_20261028_023000.sql.gz | docker exec -i freshcart_postgres psql -U freshcart_admin freshcart_prod
-```
-
----
-
-## 6. Pre-Flight Production Launch Checklist
-
-Before opening the store to customers, verify the following steps:
-
-1. [ ] **Change Default Passwords:**
-   - Log into `/admin` as Owner and change `OwnerPass@2026` immediately.
-   - Update staff password from `StaffPass@2026`.
-2. [ ] **Store Identity & Tax Setup:**
-   - Go to `/admin/settings`.
-   - Verify official Legal Store Name, Address, Phone, and Email.
-   - Enter your company's official 15-character **GSTIN** and 14-digit **FSSAI** license number.
-   - Set the starting sequential invoice prefix (e.g. `INV-2026-`).
-3. [ ] **Verify Delivery Areas & PIN Codes:**
-   - Go to `/admin/delivery-areas`.
-   - Set accurate minimum order values (e.g. ₹199), standard delivery charges (e.g. ₹40), and free delivery thresholds (e.g. ₹499) for each serviced pincode.
-4. [ ] **SMS Gateway Activation:**
-   - In `backend/src/services/notification.service.ts` and `auth.service.ts`, plug in your production SMS provider credentials (e.g. MSG91 DLT template ID or Twilio Account SID/Token).
-5. [ ] **Logging & Monitoring:**
-   - Ensure `NODE_ENV=production` is set so query debug logs are disabled.
-   - Set up server resource monitoring (e.g. UptimeKuma, Grafana, or Datadog) on port 5000 `/api/health`.
-6. [ ] **Daily Backups Verified:**
-   - Run `/usr/local/bin/backup-freshcart-db.sh` manually once and verify the generated `.sql.gz` file.
+1. [ ] **Storefront Verification:** Open `https://yourstore.com` — verify product catalog, cart drawer, checkout, and mobile bottom navigation.
+2. [ ] **Admin Portal Verification:** Open `https://admin.yourstore.com` — login with Owner credentials (`rajesh@freshcart.com` / `OwnerPass@2026`) and change the password immediately.
+3. [ ] **Delivery Portal Verification:** Open `https://delivery.yourstore.com` — test delivery partner login (`amit.driver@freshcart.com` / `Deliver@2026`).
+4. [ ] **GST Invoice Download:** Generate an invoice in Admin and confirm the PDF downloads cleanly.
+5. [ ] **Real-time Synchronization:** Update order status in Admin and observe live status change in Storefront order history and Delivery portal without page refresh.

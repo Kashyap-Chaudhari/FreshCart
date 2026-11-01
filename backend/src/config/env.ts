@@ -17,3 +17,4 @@ export const env = {
   SUPPORT_EMAIL: process.env.SUPPORT_EMAIL || 'support@freshcart.com',
   DEFAULT_INVOICE_PREFIX: process.env.DEFAULT_INVOICE_PREFIX || 'INV-',
 };
+
