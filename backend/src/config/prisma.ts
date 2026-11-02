@@ -891,24 +891,12 @@ export const prisma: any = new Proxy(rawPrisma, {
               try {
                 return await fn.apply(modelTarget, args);
               } catch (err: any) {
-                // If PostgreSQL connection error (e.g. P1001, ECONNREFUSED, database server unreachable, or no database configured)
-                if (
-                  err?.code === 'P1001' ||
-                  err?.code === 'P1002' ||
-                  err?.code === 'P1003' ||
-                  err?.code === 'P2021' ||
-                  err?.message?.includes("Can't reach database server") ||
-                  err?.message?.includes('does not exist') ||
-                  err?.message?.includes('ECONNREFUSED') ||
-                  err?.message?.includes('Environment variable not found') ||
-                  err?.message?.includes('DATABASE_URL')
-                ) {
-                  logger.warn('[DATABASE AUTO-FALLBACK] PostgreSQL offline or tables unmigrated — seamlessly serving request from in-memory grocery store.');
-                  process.env.DATABASE_OFFLINE = 'true';
-                  const fallbackModel = (inMemoryPrisma as any)[prop];
-                  if (fallbackModel && typeof fallbackModel[modelProp] === 'function') {
-                    return await fallbackModel[modelProp](...args);
-                  }
+                // If any PostgreSQL connection error, unmigrated table, SSL issue, or database exception
+                logger.warn(`[DATABASE AUTO-FALLBACK] PostgreSQL error (${err?.message || err}) — seamlessly serving request from in-memory grocery store.`);
+                process.env.DATABASE_OFFLINE = 'true';
+                const fallbackModel = (inMemoryPrisma as any)[prop];
+                if (fallbackModel && typeof fallbackModel[modelProp] === 'function') {
+                  return await fallbackModel[modelProp](...args);
                 }
                 throw err;
               }

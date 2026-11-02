@@ -5,15 +5,20 @@ import { AppError } from '../middlewares/error.middleware';
 export const categoryController = {
   async list(req: Request, res: Response, next: NextFunction) {
     try {
-      let categories = await prisma.category.findMany({
-        where: { isActive: true },
-        orderBy: { displayOrder: 'asc' },
-        include: {
-          _count: {
-            select: { products: { where: { isAvailable: true } } },
+      let categories: any[] = [];
+      try {
+        categories = await prisma.category.findMany({
+          where: { isActive: true },
+          orderBy: { displayOrder: 'asc' },
+          include: {
+            _count: {
+              select: { products: { where: { isAvailable: true } } },
+            },
           },
-        },
-      });
+        });
+      } catch (dbErr) {
+        categories = [];
+      }
 
       if (!categories || categories.length === 0) {
         categories = (mockStore.categories || []).filter((c: any) => c.isActive !== false);

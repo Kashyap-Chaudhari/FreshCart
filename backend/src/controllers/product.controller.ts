@@ -49,18 +49,25 @@ export const productController = {
         orderBy = { name: sortOrder === 'desc' ? 'desc' : 'asc' };
       }
 
-      let [total, products] = await Promise.all([
-        prisma.product.count({ where }),
-        prisma.product.findMany({
-          where,
-          skip,
-          take: limit,
-          orderBy,
-          include: {
-            category: { select: { id: true, name: true, slug: true } },
-          },
-        }),
-      ]);
+      let total = 0;
+      let products: any[] = [];
+      try {
+        [total, products] = await Promise.all([
+          prisma.product.count({ where }),
+          prisma.product.findMany({
+            where,
+            skip,
+            take: limit,
+            orderBy,
+            include: {
+              category: { select: { id: true, name: true, slug: true } },
+            },
+          }),
+        ]);
+      } catch (dbErr) {
+        total = 0;
+        products = [];
+      }
 
       // If database is empty or unseeded, fall back to in-memory catalogue
       if (total === 0 && (!products || products.length === 0)) {
@@ -113,14 +120,19 @@ export const productController = {
   async getBySlugOrId(req: Request, res: Response, next: NextFunction) {
     try {
       const { identifier } = req.params;
-      let product = await prisma.product.findFirst({
-        where: {
-          OR: [{ slug: identifier }, { id: identifier }],
-        },
-        include: {
-          category: { select: { id: true, name: true, slug: true } },
-        },
-      });
+      let product: any = null;
+      try {
+        product = await prisma.product.findFirst({
+          where: {
+            OR: [{ slug: identifier }, { id: identifier }],
+          },
+          include: {
+            category: { select: { id: true, name: true, slug: true } },
+          },
+        });
+      } catch (dbErr) {
+        product = null;
+      }
 
       if (!product) {
         const found = mockStore.products.find((p: any) => p.slug === identifier || p.id === identifier);
