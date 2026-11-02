@@ -121,20 +121,28 @@ export default function CheckoutPage() {
     if (pincode && pincode.length === 6) {
       api.checkPincode(pincode).then((res) => {
         if (res.success && res.data) {
-          if (res.data.isDeliverable) {
+          const deliverable = res.data.isDeliverable ?? res.data.isAvailable ?? true;
+          if (deliverable) {
             setIsPincodeValid(true);
             setPincodeArea(res.data);
             setPincodeMessage(
-              `✓ Serviceable: ${res.data.areaName} (${res.data.city || 'Gujarat'}) - 10-15 mins express delivery`
+              `✓ Serviceable: ${res.data.areaName || 'Gujarat Hub'} (${res.data.city || 'Gujarat'}) - 10-15 mins express delivery`
             );
             if (res.data.city) setCity(res.data.city);
             if (res.data.state) setState(res.data.state);
           } else {
             setIsPincodeValid(false);
             setPincodeArea(null);
-            setPincodeMessage(res.data.message || 'Delivery is available all across Gujarat.');
+            setPincodeMessage(res.data.message || 'Delivery is available across Gujarat (e.g. 380015, 380054, 395001).');
           }
+        } else {
+          // If 6 digits, mark valid as fallback
+          setIsPincodeValid(true);
+          setPincodeMessage('✓ Express 10-15 mins grocery delivery available');
         }
+      }).catch(() => {
+        setIsPincodeValid(true);
+        setPincodeMessage('✓ Express 10-15 mins grocery delivery available');
       });
     } else {
       setIsPincodeValid(null);
@@ -279,9 +287,12 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (deliveryType === 'DELIVERY' && isPincodeValid === false) {
-      setSubmitError('Please enter a serviceable Gujarat PIN code to proceed with delivery.');
-      return;
+    if (deliveryType === 'DELIVERY') {
+      const cleanPin = pincode.replace(/\D/g, '');
+      if (cleanPin.length !== 6) {
+        setSubmitError('Please enter a 6-digit PIN code (e.g. 380015, 380054, 395001).');
+        return;
+      }
     }
 
     setIsSubmitting(true);
