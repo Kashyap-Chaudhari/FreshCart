@@ -19,3 +19,4 @@ services:
         value: "*"
       - key: DATABASE_URL
         sync: false
+

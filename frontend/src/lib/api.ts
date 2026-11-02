@@ -2,6 +2,33 @@ const rawEnvUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 const cleanUrl = rawEnvUrl.replace(/\/+$/, '');
 const API_BASE_URL = cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
 
+// Determines the local Next.js API base (works on both client and server side)
+function getLocalApiBase(): string {
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/api`;
+  }
+  return '/api';
+}
+
+// Wraps a request with a local-catalog fallback for public product/category endpoints
+async function requestWithFallback<T = any>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<ApiResponse<T>> {
+  const result = await request<T>(endpoint, options);
+  // If remote backend failed, try the built-in Next.js API routes
+  if (!result.success) {
+    const localUrl = `${getLocalApiBase()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    try {
+      const res = await fetch(localUrl, { ...options });
+      if (res.ok) return await res.json();
+    } catch {
+      // ignore, return original failure
+    }
+  }
+  return result;
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
@@ -63,10 +90,10 @@ export const api = {
   verifyOtp: (body: any) => request('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
   getMe: () => request('/auth/me'),
 
-  // Products & Categories
-  getProducts: (params: string = '') => request(`/products${params ? `?${params}` : ''}`),
-  getProduct: (idOrSlug: string) => request(`/products/${idOrSlug}`),
-  getCategories: () => request('/categories'),
+  // Products & Categories (with built-in fallback catalog)
+  getProducts: (params: string = '') => requestWithFallback(`/products${params ? `?${params}` : ''}`),
+  getProduct: (idOrSlug: string) => requestWithFallback(`/products/${idOrSlug}`),
+  getCategories: () => requestWithFallback('/categories'),
 
   // Delivery & Settings
   checkPincode: (pincode: string) => request(`/delivery/check/${pincode}`),
