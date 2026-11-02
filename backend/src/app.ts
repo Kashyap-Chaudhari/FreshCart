@@ -66,12 +66,14 @@ export function createApp(): Express {
 
   // Rate Limiting on general API
   app.use('/api', apiRateLimiter);
+  app.use(apiRateLimiter);
 
   // Swagger Documentation
   setupSwagger(app);
 
-  // REST API Routes
+  // REST API Routes (mounted at both /api and root / to support any frontend URL configuration)
   app.use('/api', routes);
+  app.use(routes);
 
   // Fallback 404 handler
   app.use('*', (req, res) => {

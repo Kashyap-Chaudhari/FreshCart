@@ -33,7 +33,9 @@ const DeliveryAuthContext = createContext<DeliveryAuthContextType>({
 });
 
 function getApiBaseUrls(): string[] {
-  const envUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const rawEnvUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const cleanUrl = rawEnvUrl.replace(/\/+$/, '');
+  const envUrl = cleanUrl.endsWith('/api') ? cleanUrl : `${cleanUrl}/api`;
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
     if (host === '127.0.0.1') {

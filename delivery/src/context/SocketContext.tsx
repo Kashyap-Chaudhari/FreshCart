@@ -14,7 +14,8 @@ const SocketContext = createContext<SocketContextType>({
   connected: false,
 });
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const rawSocketApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const SOCKET_URL = rawSocketApiUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '') || 'http://localhost:5000';
 
 export function SocketProvider({ children }: { children: React.ReactNode }) {
   const [socket, setSocket] = useState<Socket | null>(null);
