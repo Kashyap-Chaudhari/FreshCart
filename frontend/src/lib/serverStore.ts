@@ -102,27 +102,33 @@ const INITIAL_USERS: UserAccount[] = [
 
 class StoreManager {
   private users: Map<string, UserAccount> = new Map();
+  private usersList: UserAccount[] = [];
   private otps: Map<string, { otp: string; expires: number; name?: string }> = new Map();
   private orders: PlacedOrder[] = [];
 
   constructor() {
     INITIAL_USERS.forEach((u) => {
       this.users.set(u.id, u);
+      this.usersList.push(u);
     });
   }
 
   findUserByEmail(email: string): UserAccount | undefined {
     const clean = email.toLowerCase().trim();
-    for (const u of this.users.values()) {
-      if (u.email?.toLowerCase().trim() === clean) return u;
+    for (let i = 0; i < this.usersList.length; i++) {
+      if (this.usersList[i].email?.toLowerCase().trim() === clean) {
+        return this.usersList[i];
+      }
     }
     return undefined;
   }
 
   findUserByPhone(phone: string): UserAccount | undefined {
     const clean = phone.replace(/\D/g, '').slice(-10);
-    for (const u of this.users.values()) {
-      if (u.phone.replace(/\D/g, '').slice(-10) === clean) return u;
+    for (let i = 0; i < this.usersList.length; i++) {
+      if (this.usersList[i].phone.replace(/\D/g, '').slice(-10) === clean) {
+        return this.usersList[i];
+      }
     }
     return undefined;
   }
@@ -144,6 +150,7 @@ class StoreManager {
       addresses: [],
     };
     this.users.set(id, user);
+    this.usersList.push(user);
     return user;
   }
 
@@ -296,3 +303,4 @@ export function parseToken(authHeader?: string | null): UserAccount | null {
     return null;
   }
 }
+

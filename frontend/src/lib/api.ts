@@ -10,7 +10,7 @@ function getLocalApiBase(): string {
   return '/api';
 }
 
-// Wraps a request with a local Next.js API fallback whenever the remote backend fails
+// Wraps a request with instantaneous local Next.js API routing and remote backend fallback
 async function requestWithFallback<T = any>(
   endpoint: string,
   options: RequestInit = {}
@@ -24,30 +24,43 @@ async function requestWithFallback<T = any>(
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  // 1. Try primary remote API request first
-  let result: ApiResponse<T> = { success: false, message: 'Initiating request' };
-  try {
-    result = await request<T>(endpoint, options);
-  } catch (err: any) {
-    result = { success: false, message: err?.message || 'Failed to fetch' };
-  }
+  const localUrl = `${getLocalApiBase()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
-  // 2. If remote request failed or 404, fall back seamlessly to built-in Next.js API route
-  if (!result.success) {
-    const localUrl = `${getLocalApiBase()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  // 1. In browser, try local built-in Next.js API first for instant sub-50ms response
+  if (typeof window !== 'undefined') {
     try {
       const res = await fetch(localUrl, {
         ...options,
         headers,
       });
-      const data = await res.json();
-      return data;
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
     } catch {
-      return result;
+      // Fall through to remote
     }
   }
 
-  return result;
+  // 2. Try primary remote API request
+  try {
+    const result = await request<T>(endpoint, options);
+    if (result.success) return result;
+  } catch {
+    // Fall through to local fallback
+  }
+
+  // 3. Server-side or final local fallback attempt
+  try {
+    const res = await fetch(localUrl, { ...options, headers });
+    const data = await res.json();
+    return data;
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.message || 'Network connection issue. Please try again.',
+    };
+  }
 }
 
 export interface ApiResponse<T = any> {
