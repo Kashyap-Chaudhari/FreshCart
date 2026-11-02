@@ -10,22 +10,43 @@ function getLocalApiBase(): string {
   return '/api';
 }
 
-// Wraps a request with a local-catalog fallback for public product/category endpoints
+// Wraps a request with a local Next.js API fallback whenever the remote backend fails
 async function requestWithFallback<T = any>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  const result = await request<T>(endpoint, options);
-  // If remote backend failed, try the built-in Next.js API routes
+  const token = typeof window !== 'undefined' ? localStorage.getItem('freshcart_token') : null;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options.headers as Record<string, string>),
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  // 1. Try primary remote API request first
+  let result: ApiResponse<T> = { success: false, message: 'Initiating request' };
+  try {
+    result = await request<T>(endpoint, options);
+  } catch (err: any) {
+    result = { success: false, message: err?.message || 'Failed to fetch' };
+  }
+
+  // 2. If remote request failed or 404, fall back seamlessly to built-in Next.js API route
   if (!result.success) {
     const localUrl = `${getLocalApiBase()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
     try {
-      const res = await fetch(localUrl, { ...options });
-      if (res.ok) return await res.json();
+      const res = await fetch(localUrl, {
+        ...options,
+        headers,
+      });
+      const data = await res.json();
+      return data;
     } catch {
-      // ignore, return original failure
+      return result;
     }
   }
+
   return result;
 }
 
@@ -83,12 +104,12 @@ async function request<T = any>(
 }
 
 export const api = {
-  // Auth
-  register: (body: any) => request('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
-  login: (body: any) => request('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
-  requestOtp: (phone: string) => request('/auth/otp/request', { method: 'POST', body: JSON.stringify({ phone }) }),
-  verifyOtp: (body: any) => request('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
-  getMe: () => request('/auth/me'),
+  // Auth (with 100% resilient fallback)
+  register: (body: any) => requestWithFallback('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
+  login: (body: any) => requestWithFallback('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
+  requestOtp: (phone: string) => requestWithFallback('/auth/otp/request', { method: 'POST', body: JSON.stringify({ phone }) }),
+  verifyOtp: (body: any) => requestWithFallback('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
+  getMe: () => requestWithFallback('/auth/me'),
 
   // Products & Categories (with built-in fallback catalog)
   getProducts: (params: string = '') => requestWithFallback(`/products${params ? `?${params}` : ''}`),
@@ -96,25 +117,25 @@ export const api = {
   getCategories: () => requestWithFallback('/categories'),
 
   // Delivery & Settings
-  checkPincode: (pincode: string) => request(`/delivery/check/${pincode}`),
-  getDeliveryAreas: () => request('/delivery/areas'),
-  getStoreSettings: () => request('/settings'),
+  checkPincode: (pincode: string) => requestWithFallback(`/delivery/check/${pincode}`),
+  getDeliveryAreas: () => requestWithFallback('/delivery/areas'),
+  getStoreSettings: () => requestWithFallback('/settings'),
   validateCoupon: (code: string, subtotal: number) =>
-    request('/coupons/validate', { method: 'POST', body: JSON.stringify({ code, subtotal }) }),
+    requestWithFallback('/coupons/validate', { method: 'POST', body: JSON.stringify({ code, subtotal }) }),
 
   // Orders
-  checkout: (orderData: any) => request('/orders/checkout', { method: 'POST', body: JSON.stringify(orderData) }),
-  getMyOrders: (page: number = 1) => request(`/orders/my-orders?page=${page}`),
-  trackOrder: (idOrNumber: string) => request(`/orders/track/${idOrNumber}`),
-  getOrderTracking: (idOrNumber: string) => request(`/orders/${idOrNumber}/tracking`),
+  checkout: (orderData: any) => requestWithFallback('/orders/checkout', { method: 'POST', body: JSON.stringify(orderData) }),
+  getMyOrders: (page: number = 1) => requestWithFallback(`/orders/my-orders?page=${page}`),
+  trackOrder: (idOrNumber: string) => requestWithFallback(`/orders/track/${idOrNumber}`),
+  getOrderTracking: (idOrNumber: string) => requestWithFallback(`/orders/${idOrNumber}/tracking`),
   requestOrderCancellation: (orderId: string, reason: string) =>
-    request(`/orders/${orderId}/cancel-request`, { method: 'POST', body: JSON.stringify({ reason }) }),
+    requestWithFallback(`/orders/${orderId}/cancel-request`, { method: 'POST', body: JSON.stringify({ reason }) }),
   cancelOrder: (id: string, reason: string) =>
-    request(`/orders/${id}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) }),
+    requestWithFallback(`/orders/${id}/cancel`, { method: 'POST', body: JSON.stringify({ reason }) }),
   getInvoiceUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/invoice`,
   getInvoicePrintUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/print`,
   getCreditNoteUrl: (orderId: string) => `${API_BASE_URL}/orders/${orderId}/credit-note`,
-  getInvoiceData: (idOrNumber: string) => request(`/invoices/${idOrNumber}`),
+  getInvoiceData: (idOrNumber: string) => requestWithFallback(`/invoices/${idOrNumber}`),
 
   // Admin Portal Endpoints
   adminGetDashboard: () => request('/admin/dashboard-summary'),

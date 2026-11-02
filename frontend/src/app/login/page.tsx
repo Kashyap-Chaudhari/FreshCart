@@ -246,9 +246,16 @@ function LoginForm() {
                     className="w-full text-center tracking-widest text-lg font-black border border-gray-300 rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                   {devOtpHint && (
-                    <p className="text-[11px] text-emerald-700 font-mono mt-1">
-                      Dev OTP Hint: <strong>{devOtpHint}</strong>
-                    </p>
+                    <div className="mt-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setOtp(devOtpHint)}
+                        className="text-[11px] text-emerald-700 font-extrabold hover:underline inline-flex items-center gap-1"
+                      >
+                        <span>⚡ One-Click Auto-Fill Demo OTP:</span>
+                        <span className="font-mono bg-emerald-100 px-1.5 py-0.5 rounded text-emerald-800 font-bold">{devOtpHint}</span>
+                      </button>
+                    </div>
                   )}
                 </div>
 
@@ -317,6 +324,40 @@ function LoginForm() {
               />
             </div>
 
+            {/* 1-Click Demo Accounts */}
+            <div className="pt-1 space-y-1.5">
+              <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                ⚡ 1-Click Fill Demo Credentials:
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('customer@example.com');
+                    setPassword('CustomerPass@2026');
+                  }}
+                  className="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold hover:bg-emerald-100 transition text-left flex items-center justify-between"
+                >
+                  <span>👤 Priya Patel (Customer)</span>
+                  <span className="text-[10px] text-emerald-600 font-mono">Fill →</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail('owner@freshcart.com');
+                    setPassword('OwnerPass@2026');
+                  }}
+                  className="px-3 py-2 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold hover:bg-slate-200 transition text-left flex items-center justify-between"
+                >
+                  <span>👑 Store Owner / Admin</span>
+                  <span className="text-[10px] text-slate-500 font-mono">Fill →</span>
+                </button>
+              </div>
+              <p className="text-[11px] text-gray-500 italic">
+                * You can also type ANY real email & password to sign in or register below!
+              </p>
+            </div>
+
             <button
               type="submit"
               disabled={isLoading}
@@ -324,10 +365,6 @@ function LoginForm() {
             >
               {isLoading ? 'Logging In...' : 'Sign In'}
             </button>
-
-            <div className="pt-2 text-center text-[11px] text-gray-400">
-              Demo Owner: <code>owner@freshcart.com</code> / <code>OwnerPass@2026</code>
-            </div>
           </form>
         )}
 

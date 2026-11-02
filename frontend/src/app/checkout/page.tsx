@@ -975,11 +975,16 @@ export default function CheckoutPage() {
                         required
                         className="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-center text-lg font-mono font-black tracking-widest focus:outline-none focus:ring-2 focus:ring-brand-primary"
                       />
-                      {quickDevOtp && (
-                        <p className="text-[10px] text-emerald-600 font-bold mt-1">
-                          Demo OTP: <span className="underline">{quickDevOtp}</span>
-                        </p>
-                      )}
+                      <div className="flex items-center justify-between mt-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setQuickOtp(quickDevOtp || '123456')}
+                          className="text-[11px] text-emerald-600 dark:text-emerald-400 font-extrabold hover:underline inline-flex items-center gap-1"
+                        >
+                          <span>⚡ One-Click Auto-Fill OTP:</span>
+                          <span className="font-mono bg-emerald-100 dark:bg-emerald-950 px-1.5 py-0.5 rounded text-emerald-800 dark:text-emerald-200">{quickDevOtp || '123456'}</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div>
@@ -1034,24 +1039,39 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-                {/* 1-click test fill */}
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setQuickEmail('customer@example.com');
-                      setQuickPassword('CustomerPass@2026');
-                    }}
-                    className="text-[10px] text-brand-primary font-bold hover:underline"
-                  >
-                    ⚡ One-Click Fill: Priya Patel (Customer Demo)
-                  </button>
+                {/* 1-click test fill buttons */}
+                <div className="pt-1 space-y-1.5">
+                  <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                    Quick One-Click Demo Accounts:
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickEmail('customer@example.com');
+                        setQuickPassword('CustomerPass@2026');
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-[10px] font-bold hover:bg-emerald-100 transition"
+                    >
+                      👤 Priya Patel (Customer Demo)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickEmail('owner@freshcart.com');
+                        setQuickPassword('OwnerPass@2026');
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px] font-bold hover:bg-slate-200 transition"
+                    >
+                      👑 Store Owner Demo
+                    </button>
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={quickLoading}
-                  className="w-full py-2.5 px-4 rounded-xl bg-brand-primary hover:bg-brand-deep text-white font-bold text-xs transition disabled:opacity-50"
+                  className="w-full py-2.5 px-4 rounded-xl bg-brand-primary hover:bg-brand-deep text-white font-bold text-xs transition disabled:opacity-50 shadow-sm"
                 >
                   {quickLoading ? 'Signing In...' : 'Sign In & Confirm Order'}
                 </button>
