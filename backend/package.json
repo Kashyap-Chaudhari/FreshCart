@@ -1,6 +1,6 @@
 {
   "name": "grocerystore-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Production-grade Grocery Store REST API with Prisma, PostgreSQL, and PDFKit",
   "main": "dist/server.js",
   "scripts": {
