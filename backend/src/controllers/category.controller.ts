@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '../config/prisma';
+import prisma, { mockStore } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 
 export const categoryController = {
   async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const categories = await prisma.category.findMany({
+      let categories = await prisma.category.findMany({
         where: { isActive: true },
         orderBy: { displayOrder: 'asc' },
         include: {
@@ -14,6 +14,11 @@ export const categoryController = {
           },
         },
       });
+
+      if (!categories || categories.length === 0) {
+        categories = (mockStore.categories || []).filter((c: any) => c.isActive !== false);
+      }
+
       res.json({ success: true, data: categories });
     } catch (err) {
       next(err);

@@ -14,13 +14,11 @@ const rawPrisma = new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['error'] : ['error'],
 });
 
-const mockStore = global.mockStoreInstance || createInitialMockStore();
-if (process.env.NODE_ENV !== 'production') {
-  global.mockStoreInstance = mockStore;
-}
+export const mockStore = global.mockStoreInstance || createInitialMockStore();
+global.mockStoreInstance = mockStore;
 
 // Emulated Database Adapter for Prisma when PostgreSQL is not running locally
-const inMemoryPrisma = {
+export const inMemoryPrisma = {
   storeSetting: {
     findUnique: async () => mockStore.storeSettings,
     findFirst: async () => mockStore.storeSettings,
@@ -898,12 +896,14 @@ export const prisma: any = new Proxy(rawPrisma, {
                   err?.code === 'P1001' ||
                   err?.code === 'P1002' ||
                   err?.code === 'P1003' ||
+                  err?.code === 'P2021' ||
                   err?.message?.includes("Can't reach database server") ||
+                  err?.message?.includes('does not exist') ||
                   err?.message?.includes('ECONNREFUSED') ||
                   err?.message?.includes('Environment variable not found') ||
                   err?.message?.includes('DATABASE_URL')
                 ) {
-                  logger.warn('[DATABASE AUTO-FALLBACK] PostgreSQL offline at localhost:5432 — seamlessly serving request from in-memory grocery store.');
+                  logger.warn('[DATABASE AUTO-FALLBACK] PostgreSQL offline or tables unmigrated — seamlessly serving request from in-memory grocery store.');
                   process.env.DATABASE_OFFLINE = 'true';
                   const fallbackModel = (inMemoryPrisma as any)[prop];
                   if (fallbackModel && typeof fallbackModel[modelProp] === 'function') {

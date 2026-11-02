@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '../config/prisma';
+import prisma, { mockStore } from '../config/prisma';
 import { stockService } from '../services/stock.service';
 import { auditService } from '../services/audit.service';
 import { AppError } from '../middlewares/error.middleware';
@@ -49,7 +49,7 @@ export const productController = {
         orderBy = { name: sortOrder === 'desc' ? 'desc' : 'asc' };
       }
 
-      const [total, products] = await Promise.all([
+      let [total, products] = await Promise.all([
         prisma.product.count({ where }),
         prisma.product.findMany({
           where,
@@ -61,6 +61,36 @@ export const productController = {
           },
         }),
       ]);
+
+      // If database is empty or unseeded, fall back to in-memory catalogue
+      if (total === 0 && (!products || products.length === 0)) {
+        let fallback = mockStore.products;
+        if (category) {
+          const cat = mockStore.categories.find((c: any) => c.slug === String(category));
+          fallback = fallback.filter((p: any) => p.categoryId === cat?.id);
+        }
+        if (subcategory) {
+          const subQuery = String(subcategory).toLowerCase().trim();
+          fallback = fallback.filter((p: any) =>
+            p.subcategory?.toLowerCase() === subQuery ||
+            p.subcategorySlug?.toLowerCase() === subQuery ||
+            p.subcategory?.toLowerCase().includes(subQuery)
+          );
+        }
+        if (search) {
+          const query = String(search).toLowerCase().trim();
+          fallback = fallback.filter((p: any) =>
+            p.name?.toLowerCase().includes(query) ||
+            p.sku?.toLowerCase().includes(query) ||
+            p.description?.toLowerCase().includes(query)
+          );
+        }
+        total = fallback.length;
+        products = fallback.slice(skip, skip + limit).map((p: any) => ({
+          ...p,
+          category: mockStore.categories.find((c: any) => c.id === p.categoryId) || null,
+        }));
+      }
 
       res.json({
         success: true,
@@ -83,7 +113,7 @@ export const productController = {
   async getBySlugOrId(req: Request, res: Response, next: NextFunction) {
     try {
       const { identifier } = req.params;
-      const product = await prisma.product.findFirst({
+      let product = await prisma.product.findFirst({
         where: {
           OR: [{ slug: identifier }, { id: identifier }],
         },
@@ -91,6 +121,16 @@ export const productController = {
           category: { select: { id: true, name: true, slug: true } },
         },
       });
+
+      if (!product) {
+        const found = mockStore.products.find((p: any) => p.slug === identifier || p.id === identifier);
+        if (found) {
+          product = {
+            ...found,
+            category: mockStore.categories.find((c: any) => c.id === found.categoryId) || null,
+          };
+        }
+      }
 
       if (!product) {
         throw new AppError('Product not found', 404);
