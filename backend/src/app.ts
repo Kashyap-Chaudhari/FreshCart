@@ -71,6 +71,14 @@ export function createApp(): Express {
   // Swagger Documentation
   setupSwagger(app);
 
+  // Health check endpoint (for Render, uptime monitors, and load balancers)
+  app.get('/health', (_req, res) => {
+    res.json({ status: 'ok', service: 'FreshCart API', timestamp: new Date().toISOString() });
+  });
+  app.get('/', (_req, res) => {
+    res.json({ status: 'ok', service: 'FreshCart API', version: '1.0.1', docs: '/api-docs' });
+  });
+
   // REST API Routes (mounted at both /api and root / to support any frontend URL configuration)
   app.use('/api', routes);
   app.use(routes);
