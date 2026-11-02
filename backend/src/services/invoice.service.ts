@@ -1,4 +1,5 @@
 import PDFDocument from 'pdfkit';
+type PDFDocument = InstanceType<typeof PDFDocument>;
 import prisma from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 import { calculateGstInvoice, GstInvoiceData, numberToIndianWords, round2, DEFAULT_BUSINESS_GST } from '../utils/gst.util';
@@ -32,7 +33,7 @@ export const invoiceService = {
    * Generates a genuine, authentic Indian Business GST Tax Invoice PDF compliant with
    * Section 31 of CGST Act, 2017 & Rule 46 of CGST Rules, 2017.
    */
-  async generateInvoicePdf(orderIdOrNumber: string): Promise<PDFKit.PDFDocument> {
+  async generateInvoicePdf(orderIdOrNumber: string): Promise<PDFDocument> {
     const data = await this.getInvoiceData(orderIdOrNumber);
 
     const doc = new PDFDocument({
@@ -400,7 +401,7 @@ export const invoiceService = {
    * Generates a legal GST Credit Note PDF under Section 34 of the CGST Act, 2017
    * for cancelled or returned orders.
    */
-  async generateCreditNotePdf(orderIdOrNumber: string, reason: string = 'Order Cancellation / Return'): Promise<PDFKit.PDFDocument> {
+  async generateCreditNotePdf(orderIdOrNumber: string, reason: string = 'Order Cancellation / Return'): Promise<PDFDocument> {
     const data = await this.getInvoiceData(orderIdOrNumber);
 
     const doc = new PDFDocument({
@@ -945,7 +946,7 @@ export const invoiceService = {
   /**
    * Generates Warehouse Packing Slip PDF
    */
-  async generatePackingSlipPdf(orderIdOrNumber: string): Promise<PDFKit.PDFDocument> {
+  async generatePackingSlipPdf(orderIdOrNumber: string): Promise<PDFDocument> {
     const data = await this.getInvoiceData(orderIdOrNumber);
 
     const doc = new PDFDocument({
@@ -1018,7 +1019,7 @@ export const invoiceService = {
   /**
    * Generates Delivery Slip PDF
    */
-  async generateDeliverySlipPdf(orderIdOrNumber: string): Promise<PDFKit.PDFDocument> {
+  async generateDeliverySlipPdf(orderIdOrNumber: string): Promise<PDFDocument> {
     const data = await this.getInvoiceData(orderIdOrNumber);
 
     const doc = new PDFDocument({
