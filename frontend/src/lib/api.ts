@@ -33,24 +33,36 @@ async function requestWithFallback<T = any>(
         ...options,
         headers,
       });
-      if (res.ok) {
-        const data = await res.json();
-        return data;
+      // If local Next.js route responded (200 OK, 400 Bad Request, 401 Auth Error, etc.), return its real payload!
+      if (res.status !== 404 && res.status !== 502 && res.status !== 503) {
+        try {
+          const data = await res.json();
+          return data;
+        } catch {
+          // not valid json
+        }
       }
     } catch {
-      // Fall through to remote
+      // Local fetch network error, fall through to remote
     }
   }
 
-  // 2. Try primary remote API request
-  try {
-    const result = await request<T>(endpoint, options);
-    if (result.success) return result;
-  } catch {
-    // Fall through to local fallback
+  // 2. Try primary remote API request only if safe (avoid mixed-content HTTPS -> HTTP localhost)
+  const isHttps = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const isLocalhostTarget = API_BASE_URL.includes('localhost') || API_BASE_URL.includes('127.0.0.1');
+
+  if (!isHttps || !isLocalhostTarget) {
+    try {
+      const result = await request<T>(endpoint, options);
+      if (result.success || (result.message && !result.message.toLowerCase().includes('fetch'))) {
+        return result;
+      }
+    } catch {
+      // Fall through to final fallback
+    }
   }
 
-  // 3. Server-side or final local fallback attempt
+  // 3. Final attempt to local built-in Next.js API
   try {
     const res = await fetch(localUrl, { ...options, headers });
     const data = await res.json();
@@ -58,7 +70,7 @@ async function requestWithFallback<T = any>(
   } catch (err: any) {
     return {
       success: false,
-      message: err?.message || 'Network connection issue. Please try again.',
+      message: 'Network issue connecting to server. Please try again or use the one-click demo option.',
     };
   }
 }

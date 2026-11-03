@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   X,
@@ -25,6 +25,17 @@ export default function CartDrawer() {
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
   const [couponError, setCouponError] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsCartOpen(false);
+    };
+    if (isCartOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCartOpen, setIsCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -64,16 +75,23 @@ export default function CartDrawer() {
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
+      {/* Backdrop — closes cart when clicking anywhere outside / empty space */}
       <div
         onClick={() => setIsCartOpen(false)}
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity animate-in fade-in duration-200 cursor-pointer"
+        aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white dark:bg-slate-900 text-brand-text dark:text-slate-100 shadow-2xl flex flex-col transition-colors">
+      {/* Drawer Container — full width on mobile (pl-0, max-w-full), slide-over on desktop (sm:pl-10 sm:max-w-md) */}
+      <div
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setIsCartOpen(false);
+        }}
+        className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10 pointer-events-none"
+      >
+        <div className="w-screen max-w-full sm:max-w-md bg-white dark:bg-slate-900 text-brand-text dark:text-slate-100 shadow-2xl flex flex-col transition-colors pointer-events-auto h-full">
           {/* Header */}
-          <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
+          <div className="px-4 sm:px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-800/40">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-xl bg-brand-soft text-brand-primary flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4 stroke-[2.5]" />
@@ -95,10 +113,10 @@ export default function CartDrawer() {
               <button
                 type="button"
                 onClick={() => setIsCartOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-95"
                 aria-label="Close cart"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 stroke-[2.5]" />
               </button>
             </div>
           </div>
