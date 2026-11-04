@@ -28,29 +28,18 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
 
-const AVAILABLE_COUPONS = [
-  {
-    code: 'FRESH15',
-    title: '15% OFF on Fresh Groceries',
-    desc: 'Valid on orders above ₹199 • Max savings ₹150',
-    minOrder: 199,
-    tag: 'POPULAR',
-  },
-  {
-    code: 'SUPER50',
-    title: 'Flat ₹50 Instant Discount',
-    desc: 'Valid on daily staples above ₹399',
-    minOrder: 399,
-    tag: 'STAPLES',
-  },
-  {
-    code: 'WELCOME',
-    title: 'Flat ₹100 Welcome Offer',
-    desc: 'Valid on first 3 orders above ₹599',
-    minOrder: 599,
-    tag: 'NEW USER',
-  },
-];
+interface AdminCoupon {
+  id: string;
+  code: string;
+  description: string;
+  discountType: 'PERCENTAGE' | 'FLAT';
+  discountValue: number;
+  minOrderValue: number;
+  maxDiscount?: number | null;
+  validFrom?: string;
+  validTo?: string;
+  isActive?: boolean;
+}
 
 export default function CartPage() {
   const router = useRouter();
@@ -63,6 +52,8 @@ export default function CartPage() {
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [availableCoupons, setAvailableCoupons] = useState<AdminCoupon[]>([]);
+  const [loadingCoupons, setLoadingCoupons] = useState(true);
 
   // Delivery instruction note
   const [showOrderNote, setShowOrderNote] = useState(false);
@@ -90,6 +81,87 @@ export default function CartPage() {
   );
   const mrpSavings = Math.max(0, totalMrp - subtotal);
   const totalSavings = mrpSavings + discountAmount;
+
+  // Load active coupons managed by Admin Panel
+  const fetchActiveCoupons = () => {
+    setLoadingCoupons(true);
+    api
+      .getActiveCoupons()
+      .then((res) => {
+        if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+          setAvailableCoupons(res.data);
+        } else {
+          // Default initial fallback
+          setAvailableCoupons([
+            {
+              id: 'coup-1',
+              code: 'FRESH15',
+              description: 'Get 15% OFF on minimum order of ₹399',
+              discountType: 'PERCENTAGE',
+              discountValue: 15,
+              minOrderValue: 399,
+              maxDiscount: 150,
+            },
+            {
+              id: 'coup-2',
+              code: 'FLAT50',
+              description: 'Flat ₹50 OFF on orders above ₹299',
+              discountType: 'FLAT',
+              discountValue: 50,
+              minOrderValue: 299,
+              maxDiscount: null,
+            },
+            {
+              id: 'coup-3',
+              code: 'WELCOME50',
+              description: 'Flat ₹50 OFF on your first cart above ₹199',
+              discountType: 'FLAT',
+              discountValue: 50,
+              minOrderValue: 199,
+              maxDiscount: null,
+            },
+          ]);
+        }
+      })
+      .catch(() => {
+        setAvailableCoupons([
+          {
+            id: 'coup-1',
+            code: 'FRESH15',
+            description: 'Get 15% OFF on minimum order of ₹399',
+            discountType: 'PERCENTAGE',
+            discountValue: 15,
+            minOrderValue: 399,
+            maxDiscount: 150,
+          },
+          {
+            id: 'coup-2',
+            code: 'FLAT50',
+            description: 'Flat ₹50 OFF on orders above ₹299',
+            discountType: 'FLAT',
+            discountValue: 50,
+            minOrderValue: 299,
+            maxDiscount: null,
+          },
+        ]);
+      })
+      .finally(() => {
+        setLoadingCoupons(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchActiveCoupons();
+  }, []);
+
+  // Re-validate coupon if cart subtotal drops below coupon minimum
+  useEffect(() => {
+    if (appliedCoupon && appliedCoupon.minOrderValue && subtotal < appliedCoupon.minOrderValue) {
+      setCouponError(`Coupon "${appliedCoupon.code}" was removed because cart subtotal is now below ₹${appliedCoupon.minOrderValue}.`);
+      setAppliedCoupon(null);
+      setCouponSuccess('');
+    }
+  }, [subtotal, appliedCoupon]);
 
   // Load recommended products
   useEffect(() => {
@@ -651,42 +723,140 @@ export default function CartPage() {
                   </p>
                 )}
 
-                {/* Available Coupon Chips / Suggestions */}
-                <div className="space-y-1.5 pt-2">
-                  <span className="text-[10px] font-bold text-[#858585] uppercase tracking-wider block">
-                    Available Offers for You:
-                  </span>
-                  <div className="space-y-1.5">
-                    {AVAILABLE_COUPONS.map((c) => {
-                      const isEligible = subtotal >= c.minOrder;
-                      return (
-                        <div
-                          key={c.code}
-                          className="p-2 rounded-xl border border-[#EAE8E2] bg-[#FAF9F5] flex items-center justify-between text-xs hover:border-[#176B36] transition"
-                        >
-                          <div>
-                            <div className="flex items-center gap-1.5">
-                              <span className="font-mono font-black text-[#176B36] text-[11px] bg-white border border-[#EAE8E2] px-1.5 py-0.5 rounded">
-                                {c.code}
-                              </span>
-                              <span className="font-bold text-[#252525] text-[11px]">{c.title}</span>
-                            </div>
-                            <span className="text-[10px] text-[#858585] block mt-0.5">{c.desc}</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setCouponCode(c.code);
-                              handleApplyCoupon(c.code);
-                            }}
-                            className="text-[11px] font-bold text-[#176B36] hover:underline px-2 py-1"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      );
-                    })}
+                {/* Available Coupon Chips / Suggestions (Managed via Admin Panel) */}
+                <div className="space-y-2 pt-2 border-t border-[#EAE8E2]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-black text-[#252525] uppercase tracking-wider flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-[#176B36]" />
+                      <span>Available Coupons & Offers</span>
+                    </span>
+                    <span className="text-[10px] font-bold text-[#858585] bg-[#F7F6F2] px-2 py-0.5 rounded-full border border-[#EAE8E2]">
+                      {availableCoupons.length} {availableCoupons.length === 1 ? 'Offer' : 'Offers'}
+                    </span>
                   </div>
+
+                  {loadingCoupons ? (
+                    <div className="space-y-2 py-2">
+                      <div className="h-14 rounded-xl bg-slate-100 animate-pulse" />
+                      <div className="h-14 rounded-xl bg-slate-100 animate-pulse" />
+                    </div>
+                  ) : availableCoupons.length === 0 ? (
+                    <div className="p-3 rounded-xl bg-[#FAF9F5] border border-dashed border-[#EAE8E2] text-center text-xs text-[#858585]">
+                      No active promo coupons at the moment.
+                    </div>
+                  ) : (
+                    <div className="space-y-2 max-h-[320px] overflow-y-auto pr-0.5">
+                      {availableCoupons.map((c) => {
+                        const isApplied = appliedCoupon?.code === c.code;
+                        const isEligible = subtotal >= Number(c.minOrderValue || 0);
+                        const discountBadge =
+                          c.discountType === 'PERCENTAGE'
+                            ? `${Number(c.discountValue)}% OFF${c.maxDiscount ? ` (up to ₹${c.maxDiscount})` : ''}`
+                            : `FLAT ₹${Number(c.discountValue)} OFF`;
+                        const shortDesc =
+                          c.description ||
+                          (c.discountType === 'PERCENTAGE'
+                            ? `Save ${c.discountValue}% on your order`
+                            : `Instant ₹${c.discountValue} discount`);
+                        const neededToUnlock = Math.max(0, Number(c.minOrderValue || 0) - subtotal);
+                        const progress =
+                          c.minOrderValue > 0
+                            ? Math.min(100, Math.round((subtotal / Number(c.minOrderValue)) * 100))
+                            : 100;
+
+                        return (
+                          <div
+                            key={c.id || c.code}
+                            className={`p-2.5 rounded-xl border transition-all duration-150 relative ${
+                              isApplied
+                                ? 'bg-[#EAF5EE] border-[#176B36] shadow-xs'
+                                : isEligible
+                                ? 'bg-[#FAF9F5] hover:bg-[#F2F8F4] border-[#EAE8E2] hover:border-[#176B36]/60'
+                                : 'bg-white/80 border-[#EAE8E2] opacity-80'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="space-y-1 min-w-0 flex-1">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="font-mono font-black text-[#176B36] text-[11px] bg-white border border-dashed border-[#176B36]/50 px-2 py-0.5 rounded shadow-2xs">
+                                    {c.code}
+                                  </span>
+                                  <span className="text-[11px] font-bold text-[#176B36] bg-emerald-50 px-1.5 py-0.5 rounded">
+                                    {discountBadge}
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-[#252525] font-semibold leading-snug line-clamp-2">
+                                  {shortDesc}
+                                </p>
+                                <div className="text-[10px] text-[#858585]">
+                                  {Number(c.minOrderValue) > 0 ? (
+                                    <span>
+                                      Valid on orders above <strong>₹{Number(c.minOrderValue)}</strong>
+                                    </span>
+                                  ) : (
+                                    <span>No minimum order required</span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Action Button */}
+                              <div className="flex-shrink-0 text-right">
+                                {isApplied ? (
+                                  <div className="space-y-1">
+                                    <span className="inline-flex items-center gap-0.5 px-2 py-1 rounded-md bg-[#176B36] text-white text-[10px] font-bold uppercase tracking-wider">
+                                      <Check className="w-3 h-3 stroke-[3]" />
+                                      Applied
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={handleRemoveCoupon}
+                                      className="block w-full text-[10px] text-rose-600 font-bold hover:underline"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                ) : isEligible ? (
+                                  <button
+                                    type="button"
+                                    disabled={validatingCoupon}
+                                    onClick={() => {
+                                      setCouponCode(c.code);
+                                      handleApplyCoupon(c.code);
+                                    }}
+                                    className="px-3 py-1.5 rounded-lg bg-[#176B36] hover:bg-[#12552b] active:scale-95 text-white text-xs font-bold transition shadow-2xs disabled:opacity-50"
+                                  >
+                                    {validatingCoupon && couponCode === c.code ? 'Applying...' : 'Apply'}
+                                  </button>
+                                ) : (
+                                  <span className="inline-block px-2 py-1 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">
+                                    Locked
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Unlock Progress when Cart Total < Minimum Order */}
+                            {!isEligible && Number(c.minOrderValue) > 0 && (
+                              <div className="mt-2 pt-2 border-t border-dashed border-[#EAE8E2] space-y-1">
+                                <div className="flex items-center justify-between text-[10px]">
+                                  <span className="text-[#858585]">
+                                    Add <strong>₹{neededToUnlock.toFixed(0)}</strong> more to unlock
+                                  </span>
+                                  <span className="font-bold text-[#176B36]">{progress}%</span>
+                                </div>
+                                <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                                  <div
+                                    className="h-full bg-[#176B36] transition-all duration-300 rounded-full"
+                                    style={{ width: `${progress}%` }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
 

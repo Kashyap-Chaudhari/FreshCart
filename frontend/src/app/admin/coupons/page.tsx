@@ -28,8 +28,8 @@ export default function AdminCouponsPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload = {
-      code,
-      description,
+      code: code.trim().toUpperCase(),
+      description: description.trim(),
       discountType,
       discountValue: Number(discountValue),
       minOrderValue: Number(minOrderValue),
@@ -45,6 +45,8 @@ export default function AdminCouponsPage() {
       setCode('');
       setDescription('');
       loadCoupons();
+    } else {
+      alert(res.message || 'Error creating coupon');
     }
   };
 

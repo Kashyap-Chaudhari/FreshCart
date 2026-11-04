@@ -5,6 +5,37 @@ import { AppError } from '../middlewares/error.middleware';
 
 export const couponController = {
   /**
+   * Public / Customer: List active and available coupons
+   */
+  async listActive(req: Request, res: Response, next: NextFunction) {
+    try {
+      const now = new Date();
+      const allCoupons = await prisma.coupon.findMany({
+        where: { isActive: true },
+        orderBy: { minOrderValue: 'asc' },
+      });
+
+      // Filter by validity date and usage limits
+      const activeCoupons = allCoupons.filter((c: any) => {
+        if (!c.isActive) return false;
+        const validFrom = c.validFrom ? new Date(c.validFrom) : null;
+        const validTo = c.validTo ? new Date(c.validTo) : null;
+        if (validFrom && now < validFrom) return false;
+        if (validTo && now > validTo) return false;
+        if (c.usageLimit && c.timesUsed >= c.usageLimit) return false;
+        return true;
+      });
+
+      res.json({
+        success: true,
+        data: activeCoupons,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  /**
    * Public / Customer: Validate coupon against cart subtotal
    */
   async validate(req: Request, res: Response, next: NextFunction) {

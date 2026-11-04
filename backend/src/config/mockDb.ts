@@ -83,6 +83,9 @@ export function createInitialMockStore(): MockStore {
   const coupons = [
     { id: 'coup-1', code: 'FRESH15', description: 'Get 15% OFF on minimum order of ₹399', discountType: 'PERCENTAGE', discountValue: 15, minOrderValue: 399, maxDiscount: 150, validFrom: new Date('2026-01-01'), validTo: new Date('2027-12-31'), usageLimit: 500, timesUsed: 12, isActive: true },
     { id: 'coup-2', code: 'FLAT50', description: 'Flat ₹50 OFF on orders above ₹299', discountType: 'FLAT', discountValue: 50, minOrderValue: 299, maxDiscount: null, validFrom: new Date('2026-01-01'), validTo: new Date('2027-12-31'), usageLimit: 1000, timesUsed: 25, isActive: true },
+    { id: 'coup-3', code: 'WELCOME50', description: 'Flat ₹50 OFF on your cart above ₹199', discountType: 'FLAT', discountValue: 50, minOrderValue: 199, maxDiscount: null, validFrom: new Date('2026-01-01'), validTo: new Date('2027-12-31'), usageLimit: 2000, timesUsed: 8, isActive: true },
+    { id: 'coup-4', code: 'FLAT100', description: 'Flat ₹100 OFF on mega orders above ₹699', discountType: 'FLAT', discountValue: 100, minOrderValue: 699, maxDiscount: null, validFrom: new Date('2026-01-01'), validTo: new Date('2027-12-31'), usageLimit: 500, timesUsed: 15, isActive: true },
+    { id: 'coup-5', code: 'FRESH20', description: 'Special 20% OFF on orders above ₹499', discountType: 'PERCENTAGE', discountValue: 20, minOrderValue: 499, maxDiscount: 200, validFrom: new Date('2026-01-01'), validTo: new Date('2027-12-31'), usageLimit: 500, timesUsed: 3, isActive: true },
   ];
 
   const storeSettings = {

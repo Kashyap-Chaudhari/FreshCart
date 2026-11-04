@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { serverStore } from '@/lib/serverStore';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,52 +10,34 @@ export async function POST(req: NextRequest) {
     const code = String(body.code || '').toUpperCase().trim();
     const subtotal = Number(body.subtotal) || 0;
 
-    if (code === 'FRESH20') {
-      if (subtotal < 299) {
-        return NextResponse.json({
-          success: false,
-          message: 'FRESH20 coupon requires a minimum cart value of ₹299.',
-        });
-      }
-      const discount = Math.min(150, Math.round(subtotal * 0.2));
+    if (!code) {
+      return NextResponse.json(
+        { success: false, message: 'Please enter a valid coupon code.' },
+        { status: 400 }
+      );
+    }
+
+    const validation = serverStore.validateCoupon(code, subtotal);
+    if (!validation.isValid) {
       return NextResponse.json({
-        success: true,
-        message: 'Coupon FRESH20 applied! You saved 20%.',
-        data: { code: 'FRESH20', discount, discountType: 'PERCENTAGE', discountValue: 20 },
+        success: false,
+        message: validation.message,
       });
     }
 
-    if (code === 'WELCOME50') {
-      if (subtotal < 199) {
-        return NextResponse.json({
-          success: false,
-          message: 'WELCOME50 coupon requires a minimum cart value of ₹199.',
-        });
-      }
-      return NextResponse.json({
-        success: true,
-        message: 'Coupon WELCOME50 applied! Flat ₹50 off.',
-        data: { code: 'WELCOME50', discount: 50, discountType: 'FLAT', discountValue: 50 },
-      });
-    }
-
-    if (code === 'FLAT100') {
-      if (subtotal < 699) {
-        return NextResponse.json({
-          success: false,
-          message: 'FLAT100 coupon requires a minimum cart value of ₹699.',
-        });
-      }
-      return NextResponse.json({
-        success: true,
-        message: 'Coupon FLAT100 applied! Flat ₹100 off.',
-        data: { code: 'FLAT100', discount: 100, discountType: 'FLAT', discountValue: 100 },
-      });
-    }
-
+    const coupon = validation.coupon!;
     return NextResponse.json({
-      success: false,
-      message: 'Invalid coupon code. Try FRESH20, WELCOME50, or FLAT100.',
+      success: true,
+      message: validation.message,
+      data: {
+        code: coupon.code,
+        discountAmount: validation.discountAmount,
+        discount: validation.discountAmount,
+        discountType: coupon.discountType,
+        discountValue: coupon.discountValue,
+        minOrderValue: coupon.minOrderValue,
+        description: coupon.description,
+      },
     });
   } catch (err: any) {
     return NextResponse.json(

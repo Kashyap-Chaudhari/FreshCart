@@ -5,7 +5,9 @@ import { requireRole } from '../middlewares/role.middleware';
 
 const router = Router();
 
-// Public: validate coupon
+// Public: active available coupons & validate coupon
+router.get('/active', couponController.listActive);
+router.get('/', couponController.listActive);
 router.post('/validate', couponController.validate);
 
 // Admin: CRUD

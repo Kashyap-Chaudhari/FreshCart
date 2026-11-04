@@ -142,10 +142,11 @@ export const api = {
   getProduct: (idOrSlug: string) => requestWithFallback(`/products/${idOrSlug}`),
   getCategories: () => requestWithFallback('/categories'),
 
-  // Delivery & Settings
+  // Delivery, Settings & Coupons
   checkPincode: (pincode: string) => requestWithFallback(`/delivery/check/${pincode}`),
   getDeliveryAreas: () => requestWithFallback('/delivery/areas'),
   getStoreSettings: () => requestWithFallback('/settings'),
+  getActiveCoupons: () => requestWithFallback('/coupons/active'),
   validateCoupon: (code: string, subtotal: number) =>
     requestWithFallback('/coupons/validate', { method: 'POST', body: JSON.stringify({ code, subtotal }) }),
 
@@ -191,9 +192,9 @@ export const api = {
   adminCreateCategory: (body: any) => request('/categories', { method: 'POST', body: JSON.stringify(body) }),
   adminUpdateCategory: (id: string, body: any) => request(`/categories/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
 
-  adminGetCoupons: () => request('/coupons/admin/list'),
-  adminCreateCoupon: (body: any) => request('/coupons/admin', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateCoupon: (id: string, body: any) => request(`/coupons/admin/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
+  adminGetCoupons: () => requestWithFallback('/coupons/admin/list'),
+  adminCreateCoupon: (body: any) => requestWithFallback('/coupons/admin', { method: 'POST', body: JSON.stringify(body) }),
+  adminUpdateCoupon: (id: string, body: any) => requestWithFallback(`/coupons/admin/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
 
   adminCreateDeliveryArea: (body: any) => request('/delivery/admin/areas', { method: 'POST', body: JSON.stringify(body) }),
   adminUpdateDeliveryArea: (id: string, body: any) =>

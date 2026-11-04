@@ -299,7 +299,13 @@ export const inMemoryPrisma = {
     findUnique: async ({ where }: any) => {
       return mockStore.coupons.find((c) => c.code === where.code) || null;
     },
-    findMany: async () => mockStore.coupons,
+    findMany: async ({ where, orderBy }: any = {}) => {
+      let list = [...mockStore.coupons];
+      if (where?.isActive !== undefined) {
+        list = list.filter((c) => c.isActive === where.isActive);
+      }
+      return list;
+    },
     create: async ({ data }: any) => {
       const newC = { id: `coup-${Date.now()}`, timesUsed: 0, isActive: true, ...data };
       mockStore.coupons.push(newC);

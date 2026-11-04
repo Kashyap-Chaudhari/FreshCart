@@ -111,6 +111,15 @@ export default function CheckoutPage() {
   const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
   const [couponError, setCouponError] = useState('');
   const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [availableCoupons, setAvailableCoupons] = useState<any[]>([]);
+
+  useEffect(() => {
+    api.getActiveCoupons().then((res) => {
+      if (res.success && Array.isArray(res.data)) {
+        setAvailableCoupons(res.data);
+      }
+    }).catch(() => {});
+  }, []);
 
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -772,6 +781,53 @@ export default function CheckoutPage() {
                 <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>{couponError}</span>
               </p>
+            )}
+
+            {/* Available Coupons list */}
+            {availableCoupons.length > 0 && !appliedCoupon && (
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-1.5">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Available Offers:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {availableCoupons.slice(0, 4).map((c) => {
+                    const isEligible = subtotal >= Number(c.minOrderValue || 0);
+                    return (
+                      <button
+                        key={c.code}
+                        type="button"
+                        onClick={async () => {
+                          setCouponCode(c.code);
+                          setValidatingCoupon(true);
+                          setCouponError('');
+                          try {
+                            const res = await api.validateCoupon(c.code, subtotal);
+                            if (res.success && res.data) {
+                              setAppliedCoupon(res.data);
+                            } else {
+                              setCouponError(res.message || 'Invalid coupon code.');
+                            }
+                          } catch {
+                            setCouponError('Error applying coupon.');
+                          } finally {
+                            setValidatingCoupon(false);
+                          }
+                        }}
+                        className={`text-left text-[11px] px-2.5 py-1 rounded-lg border transition flex items-center gap-1.5 ${
+                          isEligible
+                            ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:border-emerald-500'
+                            : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-400'
+                        }`}
+                      >
+                        <span className="font-mono font-black">{c.code}</span>
+                        <span className="text-[10px]">
+                          {c.discountType === 'PERCENTAGE' ? `${c.discountValue}% OFF` : `₹${c.discountValue} OFF`}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
 

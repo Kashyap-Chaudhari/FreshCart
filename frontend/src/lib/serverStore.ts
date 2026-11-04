@@ -44,6 +44,100 @@ export interface PlacedOrder {
   }>;
 }
 
+export interface ServerCoupon {
+  id: string;
+  code: string;
+  description: string;
+  discountType: 'PERCENTAGE' | 'FLAT';
+  discountValue: number;
+  minOrderValue: number;
+  maxDiscount?: number | null;
+  validFrom: string;
+  validTo: string;
+  usageLimit?: number | null;
+  timesUsed: number;
+  isActive: boolean;
+  createdAt: string;
+}
+
+const INITIAL_COUPONS: ServerCoupon[] = [
+  {
+    id: 'coup-1',
+    code: 'FRESH15',
+    description: 'Get 15% OFF on minimum order of ₹399',
+    discountType: 'PERCENTAGE',
+    discountValue: 15,
+    minOrderValue: 399,
+    maxDiscount: 150,
+    validFrom: '2026-01-01T00:00:00.000Z',
+    validTo: '2027-12-31T23:59:59.000Z',
+    usageLimit: 500,
+    timesUsed: 12,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'coup-2',
+    code: 'FLAT50',
+    description: 'Flat ₹50 OFF on orders above ₹299',
+    discountType: 'FLAT',
+    discountValue: 50,
+    minOrderValue: 299,
+    maxDiscount: null,
+    validFrom: '2026-01-01T00:00:00.000Z',
+    validTo: '2027-12-31T23:59:59.000Z',
+    usageLimit: 1000,
+    timesUsed: 25,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'coup-3',
+    code: 'WELCOME50',
+    description: 'Flat ₹50 OFF on your first cart above ₹199',
+    discountType: 'FLAT',
+    discountValue: 50,
+    minOrderValue: 199,
+    maxDiscount: null,
+    validFrom: '2026-01-01T00:00:00.000Z',
+    validTo: '2027-12-31T23:59:59.000Z',
+    usageLimit: 2000,
+    timesUsed: 8,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'coup-4',
+    code: 'FLAT100',
+    description: 'Flat ₹100 OFF on mega orders above ₹699',
+    discountType: 'FLAT',
+    discountValue: 100,
+    minOrderValue: 699,
+    maxDiscount: null,
+    validFrom: '2026-01-01T00:00:00.000Z',
+    validTo: '2027-12-31T23:59:59.000Z',
+    usageLimit: 500,
+    timesUsed: 15,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'coup-5',
+    code: 'FRESH20',
+    description: 'Special 20% OFF on orders above ₹499',
+    discountType: 'PERCENTAGE',
+    discountValue: 20,
+    minOrderValue: 499,
+    maxDiscount: 200,
+    validFrom: '2026-01-01T00:00:00.000Z',
+    validTo: '2027-12-31T23:59:59.000Z',
+    usageLimit: 500,
+    timesUsed: 3,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  },
+];
+
 const INITIAL_USERS: UserAccount[] = [
   {
     id: 'user-customer-1',
@@ -105,11 +199,15 @@ class StoreManager {
   private usersList: UserAccount[] = [];
   private otps: Map<string, { otp: string; expires: number; name?: string }> = new Map();
   private orders: PlacedOrder[] = [];
+  private coupons: ServerCoupon[] = [];
 
   constructor() {
     INITIAL_USERS.forEach((u) => {
       this.users.set(u.id, u);
       this.usersList.push(u);
+    });
+    INITIAL_COUPONS.forEach((c) => {
+      this.coupons.push({ ...c });
     });
   }
 
@@ -265,6 +363,104 @@ class StoreManager {
 
   getAllOrders(): PlacedOrder[] {
     return this.orders;
+  }
+
+  // =========================================================================
+  // 🏷️ COUPON SYSTEM
+  // =========================================================================
+  getCoupons(activeOnly: boolean = false): ServerCoupon[] {
+    const now = new Date().getTime();
+    if (!activeOnly) {
+      return [...this.coupons];
+    }
+    return this.coupons.filter((c) => {
+      if (!c.isActive) return false;
+      const vFrom = new Date(c.validFrom).getTime();
+      const vTo = new Date(c.validTo).getTime();
+      if (now < vFrom || now > vTo) return false;
+      if (c.usageLimit && c.timesUsed >= c.usageLimit) return false;
+      return true;
+    });
+  }
+
+  getCouponByCode(code: string): ServerCoupon | undefined {
+    const clean = code.trim().toUpperCase();
+    return this.coupons.find((c) => c.code.toUpperCase() === clean);
+  }
+
+  createCoupon(data: any): ServerCoupon {
+    const newCoupon: ServerCoupon = {
+      id: `coup-${Date.now()}`,
+      code: String(data.code || '').trim().toUpperCase(),
+      description: data.description || '',
+      discountType: data.discountType === 'FLAT' ? 'FLAT' : 'PERCENTAGE',
+      discountValue: Number(data.discountValue) || 10,
+      minOrderValue: Number(data.minOrderValue) || 0,
+      maxDiscount: data.maxDiscount ? Number(data.maxDiscount) : null,
+      validFrom: data.validFrom ? new Date(data.validFrom).toISOString() : new Date().toISOString(),
+      validTo: data.validTo ? new Date(data.validTo).toISOString() : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+      usageLimit: data.usageLimit ? Number(data.usageLimit) : null,
+      timesUsed: 0,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+    };
+    this.coupons.unshift(newCoupon);
+    return newCoupon;
+  }
+
+  updateCoupon(id: string, data: any): ServerCoupon | null {
+    const idx = this.coupons.findIndex((c) => c.id === id);
+    if (idx === -1) return null;
+    this.coupons[idx] = { ...this.coupons[idx], ...data };
+    return this.coupons[idx];
+  }
+
+  validateCoupon(
+    code: string,
+    subtotal: number
+  ): { isValid: boolean; message: string; discountAmount: number; coupon?: ServerCoupon } {
+    const coupon = this.getCouponByCode(code);
+    if (!coupon || !coupon.isActive) {
+      return { isValid: false, message: 'Invalid or inactive coupon code.', discountAmount: 0 };
+    }
+
+    const now = new Date().getTime();
+    const vFrom = new Date(coupon.validFrom).getTime();
+    const vTo = new Date(coupon.validTo).getTime();
+    if (now < vFrom || now > vTo) {
+      return { isValid: false, message: 'This coupon has expired or is not yet active.', discountAmount: 0 };
+    }
+
+    if (coupon.usageLimit && coupon.timesUsed >= coupon.usageLimit) {
+      return { isValid: false, message: 'This coupon has reached its maximum usage limit.', discountAmount: 0 };
+    }
+
+    if (subtotal < coupon.minOrderValue) {
+      return {
+        isValid: false,
+        message: `Coupon "${coupon.code}" requires a minimum cart value of ₹${coupon.minOrderValue}.`,
+        discountAmount: 0,
+      };
+    }
+
+    let discount = 0;
+    if (coupon.discountType === 'PERCENTAGE') {
+      discount = Math.round(subtotal * (coupon.discountValue / 100));
+      if (coupon.maxDiscount && coupon.maxDiscount > 0) {
+        discount = Math.min(discount, coupon.maxDiscount);
+      }
+    } else {
+      discount = coupon.discountValue;
+    }
+
+    discount = Math.min(discount, subtotal);
+
+    return {
+      isValid: true,
+      message: `Coupon "${coupon.code}" applied! You saved ₹${discount}.`,
+      discountAmount: discount,
+      coupon,
+    };
   }
 }
 
