@@ -79,15 +79,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        {/* Floating Time Pill (Top Left) */}
-        <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10 flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs text-[9px] sm:text-[10px] font-black text-emerald-800 dark:text-emerald-400 px-1.5 sm:px-2 py-0.5 rounded-md shadow-xs border border-slate-200/50 dark:border-slate-700/50">
-          <Zap className="w-2.5 h-2.5 fill-emerald-600 text-emerald-600" />
-          <span>10-15m</span>
-        </div>
-
         {/* Floating Discount Badge (Top Right) */}
         {discountPercent > 0 && (
-          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-xs">
+          <div className="absolute top-1.5 right-1.5 z-10 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded-md shadow-xs">
             {discountPercent}% OFF
           </div>
         )}
@@ -106,34 +100,34 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="flex-1 flex flex-col justify-between min-w-0 w-full">
         <div className="min-w-0 w-full">
           {/* Brand Name */}
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 truncate block">
+          <span className="text-[9.5px] sm:text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 truncate block">
             {brandName}
           </span>
 
           {/* Product Title */}
           <Link
             href={`/products/${product.slug}`}
-            className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 line-clamp-2 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors leading-snug mt-0.5 min-h-[2.1rem] sm:min-h-[2.3rem]"
+            className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 line-clamp-2 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors leading-tight mt-0.5 min-h-[2rem] sm:min-h-[2.3rem]"
             title={product.name}
           >
             {product.name}
           </Link>
 
           {/* Unit / Pack Size */}
-          <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 dark:text-slate-400 block mt-0.5 sm:mt-1 truncate">
+          <span className="text-[10px] font-medium text-slate-400 block mt-0.5 truncate">
             {product.unit}
           </span>
         </div>
 
         {/* Bottom Price & Add to Cart Action */}
-        <div className="flex items-center justify-between pt-2 mt-auto border-t border-slate-100 dark:border-slate-800/80 gap-1 sm:gap-2 min-w-0 w-full">
-          {/* Price & MRP */}
-          <div className="flex items-baseline gap-1 min-w-0 flex-shrink">
-            <span className="text-xs sm:text-base font-black text-slate-900 dark:text-white font-mono leading-none truncate">
+        <div className="flex items-center justify-between pt-1.5 mt-auto border-t border-slate-100 dark:border-slate-800/80 gap-1.5 min-w-0 w-full">
+          {/* Price & MRP (Stacked vertically - Price above, Strikethrough MRP below - Never Truncates) */}
+          <div className="flex flex-col justify-center min-w-0 flex-shrink leading-tight">
+            <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white font-mono whitespace-nowrap leading-tight">
               ₹{Number(product.price).toFixed(0)}
             </span>
             {product.mrp && Number(product.mrp) > Number(product.price) && (
-              <span className="text-[10px] sm:text-[11px] text-slate-400 line-through font-mono font-normal truncate">
+              <span className="text-[10px] text-slate-400 line-through font-mono font-medium whitespace-nowrap leading-tight">
                 ₹{Number(product.mrp).toFixed(0)}
               </span>
             )}
@@ -141,32 +135,29 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Add / Quantity Button */}
           {isOutOfStock ? (
-            <button
-              disabled
-              className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 font-bold text-[10px] sm:text-[11px] cursor-not-allowed flex-shrink-0"
-            >
-              Unavailable
-            </button>
+            <span className="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-400 font-bold text-[9px] text-center flex-shrink-0">
+              Out
+            </span>
           ) : inCartQty === 0 ? (
             <button
               type="button"
               onClick={handleAdd}
-              className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg border-1.5 border-emerald-600 bg-emerald-50/70 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-500 dark:hover:bg-emerald-600 dark:hover:text-white font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-150 flex items-center justify-center gap-0.5 sm:gap-1 shadow-xs active:scale-95 flex-shrink-0 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-emerald-600 bg-emerald-50/80 hover:bg-emerald-600 hover:text-white text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-500 dark:hover:bg-emerald-600 dark:hover:text-white font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-150 flex items-center justify-center gap-0.5 shadow-2xs active:scale-95 flex-shrink-0 ${
                 animating ? 'scale-105 bg-emerald-600 text-white' : ''
               }`}
             >
               <span>ADD</span>
-              <Plus className="w-3 h-3 stroke-[3]" />
+              <Plus className="w-2.5 h-2.5 stroke-[3]" />
             </button>
           ) : (
-            <div className="inline-flex items-center rounded-lg bg-emerald-600 text-white shadow-md shadow-emerald-600/25 overflow-hidden text-xs font-bold min-w-[64px] sm:min-w-[76px] justify-between flex-shrink-0">
+            <div className="inline-flex items-center rounded-lg bg-emerald-600 text-white shadow-xs overflow-hidden text-xs font-bold justify-between flex-shrink-0 min-w-[62px] sm:min-w-[72px]">
               <button
                 type="button"
                 onClick={handleDecrement}
                 className="p-1 sm:p-1.5 hover:bg-emerald-700 transition active:scale-90"
                 aria-label="Decrease quantity"
               >
-                <Minus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
+                <Minus className="w-2.5 h-2.5 stroke-[3]" />
               </button>
               <span className="px-1 font-black text-[11px] sm:text-xs font-mono text-center">
                 {inCartQty}
@@ -178,7 +169,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 className="p-1 sm:p-1.5 hover:bg-emerald-700 transition active:scale-90 disabled:opacity-50"
                 aria-label="Increase quantity"
               >
-                <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
+                <Plus className="w-2.5 h-2.5 stroke-[3]" />
               </button>
             </div>
           )}

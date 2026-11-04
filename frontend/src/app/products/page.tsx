@@ -281,25 +281,25 @@ function ProductsContent() {
       </div>
 
       {/* Main Layout: Left-Side Category Navigation Rail / Sidebar + Products Grid */}
-      <div className="flex items-start gap-2 sm:gap-3 lg:gap-6 w-full min-w-0">
+      <div className="flex items-start gap-1.5 sm:gap-3 lg:gap-6 w-full min-w-0">
         {/* ========================================================================= */}
         {/* 📱 MOBILE CATEGORY LEFT RAIL (lg:hidden)                                  */}
-        {/* Placed on the LEFT SIDE of the screen as requested (Blinkit/Zepto layout) */}
+        {/* Slim, professional quick-commerce rail (Zepto / Blinkit style)            */}
         {/* ========================================================================= */}
-        <aside className="lg:hidden w-[78px] sm:w-[90px] shrink-0 sticky top-16 max-h-[calc(100vh-76px)] overflow-y-auto no-scrollbar rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-1 shadow-xs space-y-1">
+        <aside className="lg:hidden w-[68px] sm:w-[74px] shrink-0 sticky top-14 max-h-[calc(100vh-64px)] overflow-y-auto no-scrollbar rounded-xl bg-[#F6F7F9] dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-1 shadow-2xs space-y-1">
           {/* All Items Pill Button */}
           <button
             type="button"
             onClick={() => updateFilters('category', '')}
-            className={`w-full py-2 px-1 rounded-xl flex flex-col items-center text-center transition active:scale-95 ${
+            className={`w-full py-2 px-0.5 rounded-lg flex flex-col items-center text-center transition active:scale-95 ${
               !currentCategory
-                ? 'bg-emerald-600 text-white font-black shadow-xs'
-                : 'bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700 hover:bg-slate-100 font-semibold'
+                ? 'bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 font-black border-l-[3px] border-emerald-600 shadow-2xs'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 font-medium'
             }`}
           >
-            <span className="text-base sm:text-lg">🛒</span>
-            <span className="text-[10px] leading-tight mt-0.5 font-bold">All Items</span>
-            {!currentCategory && <Check className="w-2.5 h-2.5 stroke-[3] mt-0.5 text-white" />}
+            <span className="text-base">🛒</span>
+            <span className="text-[9.5px] leading-[11px] mt-0.5 font-bold">All Items</span>
+            {!currentCategory && <Check className="w-2.5 h-2.5 stroke-[3] mt-0.5 text-emerald-600" />}
           </button>
 
           {/* Category Pill Buttons */}
@@ -310,17 +310,17 @@ function ProductsContent() {
                 key={cat.id}
                 type="button"
                 onClick={() => updateFilters('category', cat.slug)}
-                className={`w-full py-2 px-1 rounded-xl flex flex-col items-center text-center transition active:scale-95 ${
+                className={`w-full py-2 px-0.5 rounded-lg flex flex-col items-center text-center transition active:scale-95 ${
                   isSelected
-                    ? 'bg-emerald-600 text-white font-black shadow-xs'
-                    : 'bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700 hover:bg-slate-100 font-semibold'
+                    ? 'bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 font-black border-l-[3px] border-emerald-600 shadow-2xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/60 font-medium'
                 }`}
               >
-                <span className="text-base sm:text-lg">{getCategoryIcon(cat.slug)}</span>
-                <span className="text-[9.5px] leading-tight mt-0.5 line-clamp-2 px-0.5">
+                <span className="text-base">{getCategoryIcon(cat.slug)}</span>
+                <span className="text-[9.5px] leading-[11px] mt-0.5 line-clamp-2 px-0.5">
                   {cat.name}
                 </span>
-                {isSelected && <Check className="w-2.5 h-2.5 stroke-[3] mt-0.5 text-white" />}
+                {isSelected && <Check className="w-2.5 h-2.5 stroke-[3] mt-0.5 text-emerald-600" />}
               </button>
             );
           })}
@@ -480,114 +480,38 @@ function ProductsContent() {
         {/* ========================================================================= */}
         {/* 🛍️ PRODUCT GRID AREA (Main right-side view)                               */}
         {/* ========================================================================= */}
-        <div className="flex-1 min-w-0 space-y-3 sm:space-y-4">
-          {/* Top Sort Bar & Active Filter Chips */}
-          <div className="p-3 sm:p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-3">
-            {/* Mobile Filter Sheet Trigger Button */}
-            <button
-              type="button"
-              onClick={() => setMobileFilterOpen(true)}
-              className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-95 transition"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Filters</span>
-              {activeFiltersCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] font-black flex items-center justify-center">
-                  {activeFiltersCount}
-                </span>
-              )}
-            </button>
+        <div className="flex-1 min-w-0 space-y-2.5 sm:space-y-4">
+          {/* Sleek, Non-Wrapping Control Bar for Mobile & Desktop */}
+          <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 min-w-0">
+              {/* Mobile Filter Sheet Trigger Button */}
+              <button
+                type="button"
+                onClick={() => setMobileFilterOpen(true)}
+                className="lg:hidden flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-[10.5px] font-bold text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 active:scale-95 transition"
+              >
+                <SlidersHorizontal className="w-3 h-3 text-emerald-600" />
+                <span>Filters</span>
+                {activeFiltersCount > 0 && (
+                  <span className="w-3.5 h-3.5 rounded-full bg-emerald-600 text-white text-[9px] font-black flex items-center justify-center">
+                    {activeFiltersCount}
+                  </span>
+                )}
+              </button>
 
-            {/* Active Filter Badges */}
-            <div className="flex flex-wrap items-center gap-1.5 min-w-0">
-              <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-                Showing <strong>{pagination.total > 0 ? (currentPage - 1) * currentLimit + 1 : 0}–{Math.min(currentPage * currentLimit, pagination.total)}</strong> of <strong>{pagination.total.toLocaleString()}</strong>
+              <span className="text-[11px] text-slate-500 font-semibold truncate hidden sm:inline">
+                Showing <strong>{pagination.total > 0 ? (currentPage - 1) * currentLimit + 1 : 0}–{Math.min(currentPage * currentLimit, pagination.total)}</strong> of <strong>{pagination.total.toLocaleString()}</strong> items
               </span>
-              {currentCategory && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200 dark:border-emerald-800">
-                  {activeCategoryObj?.name || currentCategory}
-                  <button
-                    type="button"
-                    onClick={() => updateFilters('category', '')}
-                    className="hover:text-rose-600 ml-0.5"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-              {currentSubcategory && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[11px] font-bold shadow-xs">
-                  {currentSubcategory}
-                  <button
-                    type="button"
-                    onClick={() => updateFilters('subcategory', '')}
-                    className="hover:text-emerald-200 ml-0.5"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-              {inStockOnly && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200 dark:border-emerald-800">
-                  In Stock Only
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInStockOnly(false);
-                      updateFilters('inStock', '');
-                    }}
-                    className="hover:text-rose-600 ml-0.5"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
-              {currentPriceRange && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200 dark:border-emerald-800">
-                  ₹{currentPriceRange}
-                  <button
-                    type="button"
-                    onClick={() => updateFilters('priceRange', '')}
-                    className="hover:text-rose-600 ml-0.5"
-                  >
-                    ×
-                  </button>
-                </span>
-              )}
+
+              {/* Mobile Active Category Pill Indicator */}
+              <span className="text-[10px] text-slate-400 font-semibold sm:hidden truncate">
+                {activeCategoryObj?.name || 'All Items'} ({pagination.total})
+              </span>
             </div>
 
-            {/* Sort Selector Dropdown & Mini Top Pager */}
-            <div className="flex items-center gap-2 ml-auto">
-              {pagination.totalPages > 1 && (
-                <div className="hidden sm:flex items-center gap-0.5 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1 bg-white dark:bg-slate-800 text-xs shadow-2xs">
-                  <button
-                    type="button"
-                    disabled={currentPage <= 1}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    className="p-1 hover:text-emerald-600 dark:hover:text-emerald-400 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                    title="Previous Page"
-                    aria-label="Previous Page"
-                  >
-                    <ChevronLeft className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="px-1 text-slate-700 dark:text-slate-300 font-black text-[11px] select-none">
-                    {currentPage} / {pagination.totalPages}
-                  </span>
-                  <button
-                    type="button"
-                    disabled={currentPage >= pagination.totalPages}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    className="p-1 hover:text-emerald-600 dark:hover:text-emerald-400 disabled:opacity-30 disabled:cursor-not-allowed transition"
-                    title="Next Page"
-                    aria-label="Next Page"
-                  >
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
-
-              <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 hidden sm:inline" />
-              <span className="text-xs font-bold text-slate-500 hidden sm:inline">Sort:</span>
+            {/* Sort Selector Dropdown */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-400 hidden sm:inline">Sort:</span>
               <select
                 value={`${currentSortBy}-${currentSortOrder}`}
                 onChange={(e) => {
@@ -597,7 +521,7 @@ function ProductsContent() {
                   params.set('sortOrder', so);
                   router.push(`/products?${params.toString()}`);
                 }}
-                className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold rounded-xl px-2.5 sm:px-3 py-1.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] sm:text-xs font-bold rounded-lg px-2 py-1 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
               >
                 <option value="createdAt-desc">Newest First</option>
                 <option value="price-asc">Price: Low to High</option>
