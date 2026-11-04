@@ -157,30 +157,32 @@ function ProductsContent() {
     updateFilters('search', searchInput);
   };
 
-  const getPageNumbers = () => {
+  const getPageNumbers = (isMobile = false) => {
     const { totalPages } = pagination;
     if (totalPages <= 1) return [1];
-    if (totalPages <= 5) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    if (isMobile) {
+      if (totalPages <= 4) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+      }
+      if (currentPage <= 2) {
+        return [1, 2, 3, '...', totalPages];
+      }
+      if (currentPage >= totalPages - 1) {
+        return [1, '...', totalPages - 2, totalPages - 1, totalPages];
+      }
+      return [1, '...', currentPage, '...', totalPages];
     }
 
-    if (currentPage === 1) {
-      return [1, 2, '...', totalPages];
+    // Desktop
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-    if (currentPage === 2) {
-      return [1, 2, 3, '...', totalPages];
+    if (currentPage <= 4) {
+      return [1, 2, 3, 4, 5, '...', totalPages];
     }
-    if (currentPage === 3) {
-      return [1, 2, 3, 4, '...', totalPages];
-    }
-    if (currentPage === totalPages) {
-      return [1, '...', totalPages - 1, totalPages];
-    }
-    if (currentPage === totalPages - 1) {
-      return [1, '...', totalPages - 2, totalPages - 1, totalPages];
-    }
-    if (currentPage === totalPages - 2) {
-      return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    if (currentPage >= totalPages - 3) {
+      return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
     }
 
     return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
@@ -599,68 +601,72 @@ function ProductsContent() {
             </div>
           )}
 
-          {/* Exact Zepto/FreshCart Numbered Pagination Bar */}
+          {/* FreshCart Premium Minimal Responsive Pagination */}
           {pagination.totalPages > 1 && (
-            <div
-              className={`mt-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs space-y-3 transition-all duration-200 ${
+            <nav
+              aria-label="Catalogue pagination"
+              className={`mt-8 bg-white dark:bg-slate-900 rounded-xl border border-[#E5EAF0] dark:border-slate-800 p-4 sm:p-5 shadow-xs transition-all duration-200 ${
                 isLoading ? 'opacity-70 pointer-events-none' : 'opacity-100'
               }`}
             >
-              {/* Primary Pagination Bar: Status text on left, < Prev [1] [2] ... [355] [Next >] on right */}
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                {/* Left: Showing 1 to 12 of 4,260 items (Page 1 of 355) */}
-                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-                  Showing{' '}
-                  <strong className="text-slate-900 dark:text-white font-bold">
-                    {pagination.total > 0 ? (currentPage - 1) * currentLimit + 1 : 0}
-                  </strong>{' '}
-                  to{' '}
-                  <strong className="text-slate-900 dark:text-white font-bold">
-                    {Math.min(currentPage * currentLimit, pagination.total)}
-                  </strong>{' '}
-                  of{' '}
-                  <strong className="text-slate-900 dark:text-white font-bold">
-                    {pagination.total.toLocaleString()}
-                  </strong>{' '}
-                  items (Page{' '}
-                  <strong className="text-slate-900 dark:text-white font-bold">
-                    {currentPage}
-                  </strong>{' '}
-                  of{' '}
-                  <strong className="text-slate-900 dark:text-white font-bold">
-                    {pagination.totalPages}
-                  </strong>
-                  )
+              {/* ========================================================================= */}
+              {/* DESKTOP LAYOUT (md:flex hidden)                                           */}
+              {/* ========================================================================= */}
+              <div className="hidden md:flex flex-col space-y-4">
+                {/* TOP ROW: Showing X–Y of Z products | Page X of Y */}
+                <div className="flex items-center justify-between text-xs sm:text-sm text-[#64748B] dark:text-slate-400 font-normal pb-3 border-b border-[#E5EAF0] dark:border-slate-800">
+                  <div>
+                    Showing{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {pagination.total > 0 ? (currentPage - 1) * currentLimit + 1 : 0}–
+                      {Math.min(currentPage * currentLimit, pagination.total)}
+                    </span>{' '}
+                    of{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {pagination.total.toLocaleString()}
+                    </span>{' '}
+                    products
+                  </div>
+                  <div>
+                    Page{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {currentPage}
+                    </span>{' '}
+                    of{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {pagination.totalPages}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Right: Navigation Buttons */}
-                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
-                  {/* Prev Button */}
+                {/* CENTER ROW: Previous | 1 2 3 ... 355 | Next */}
+                <div className="flex items-center justify-center gap-1.5 sm:gap-2 py-1">
+                  {/* Previous Button */}
                   <button
                     type="button"
                     disabled={currentPage <= 1}
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className={`h-9 sm:h-10 px-3.5 sm:px-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 border ${
+                    className={`h-10 px-3.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 border ${
                       currentPage <= 1
-                        ? 'opacity-40 cursor-not-allowed bg-white/60 dark:bg-slate-800/60 border-slate-100 dark:border-slate-800 text-slate-400'
-                        : 'bg-white dark:bg-slate-800 border-slate-200/90 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 shadow-2xs'
+                        ? 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-800/50 border-[#E5EAF0] dark:border-slate-800 text-slate-300 dark:text-slate-600'
+                        : 'bg-white dark:bg-slate-800 border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] hover:border-[#16834A]/40 hover:text-[#16834A] dark:hover:bg-slate-700 active:scale-95 shadow-2xs'
                     }`}
                     title="Previous Page"
                     aria-label="Previous Page"
                   >
-                    <ChevronLeft className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Prev</span>
+                    <ChevronLeft className="w-4 h-4 text-[#64748B] dark:text-slate-400" />
+                    <span>Previous</span>
                   </button>
 
-                  {/* Number Buttons & Dots */}
-                  {getPageNumbers().map((p, idx) => {
+                  {/* Page Numbers and Ellipsis */}
+                  {getPageNumbers(false).map((p, idx) => {
                     if (typeof p === 'string') {
                       return (
                         <span
-                          key={`dots-${idx}`}
-                          className="px-1 text-slate-400 dark:text-slate-500 font-bold text-xs sm:text-sm select-none tracking-widest flex items-center justify-center"
+                          key={`desktop-dots-${idx}`}
+                          className="w-8 h-10 flex items-center justify-center text-[#64748B] dark:text-slate-500 font-semibold text-sm select-none"
                         >
-                          ...
+                          …
                         </span>
                       );
                     }
@@ -668,13 +674,13 @@ function ProductsContent() {
                     const isActive = p === currentPage;
                     return (
                       <button
-                        key={p}
+                        key={`desktop-page-${p}`}
                         type="button"
                         onClick={() => handlePageChange(p)}
-                        className={`min-w-[36px] sm:min-w-[40px] h-9 sm:h-10 px-2.5 sm:px-3 rounded-2xl text-xs sm:text-sm font-bold transition-all duration-150 flex items-center justify-center ${
+                        className={`w-10 h-10 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-150 flex items-center justify-center ${
                           isActive
-                            ? 'bg-[#168447] text-white shadow-sm shadow-[#168447]/30'
-                            : 'bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-[#168447] hover:text-[#168447] dark:hover:border-emerald-500 dark:hover:text-emerald-400 shadow-2xs'
+                            ? 'bg-[#16834A] hover:bg-[#116B3B] text-white shadow-2xs'
+                            : 'bg-white dark:bg-slate-800 border border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] hover:border-[#16834A]/40 hover:text-[#16834A] dark:hover:bg-slate-700 active:scale-95'
                         }`}
                         aria-label={`Page ${p}`}
                         aria-current={isActive ? 'page' : undefined}
@@ -689,64 +695,187 @@ function ProductsContent() {
                     type="button"
                     disabled={currentPage >= pagination.totalPages}
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className={`h-9 sm:h-10 px-3.5 sm:px-4 rounded-2xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 border ${
+                    className={`h-10 px-3.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 border ${
                       currentPage >= pagination.totalPages
-                        ? 'opacity-40 cursor-not-allowed bg-white/60 dark:bg-slate-800/60 border-slate-100 dark:border-slate-800 text-slate-400'
-                        : 'bg-white dark:bg-slate-800 border-slate-200/90 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 active:scale-95 shadow-2xs'
+                        ? 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-800/50 border-[#E5EAF0] dark:border-slate-800 text-slate-300 dark:text-slate-600'
+                        : 'bg-white dark:bg-slate-800 border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] hover:border-[#16834A]/40 hover:text-[#16834A] dark:hover:bg-slate-700 active:scale-95 shadow-2xs'
                     }`}
                     title="Next Page"
                     aria-label="Next Page"
                   >
                     <span>Next</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                    <ChevronRight className="w-4 h-4 text-[#64748B] dark:text-slate-400" />
                   </button>
+                </div>
+
+                {/* BOTTOM ROW: Rows per page selector (12, 24, 48, 96) | Jump to page */}
+                <div className="flex items-center justify-between text-xs text-[#64748B] dark:text-slate-400 pt-3 border-t border-[#E5EAF0] dark:border-slate-800">
+                  {/* Left: Rows per page selector */}
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-[#64748B] dark:text-slate-400">Rows per page:</span>
+                    <select
+                      value={currentLimit}
+                      onChange={(e) => {
+                        const params = new URLSearchParams(searchParams.toString());
+                        params.set('limit', e.target.value);
+                        params.set('page', '1');
+                        router.push(`/products?${params.toString()}`);
+                      }}
+                      className="bg-white dark:bg-slate-800 border border-[#E5EAF0] dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#172033] dark:text-slate-200 focus:outline-none focus:border-[#16834A] focus:ring-1 focus:ring-[#16834A] cursor-pointer shadow-2xs"
+                    >
+                      <option value="12">12</option>
+                      <option value="24">24</option>
+                      <option value="48">48</option>
+                      <option value="96">96</option>
+                    </select>
+                  </div>
+
+                  {/* Right: Compact jump-to-page input and Go button */}
+                  <form onSubmit={handleJumpSubmit} className="flex items-center gap-2">
+                    <span className="font-medium text-[#64748B] dark:text-slate-400">Jump to page:</span>
+                    <input
+                      type="number"
+                      min={1}
+                      max={pagination.totalPages}
+                      placeholder={String(currentPage)}
+                      value={jumpPageInput}
+                      onChange={(e) => setJumpPageInput(e.target.value)}
+                      className="w-14 h-8 bg-white dark:bg-slate-800 border border-[#E5EAF0] dark:border-slate-700 rounded-lg text-center text-xs font-semibold text-[#172033] dark:text-white focus:outline-none focus:border-[#16834A] focus:ring-1 focus:ring-[#16834A]"
+                      aria-label="Target page number"
+                    />
+                    <button
+                      type="submit"
+                      className="px-3 h-8 rounded-lg bg-[#16834A] hover:bg-[#116B3B] text-white text-xs font-semibold transition active:scale-95 shadow-2xs flex items-center gap-1"
+                    >
+                      <span>Go</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </button>
+                  </form>
                 </div>
               </div>
 
-              {/* Secondary Sleek Jump & Per-Page Row */}
-              <div className="flex items-center justify-between sm:justify-end gap-4 text-xs text-slate-500 dark:text-slate-400 pt-2.5 border-t border-slate-100 dark:border-slate-800/80">
-                <form onSubmit={handleJumpSubmit} className="flex items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-slate-400">Jump to:</span>
-                  <input
-                    type="number"
-                    min={1}
-                    max={pagination.totalPages}
-                    placeholder={String(currentPage)}
-                    value={jumpPageInput}
-                    onChange={(e) => setJumpPageInput(e.target.value)}
-                    className="w-12 h-7 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-center text-xs font-bold text-slate-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                    aria-label="Target page number"
-                  />
+              {/* ========================================================================= */}
+              {/* MOBILE LAYOUT (md:hidden)                                                 */}
+              {/* ========================================================================= */}
+              <div className="flex md:hidden flex-col space-y-3.5">
+                {/* FIRST ROW: Showing 1–12 of 4,260 */}
+                <div className="text-center text-xs text-[#64748B] dark:text-slate-400 font-normal">
+                  Showing{' '}
+                  <span className="font-semibold text-[#172033] dark:text-white">
+                    {pagination.total > 0 ? (currentPage - 1) * currentLimit + 1 : 0}–
+                    {Math.min(currentPage * currentLimit, pagination.total)}
+                  </span>{' '}
+                  of{' '}
+                  <span className="font-semibold text-[#172033] dark:text-white">
+                    {pagination.total.toLocaleString()}
+                  </span>
+                </div>
+
+                {/* SECOND ROW: Compact pagination controls: Previous | 1 | 2 | 3 | ... | 355 | Next */}
+                <div className="flex items-center justify-between gap-1 w-full">
+                  {/* Previous Button */}
                   <button
-                    type="submit"
-                    className="px-2.5 h-7 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold transition active:scale-95 shadow-2xs flex items-center gap-0.5"
+                    type="button"
+                    disabled={currentPage <= 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className={`h-10 px-2.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center border shrink-0 ${
+                      currentPage <= 1
+                        ? 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-800/50 border-[#E5EAF0] dark:border-slate-800 text-slate-300 dark:text-slate-600'
+                        : 'bg-white dark:bg-slate-800 border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] active:scale-95'
+                    }`}
+                    title="Previous Page"
+                    aria-label="Previous Page"
                   >
-                    <span>Go</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <ChevronLeft className="w-4 h-4 text-[#64748B] dark:text-slate-400" />
+                    <span className="hidden xs:inline ml-0.5 text-xs">Prev</span>
                   </button>
-                </form>
 
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] font-medium text-slate-400">Show:</span>
-                  <select
-                    value={currentLimit}
-                    onChange={(e) => {
-                      const params = new URLSearchParams(searchParams.toString());
-                      params.set('limit', e.target.value);
-                      params.set('page', '1');
-                      router.push(`/products?${params.toString()}`);
-                    }}
-                    className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 cursor-pointer shadow-2xs"
+                  {/* Numbered Buttons and Ellipsis */}
+                  <div className="flex items-center justify-center gap-1 flex-1 min-w-0">
+                    {getPageNumbers(true).map((p, idx) => {
+                      if (typeof p === 'string') {
+                        return (
+                          <span
+                            key={`mobile-dots-${idx}`}
+                            className="w-5 h-10 flex items-center justify-center text-[#64748B] dark:text-slate-500 font-bold text-xs select-none"
+                          >
+                            …
+                          </span>
+                        );
+                      }
+
+                      const isActive = p === currentPage;
+                      return (
+                        <button
+                          key={`mobile-page-${p}`}
+                          type="button"
+                          onClick={() => handlePageChange(p)}
+                          className={`min-w-[34px] sm:min-w-[38px] h-10 px-1 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                            isActive
+                              ? 'bg-[#16834A] text-white shadow-2xs'
+                              : 'bg-white dark:bg-slate-800 border border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] active:scale-95'
+                          }`}
+                          aria-label={`Page ${p}`}
+                          aria-current={isActive ? 'page' : undefined}
+                        >
+                          {p}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    type="button"
+                    disabled={currentPage >= pagination.totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className={`h-10 px-2.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center border shrink-0 ${
+                      currentPage >= pagination.totalPages
+                        ? 'opacity-40 cursor-not-allowed bg-slate-50 dark:bg-slate-800/50 border-[#E5EAF0] dark:border-slate-800 text-slate-300 dark:text-slate-600'
+                        : 'bg-white dark:bg-slate-800 border-[#E5EAF0] dark:border-slate-700 text-[#172033] dark:text-slate-200 hover:bg-[#F0F7F2] active:scale-95'
+                    }`}
+                    title="Next Page"
+                    aria-label="Next Page"
                   >
-                    <option value="12">12 / page</option>
-                    <option value="16">16 / page</option>
-                    <option value="24">24 / page</option>
-                    <option value="36">36 / page</option>
-                    <option value="48">48 / page</option>
-                  </select>
+                    <span className="hidden xs:inline mr-0.5 text-xs">Next</span>
+                    <ChevronRight className="w-4 h-4 text-[#64748B] dark:text-slate-400" />
+                  </button>
+                </div>
+
+                {/* THIRD ROW: Left: Page 1 of 355 | Right: Items per page dropdown */}
+                <div className="flex items-center justify-between text-xs text-[#64748B] dark:text-slate-400 pt-2 border-t border-[#E5EAF0] dark:border-slate-800">
+                  <div className="font-medium">
+                    Page{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {currentPage}
+                    </span>{' '}
+                    of{' '}
+                    <span className="font-semibold text-[#172033] dark:text-white">
+                      {pagination.totalPages}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] font-medium text-[#64748B] dark:text-slate-400">Items:</span>
+                    <select
+                      value={currentLimit}
+                      onChange={(e) => {
+                        const params = new URLSearchParams(searchParams.toString());
+                        params.set('limit', e.target.value);
+                        params.set('page', '1');
+                        router.push(`/products?${params.toString()}`);
+                      }}
+                      className="bg-white dark:bg-slate-800 border border-[#E5EAF0] dark:border-slate-700 rounded-lg px-2 py-1 text-xs font-semibold text-[#172033] dark:text-slate-200 focus:outline-none focus:border-[#16834A]"
+                    >
+                      <option value="12">12 / page</option>
+                      <option value="24">24 / page</option>
+                      <option value="48">48 / page</option>
+                      <option value="96">96 / page</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
+            </nav>
           )}
         </div>
       </div>
