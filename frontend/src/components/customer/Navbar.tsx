@@ -82,14 +82,14 @@ export default function Navbar() {
       {/* Main Sticky Header */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs transition-colors w-full">
         <div className="max-w-[1720px] mx-auto px-2.5 sm:px-6 lg:px-8 2xl:px-12 w-full">
-          <div className="flex items-center justify-between h-14 sm:h-16 gap-1.5 sm:gap-4 lg:gap-6 w-full">
+          <div className="flex items-center justify-between h-14 sm:h-16 gap-1.5 sm:gap-4 lg:gap-6 w-full min-w-0">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0 group">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-brand-primary to-emerald-500 flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-md shadow-brand-primary/20 group-hover:scale-105 transition-transform">
+            <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 group">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-brand-primary to-emerald-500 flex items-center justify-center text-white font-black text-base sm:text-xl shadow-md shadow-brand-primary/20 group-hover:scale-105 transition-transform">
                 🥦
               </div>
               <div>
-                <span className="text-lg sm:text-xl font-black tracking-tight text-brand-text dark:text-white leading-none flex items-center">
+                <span className="text-base sm:text-xl font-black tracking-tight text-brand-text dark:text-white leading-none flex items-center">
                   Fresh<span className="text-brand-primary dark:text-emerald-400">Cart</span>
                 </span>
                 <span className="hidden sm:block text-[10px] font-extrabold text-brand-offer uppercase tracking-wider mt-0.5">
@@ -98,23 +98,24 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* Delivery Location Selector Pill (Visible on both mobile & desktop) */}
+            {/* Delivery Location Selector Pill (Optimized for Mobile & Desktop) */}
             <button
               type="button"
               onClick={() => setIsLocationModalOpen(true)}
-              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-2xl bg-brand-secondary dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/80 text-left hover:border-brand-primary/40 transition group max-w-[130px] sm:max-w-[190px] lg:max-w-[240px] flex-shrink"
+              className="flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-2xl bg-brand-secondary dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/80 text-left hover:border-brand-primary/40 transition group max-w-[120px] xs:max-w-[135px] sm:max-w-[190px] lg:max-w-[240px] shrink min-w-0"
+              title="Change Delivery Location"
             >
-              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-brand-soft dark:bg-emerald-950/60 text-brand-primary dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+              <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-xl bg-brand-soft dark:bg-emerald-950/60 text-brand-primary dark:text-emerald-400 flex items-center justify-center shrink-0">
                 <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-1">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-0.5 sm:gap-1">
                   <span className="text-[9px] sm:text-[10px] font-black uppercase text-brand-primary dark:text-emerald-400 tracking-wider truncate">
                     ⚡ 10-15m
                   </span>
-                  <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400 group-hover:text-brand-primary transition-colors flex-shrink-0" />
+                  <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-slate-400 group-hover:text-brand-primary transition-colors shrink-0" />
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold text-slate-800 dark:text-slate-200 truncate block">
+                <span className="text-[10px] sm:text-xs font-bold text-slate-800 dark:text-slate-200 truncate block">
                   {areaName}
                 </span>
               </div>
@@ -126,11 +127,11 @@ export default function Navbar() {
             </div>
 
             {/* Right Action Buttons */}
-            <div className="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               {/* Home Button (Desktop) */}
               <Link
                 href="/"
-                className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold transition group ${
+                className={`hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold transition group ${
                   pathname === '/'
                     ? 'bg-brand-primary text-white shadow-xs'
                     : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300'
@@ -141,10 +142,10 @@ export default function Navbar() {
                 <span className="hidden lg:inline">Home</span>
               </Link>
 
-              {/* Order History Button */}
+              {/* Order History Button (Desktop & Tablet - Mobile uses bottom nav) */}
               <Link
                 href="/orders"
-                className={`inline-flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-2xl text-xs font-bold transition group ${
+                className={`hidden sm:inline-flex items-center gap-1.5 p-2 sm:px-3 sm:py-2 rounded-2xl text-xs font-bold transition group ${
                   pathname === '/orders'
                     ? 'bg-brand-primary text-white shadow-xs'
                     : 'bg-brand-soft/80 hover:bg-brand-soft dark:bg-emerald-950/60 text-brand-primary dark:text-emerald-300 border border-brand-soft dark:border-emerald-900/60 hover:border-brand-primary/40'
@@ -156,87 +157,89 @@ export default function Navbar() {
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </Link>
 
-              {/* Theme Toggle */}
+              {/* Theme Toggle (Compact on Mobile) */}
               <button
                 type="button"
                 onClick={toggleTheme}
                 aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                className="p-2 sm:p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition"
+                className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shrink-0"
               >
                 {isDark ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600" />}
               </button>
 
-              {/* User Login / Profile */}
-              {user ? (
-                <div className="relative group">
-                  <Link
-                    href="/account"
-                    className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:px-3 sm:py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold transition"
-                  >
-                    <UserIcon className="w-4 h-4 text-brand-primary" />
-                    <span className="hidden sm:inline">{user.name.split(' ')[0]}</span>
-                  </Link>
-
-                  {/* Dropdown Menu */}
-                  <div className="hidden group-hover:block absolute right-0 mt-1 w-48 bg-white dark:bg-slate-900 rounded-3xl shadow-elevated border border-slate-200/90 dark:border-slate-800 p-2 z-50 animate-in fade-in zoom-in-95 duration-100">
-                    <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
-                      <span className="text-[10px] text-slate-400 uppercase font-bold block">Account</span>
-                      <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate block">
-                        {user.name}
-                      </span>
-                    </div>
+              {/* User Login / Profile (Desktop & Tablet - Mobile uses bottom nav Account tab) */}
+              <div className="hidden sm:flex items-center">
+                {user ? (
+                  <div className="relative group">
                     <Link
                       href="/account"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      className="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:px-3 sm:py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold transition"
                     >
-                      <UserIcon className="w-3.5 h-3.5 text-brand-primary" />
-                      <span>My Profile</span>
+                      <UserIcon className="w-4 h-4 text-brand-primary" />
+                      <span className="hidden sm:inline">{user.name.split(' ')[0]}</span>
                     </Link>
-                    <Link
-                      href="/orders"
-                      className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
-                    >
-                      <span className="flex items-center gap-2">
-                        <History className="w-3.5 h-3.5 text-brand-primary" />
-                        <span>Order History</span>
-                      </span>
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    </Link>
-                    {isAdmin && (
-                      <a
-                        href={process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40"
-                      >
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        <span>Admin Portal ↗</span>
-                      </a>
-                    )}
-                    <button
-                      type="button"
-                      onClick={logout}
-                      className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition mt-1"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-brand-soft text-brand-primary dark:bg-emerald-950/60 dark:text-emerald-400 font-extrabold text-xs hover:bg-brand-primary hover:text-white transition shadow-xs"
-                >
-                  <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span>Login</span>
-                </Link>
-              )}
 
-              {/* Blinkit/Zepto-style Green Cart Pill Button */}
+                    {/* Dropdown Menu */}
+                    <div className="hidden group-hover:block absolute right-0 mt-1 w-48 bg-white dark:bg-slate-900 rounded-3xl shadow-elevated border border-slate-200/90 dark:border-slate-800 p-2 z-50 animate-in fade-in zoom-in-95 duration-100">
+                      <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
+                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Account</span>
+                        <span className="text-xs font-extrabold text-slate-900 dark:text-white truncate block">
+                          {user.name}
+                        </span>
+                      </div>
+                      <Link
+                        href="/account"
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      >
+                        <UserIcon className="w-3.5 h-3.5 text-brand-primary" />
+                        <span>My Profile</span>
+                      </Link>
+                      <Link
+                        href="/orders"
+                        className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                      >
+                        <span className="flex items-center gap-2">
+                          <History className="w-3.5 h-3.5 text-brand-primary" />
+                          <span>Order History</span>
+                        </span>
+                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      </Link>
+                      {isAdmin && (
+                        <a
+                          href={process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:3001'}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/40"
+                        >
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          <span>Admin Portal ↗</span>
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition mt-1"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-brand-soft text-brand-primary dark:bg-emerald-950/60 dark:text-emerald-400 font-extrabold text-xs hover:bg-brand-primary hover:text-white transition shadow-xs"
+                  >
+                    <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span>Login</span>
+                  </Link>
+                )}
+              </div>
+
+              {/* Blinkit/Zepto-style Green Cart Pill Button (Fully Visible, NEVER Clipped!) */}
               <button
                 type="button"
                 onClick={() => setIsCartOpen(true)}
-                className="flex items-center gap-1.5 sm:gap-2 bg-brand-primary hover:bg-brand-deep text-white px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-2xl font-black text-xs shadow-md shadow-brand-primary/20 transition active:scale-95"
+                className="flex items-center gap-1.5 sm:gap-2 bg-brand-primary hover:bg-brand-deep text-white px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-2xl font-black text-xs shadow-md shadow-brand-primary/20 transition active:scale-95 shrink-0"
                 aria-label="Open Cart"
               >
                 <div className="relative">
@@ -251,21 +254,12 @@ export default function Navbar() {
                   {totalItems > 0 ? (
                     <>
                       <span className="text-[9px] sm:text-[10px] opacity-90 font-bold hidden sm:inline">{totalItems} items</span>
-                      <span className="text-xs font-black font-mono">₹{Math.round(subtotal)}</span>
+                      <span className="text-xs font-black font-mono whitespace-nowrap">₹{Math.round(subtotal)}</span>
                     </>
                   ) : (
                     <span className="hidden sm:inline">My Cart</span>
                   )}
                 </div>
-              </button>
-
-              {/* Mobile Menu Toggle */}
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-1.5 text-slate-700 dark:text-slate-300"
-              >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
