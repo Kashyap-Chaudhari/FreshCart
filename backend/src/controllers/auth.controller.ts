@@ -80,5 +80,18 @@ export const authController = {
       next(err);
     }
   },
+
+  async deleteAccount(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        res.status(401).json({ success: false, message: 'Authentication required' });
+        return;
+      }
+      const result = await authService.deleteAccount(req.user.id);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 

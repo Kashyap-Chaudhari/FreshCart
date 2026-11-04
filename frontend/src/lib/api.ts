@@ -135,6 +135,7 @@ export const api = {
   requestOtp: (phone: string) => requestWithFallback('/auth/otp/request', { method: 'POST', body: JSON.stringify({ phone }) }),
   verifyOtp: (body: any) => requestWithFallback('/auth/otp/verify', { method: 'POST', body: JSON.stringify(body) }),
   getMe: () => requestWithFallback('/auth/me'),
+  deleteAccount: () => requestWithFallback('/auth/delete-account', { method: 'DELETE' }),
 
   // Products & Categories (with built-in fallback catalog)
   getProducts: (params: string = '') => requestWithFallback(`/products${params ? `?${params}` : ''}`),

@@ -17,6 +17,7 @@ router.post('/login', authRateLimiter, validate({ body: loginEmailSchema }), aut
 router.post('/otp/request', authRateLimiter, validate({ body: requestOtpSchema }), authController.requestOtp);
 router.post('/otp/verify', authRateLimiter, validate({ body: verifyOtpSchema }), authController.verifyOtp);
 router.get('/me', authenticate, authController.getMe);
+router.delete('/delete-account', authenticate, authController.deleteAccount);
 
 export default router;
 

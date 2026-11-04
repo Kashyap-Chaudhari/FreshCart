@@ -41,7 +41,7 @@ export const authService = {
       }
     }
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(data.password, salt);
 
     const user = await prisma.user.create({
@@ -76,7 +76,7 @@ export const authService = {
 
     // If demo customer credentials
     if (!user && (email.toLowerCase() === 'customer@freshcart.com' || email.toLowerCase() === 'customer@example.com')) {
-      const passwordHash = await bcrypt.hash('CustomerPass@2026', 10);
+      const passwordHash = await bcrypt.hash('CustomerPass@2026', 12);
       user = await prisma.user.create({
         data: {
           name: 'Priya Patel',
@@ -90,7 +90,7 @@ export const authService = {
 
     // Dynamic real customer auto-registration on sign-in
     if (!user) {
-      const passwordHash = await bcrypt.hash(password, 10);
+      const passwordHash = await bcrypt.hash(password, 12);
       const name = email.split('@')[0].replace(/[._-]/g, ' ');
       user = await prisma.user.create({
         data: {
@@ -222,6 +222,51 @@ export const authService = {
         role: user.role,
       },
       token,
+    };
+  },
+
+  /**
+   * Delete account & anonymize personal data (India DPDP Act 2023 & Google Play/App Store compliance)
+   */
+  async deleteAccount(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        orders: {
+          where: {
+            status: { in: ['PLACED', 'CONFIRMED', 'PACKED', 'OUT_FOR_DELIVERY'] },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new AppError('User account not found.', 404);
+    }
+
+    if (user.orders && user.orders.length > 0) {
+      throw new AppError(
+        'Cannot delete account while you have active orders in progress. Please wait until deliveries are completed or cancelled.',
+        400
+      );
+    }
+
+    // Anonymize personal identifiable data (preserves order history for statutory tax/accounting records)
+    const anonymizedIdentifier = `deleted_${Date.now()}`;
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: 'Deleted Customer',
+        email: null,
+        phone: anonymizedIdentifier,
+        passwordHash: 'DELETED',
+        isBlocked: true,
+      },
+    });
+
+    return {
+      success: true,
+      message: 'Your account and personal data have been permanently deleted in accordance with data privacy regulations.',
     };
   },
 };

@@ -11,9 +11,25 @@ import { env } from './config/env';
 export function createApp(): Express {
   const app = express();
 
-  // Security HTTP headers
+  // Hide server version banners
+  app.disable('x-powered-by');
+
+  // Security HTTP headers (HSTS, X-Content-Type-Options, Frameguard, Referrer-Policy)
   app.use(helmet({
-    contentSecurityPolicy: false, // Allows Swagger UI and embedded previews
+    contentSecurityPolicy: false, // Allows Swagger UI and embedded previews while keeping strict transport headers
+    crossOriginEmbedderPolicy: false,
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+    frameguard: {
+      action: 'sameorigin',
+    },
+    noSniff: true,
+    referrerPolicy: {
+      policy: 'strict-origin-when-cross-origin',
+    },
   }));
 
   // CORS configuration for storefront, admin portal, and driver portal
